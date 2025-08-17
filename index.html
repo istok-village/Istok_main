@@ -1159,69 +1159,6 @@ body.no-scroll{ overflow:hidden; }
   }
 }
 
-
-@media (max-width: 560px) {
-  /* Fullscreen overlay for master plan */
-  .master-plan-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-  }
-  .master-plan-overlay.show {
-    display: flex;
-  }
-  .master-plan-overlay .master-plan-container {
-    width: 100%;
-    height: 100%;
-    max-height: 100%;
-    max-width: 100%;
-    border-radius: 0;
-  }
-  .master-plan-overlay .master-plan-container img {
-    width: 1200px !important;
-  }
-  /* Remove white space under preview */
-  #map-container {
-    margin: 0 !important;
-    height: auto !important;
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  #map-container img {
-    width: 100% !important;
-    height: auto !important;
-    display: block;
-  }
-}
-
-
-@media (max-width: 560px) {
-  .master-plan-controls button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1.2;
-    padding: 10px 12px !important;
-    height: auto !important;
-  }
-}
-
-
-@media (max-width: 560px) {
-  .cottage-house-card .house-info-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-  }
-  .cottage-house-gallery img {
-    transform: scale(0.7);
-  }
-}
-
 </style>
 </head>
 <body>
@@ -1229,7 +1166,7 @@ body.no-scroll{ overflow:hidden; }
 <header class="cottage-nav">
   <div class="cottage-container cottage-nav__row" style="padding-left: 0; padding-right: 0; justify-content: space-between;">
     <a class="cottage-brand" href="#top" aria-label="Исток" style="margin-left: 0;">
-      <img src="img/logo.png" alt="Логотип Исток" class="logo" 
+      <img src="logo.png" alt="Логотип Исток" class="logo" 
            style="width:42px;height:42px;background:none;box-shadow:none;border-radius:0;">
       <span style="color:#906a41;">Исток — коттеджный поселок</span>
     </a>
@@ -1343,23 +1280,6 @@ const mapImgEl = document.getElementById("map-img");
 if(mapContainerEl && mapImgEl){
   mapImgEl.addEventListener("click", () => {
     mapContainerEl.classList.toggle("zoomed");
-  });
-}
-
-
-// === Fullscreen master plan ===
-const mapOverlay = document.getElementById("master-plan-overlay");
-const mapImgPreview = document.getElementById("map-img");
-const mapImgOverlay = document.getElementById("map-img-overlay");
-
-if(mapImgPreview && mapOverlay){
-  mapImgPreview.addEventListener("click", () => {
-    mapOverlay.classList.add("show");
-  });
-  mapOverlay.addEventListener("click", (e) => {
-    if(e.target === mapOverlay){
-      mapOverlay.classList.remove("show");
-    }
   });
 }
 
@@ -1480,7 +1400,7 @@ if(mapImgPreview && mapOverlay){
     <div style="flex:1 1 480px; max-width:600px;">
       <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:12px; background:#000;">
         <video
-          src="video.mp4"
+          src="img/video.mp4"
           controls
           autoplay
           muted
@@ -1549,16 +1469,6 @@ if(mapImgPreview && mapOverlay){
         </form>
       </div>
     </section>
-
-
-<!-- Fullscreen overlay for master plan -->
-<div id="master-plan-overlay" class="master-plan-overlay">
-  <div class="master-plan-container zoomed">
-    <img id="map-img-overlay" src="img/genplan.jpg" alt="Генеральный план поселка" />
-    <svg id="map-svg-overlay" class="master-plan-svg" width="1200" height="900"></svg>
-    <div id="tooltip-overlay" class="master-plan-tooltip"></div>
-  </div>
-</div>
 
 </main>
 
@@ -1750,7 +1660,7 @@ function populateLots() {
         <div>
           <h3 style="margin: 0 0 0.5rem; font-size: 1.3rem; color: var(--text);">${house.title}</h3>
           <p style="color: var(--text); margin-bottom: 1rem;">${house.description}</p>
-          <div class="house-info-row">
+          <div style="display: flex; gap: 2rem; margin-bottom: 1rem;">
             <div>
               <div style="color: var(--text); font-size: 0.9rem;">Площадь</div>
               <div style="font-weight: 600; color: var(--text);">${house.area} м²</div>
@@ -2021,23 +1931,6 @@ const mapImgEl = document.getElementById("map-img");
 if(mapContainerEl && mapImgEl){
   mapImgEl.addEventListener("click", () => {
     mapContainerEl.classList.toggle("zoomed");
-  });
-}
-
-
-// === Fullscreen master plan ===
-const mapOverlay = document.getElementById("master-plan-overlay");
-const mapImgPreview = document.getElementById("map-img");
-const mapImgOverlay = document.getElementById("map-img-overlay");
-
-if(mapImgPreview && mapOverlay){
-  mapImgPreview.addEventListener("click", () => {
-    mapOverlay.classList.add("show");
-  });
-  mapOverlay.addEventListener("click", (e) => {
-    if(e.target === mapOverlay){
-      mapOverlay.classList.remove("show");
-    }
   });
 }
 
