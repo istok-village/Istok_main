@@ -936,6 +936,73 @@
   transform: scale(1.05);
 }
 
+
+
+/* === Mobile header (burger) === */
+.burger{
+  display:none;
+  flex-direction:column;
+  gap:4px;
+  cursor:pointer;
+  z-index:1001;
+}
+.burger span{
+  width:24px;
+  height:3px;
+  background:#906a41;
+  border-radius:2px;
+  transition:transform .3s, opacity .3s;
+}
+
+/* overlay behind the side panel */
+.menu-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.35);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease;
+  z-index:1100;
+}
+.menu-overlay.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+/* side panel */
+.mobile-menu{
+  position:fixed;
+  top:0;
+  right:-100%;
+  width:min(78vw,360px);
+  height:100vh;
+  background:rgba(248,240,227,.97);
+  box-shadow:-6px 0 24px rgba(0,0,0,.2);
+  padding:2rem 1.25rem;
+  display:flex;
+  flex-direction:column;
+  gap:.75rem;
+  transition:right .3s ease;
+  z-index:1200;
+}
+.mobile-menu.show{ right:0; }
+.mobile-menu a{
+  font-size:1.05rem;
+  padding:.6rem 0;
+  border-bottom:1px solid var(--border);
+  text-decoration:none;
+  color:var(--text);
+}
+
+body.no-scroll{ overflow:hidden; }
+
+/* ensure desktop keeps original nav */
+@media (max-width: 560px){
+  /* hide desktop nav, show burger only on small screens */
+  .cottage-nav__row nav{ display:none !important; }
+  .burger{ display:flex; }
+}
+
 </style>
 </head>
 <body>
@@ -947,6 +1014,7 @@
            style="width:42px;height:42px;background:none;box-shadow:none;border-radius:0;">
       <span style="color:#906a41;">Исток — коттеджный поселок</span>
     </a>
+    <div class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></div>
     <nav style="display: flex; gap: 0.8rem;">
       <a class="cottage-tag" href="#location">Расположение</a>
       <a class="cottage-tag" href="#plan">Генплан</a>
@@ -958,6 +1026,19 @@
     </nav>
   </div>
 </header>
+
+<!-- Мобильное меню и оверлей -->
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true">
+  <a href="#location">Расположение</a>
+  <a href="#plan">Генплан</a>
+  <a href="#lots">Участки</a>
+  <a href="#houses">Дома</a>
+  <a href="#contact">Заявка</a>
+  <a href="tel:+79991234567">📞 Позвонить</a>
+  <a href="https://t.me/village_istok" target="_blank">✈️ Telegram</a>
+</div>
+<div class="menu-overlay" id="menuOverlay"></div>
+
 
   <main id="top">
     <!-- Hero Section -->
@@ -1608,6 +1689,32 @@ function populateLots() {
 
       // Show cookie banner after a delay
       setTimeout(showCookieBanner, 1000);
+
+      // --- Mobile menu (burger) ---
+      const burger = document.getElementById('burger');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const menuOverlay = document.getElementById('menuOverlay');
+
+      function openMenu(){
+        mobileMenu?.classList.add('show');
+        menuOverlay?.classList.add('show');
+        document.body.classList.add('no-scroll');
+        burger?.setAttribute('aria-expanded','true');
+      }
+      function closeMenu(){
+        mobileMenu?.classList.remove('show');
+        menuOverlay?.classList.remove('show');
+        document.body.classList.remove('no-scroll');
+        burger?.setAttribute('aria-expanded','false');
+      }
+
+      burger?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (mobileMenu?.classList.contains('show')) { closeMenu(); } else { openMenu(); }
+      });
+      menuOverlay?.addEventListener('click', closeMenu);
+      mobileMenu?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
     });
   
 function openLightbox(images, startIndex) {
