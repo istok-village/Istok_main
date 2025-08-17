@@ -1259,7 +1259,60 @@ body.no-scroll{ overflow:hidden; }
   white-space: normal !important;
 }
 
+
+/* === Genplan Viewer: content wrapper + SVG overlay + tooltip (stronger selectors) === */
+.genplan-viewer .gp-stage { position:absolute; inset:0; overflow:hidden; touch-action:none; cursor:grab; }
+.genplan-viewer .gp-content { position:absolute; top:0; left:0; transform-origin:0 0; will-change:transform; }
+.genplan-viewer .gp-img    { position:absolute; top:0; left:0; user-select:none; -webkit-user-drag:none; pointer-events:none; }
+.genplan-viewer .gp-svg    { position:absolute; top:0; left:0; pointer-events:none; }
+.genplan-viewer .gp-svg polygon { pointer-events:all; cursor:pointer; stroke:#333; stroke-width:1; outline:none; }
+.genplan-viewer .gp-svg polygon:hover { stroke-width:3; stroke:orange; }
+.genplan-viewer .gp-tooltip {
+  position:absolute; background:#fff; color:#000;
+  border:1px solid rgba(0,0,0,.15); padding:8px 10px; border-radius:8px;
+  box-shadow:0 6px 24px rgba(0,0,0,.25); display:none; z-index:10001; max-width:92vw;
+}
+.genplan-viewer .gp-toolbar { position:absolute; top:12px; right:12px; z-index:10002; display:flex; gap:8px; }
+.genplan-viewer .gp-btn {
+  background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25);
+  color:#fff; border-radius:10px; padding:8px 12px; font-size:16px; line-height:1; cursor:pointer; backdrop-filter:blur(6px);
+}
+.genplan-viewer .gp-btn:active { transform:scale(.98); }
+.genplan-viewer .gp-overlay { position:fixed; inset:0; background:rgba(0,0,0,.9); }
+
+
+/* === Fullscreen open hotspot to guarantee click === */
+#map-container { position: relative; }
+#map-container .gp-open-hotspot {
+  position:absolute; inset:0; background:transparent; border:0; padding:0; margin:0;
+  cursor: zoom-in; z-index:1; pointer-events:none; /* allow interactions with SVG/polygons under it */
+}
+#map-container img, #map-container svg { display:block; }
+
+
+/* === Inline genplan tooltip === */
+#map-container { position:relative; }
+#map-container .gp-tooltip {
+  position:absolute; background:#fff; color:#000;
+  border:1px solid rgba(0,0,0,.15); padding:6px 8px; border-radius:6px;
+  box-shadow:0 4px 12px rgba(0,0,0,.2); display:none; z-index:1000; font-size:13px;
+  max-width:90%;
+}
+#map-container .gp-svg { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:6; }
+#map-container .gp-svg polygon { pointer-events:all; cursor:pointer; stroke:#333; stroke-width:1; fill:transparent; }
+#map-container .gp-svg polygon:hover { stroke:orange; stroke-width:2; }
+
 </style>
+
+<!-- Ensure global access to plots regardless of whether they were declared with const/let -->
+<script>
+  try {
+    if (typeof plots !== 'undefined' && !window.plots) {
+      window.plots = plots;
+    }
+  } catch(e){ /* ignore */ }
+</script>
+
 </head>
 <body>
 <!-- Navigation -->
@@ -2019,130 +2072,434 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
 </script>
 
 <script>
-// === Genplan Fullscreen Viewer (pan + zoom + pinch) ===
+// === Genplan Fullscreen Viewer (image + SVG polygons + tooltips + pan/zoom/pinch) ===
 (function(){
-  const trigger = document.getElementById('map-img');
-  if(!trigger) return;
+  const triggerImg  = document.getElementById('map-img');
+  const triggerBox  = document.getElementById('map-container');
+  if(!triggerImg || !triggerBox) return;
 
-  const openViewer = () => {
-    const overlay = document.createElement('div');
-    overlay.className = 'genplan-viewer';
-    overlay.innerHTML = `
-      <div class="gp-toolbar">
-        <button class="gp-close" aria-label="Закрыть">×</button>
-      </div>
-      <div class="gp-stage"><img class="gp-image" src="${trigger.src}" alt="Генплан"></div>
-    `;
+  function isTouch(){ return ('ontouchstart' in window) || navigator.maxTouchPoints > 0; }
+
+  // Get current filters from the inline controls (if present)
+  const numInput   = document.getElementById('filter-num');
+  const areaMinInp = document.getElementById('filter-area-min');
+  const areaMaxInp = document.getElementById('filter-area-max');
+  const statusSel  = document.getElementById('filter-status');
+
+  function getFilteredPlots() {
+    try {
+      const filterNum = (numInput && numInput.value.trim()) || '';
+      const filterStatus = (statusSel && statusSel.value) || '';
+      const filterAreaMin = areaMinInp && areaMinInp.value ? parseFloat(areaMinInp.value) : NaN;
+      const filterAreaMax = areaMaxInp && areaMaxInp.value ? parseFloat(areaMaxInp.value) : NaN;
+
+      return (window.plots || []).filter(plot => {
+        if (filterNum && String(plot.num) !== filterNum) return false;
+        if (filterStatus && plot.status !== filterStatus) return false;
+        if (!isNaN(filterAreaMin) && plot.area < filterAreaMin) return false;
+        if (!isNaN(filterAreaMax) && plot.area > filterAreaMax) return false;
+        return true;
+      });
+    } catch(e){
+      return (window.plots || []);
+    }
+  }
+
+  function openViewer(){
+    // build DOM
+    const overlay  = document.createElement('div');
+    overlay.className = 'genplan-viewer gp-overlay';
+    overlay.setAttribute('role','dialog');
+    overlay.setAttribute('aria-modal','true');
+
+    const stage = document.createElement('div');
+    stage.className = 'gp-stage';
+    overlay.appendChild(stage);
+
+    // toolbar
+    const toolbar = document.createElement('div');
+    toolbar.className = 'gp-toolbar';
+    toolbar.innerHTML = '<button class="gp-btn" data-act="zin">+</button>' +
+                        '<button class="gp-btn" data-act="zout">−</button>' +
+                        '<button class="gp-btn" data-act="fit">По центру</button>' +
+                        '<button class="gp-btn" data-act="close">Закрыть ✕</button>';
+    overlay.appendChild(toolbar);
+
+    // content (image + svg overlay) inside a single transformable wrapper
+    const content = document.createElement('div');
+    content.className = 'gp-content';
+    stage.appendChild(content);
+
+    const img = document.createElement('img');
+    img.className = 'gp-img';
+    img.alt = 'Генеральный план поселка';
+    img.src = triggerImg.currentSrc || triggerImg.src;
+    content.appendChild(img);
+
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.classList.add('gp-svg');
+    content.appendChild(svg);
+
+    const tip = document.createElement('div');
+    tip.className = 'gp-tooltip';
+    stage.appendChild(tip);
+
     document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
 
-    const stage = overlay.querySelector('.gp-stage');
-    const img = overlay.querySelector('.gp-image');
-    const closeBtn = overlay.querySelector('.gp-close');
-
+    // state
     let scale = 1, minScale = 1, maxScale = 8;
     let tx = 0, ty = 0;
+    let dragging = false, lastX = 0, lastY = 0;
+    let touchMode = null, lastDist = 0;
 
-    const apply = () => {
-      img.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
-    };
+    // helpers
+    function applyTransform(){
+      content.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+    }
+    function fitToScreen(){
+      const rect = stage.getBoundingClientRect();
+      const iw = img.naturalWidth;
+      const ih = img.naturalHeight;
+      // content base size is natural image size
+      content.style.width = iw + 'px';
+      content.style.height = ih + 'px';
+      img.style.width = iw + 'px';
+      img.style.height = ih + 'px';
+      svg.setAttribute('width', iw);
+      svg.setAttribute('height', ih);
+      svg.setAttribute('viewBox', `0 0 ${iw} ${ih}`);
 
-    const fit = () => {
-      const vw = stage.clientWidth, vh = stage.clientHeight;
-      const iw = img.naturalWidth, ih = img.naturalHeight;
-      minScale = Math.min(vw / iw, vh / ih);
-      scale = minScale;
-      // центрируем
-      tx = (vw - iw * scale) * 0.5;
-      ty = (vh - ih * scale) * 0.5;
-      apply();
-    };
-
-    if (img.complete) {
-      fit();
-    } else {
-      img.onload = fit;
+      const kx = rect.width / iw;
+      const ky = rect.height / ih;
+      minScale = Math.min(kx, ky);
+      // leave a small margin
+      minScale = Math.min(minScale, 1); // don't upscale on desktop initial
+      if (minScale > 1) minScale = 1;
+      scale = Math.max(minScale, Math.min(scale, maxScale));
+      tx = (rect.width - iw * scale) * 0.5;
+      ty = (rect.height - ih * scale) * 0.5;
+      applyTransform();
     }
 
-    // колесо мыши — масштабируем к курсору
+    function showTipAtScreen(x, y, html){
+      tip.innerHTML = html;
+      tip.style.display = 'block';
+      // shift so tip doesn't hide under finger
+      const pad = 14;
+      let left = x + pad;
+      let top  = y + pad;
+      const tr = tip.getBoundingClientRect();
+      const sr = stage.getBoundingClientRect();
+      if (left + tr.width > sr.right)  left = x - tr.width - pad;
+      if (top + tr.height > sr.bottom) top = y - tr.height - pad;
+      if (left < sr.left) left = sr.left + 8;
+      if (top < sr.top)   top  = sr.top + 8;
+      tip.style.left = (left - sr.left) + 'px';
+      tip.style.top  = (top - sr.top) + 'px';
+    }
+    function hideTip(){ tip.style.display = 'none'; tip.innerHTML=''; }
+
+    function plotTooltipHTML(plot){
+      const price = (plot.price && !isNaN(parseFloat(plot.price))) ?
+        Math.round(parseFloat(plot.price)).toLocaleString('ru-RU') + ' ₽' : plot.price;
+      return `<b>Участок №${plot.num}</b><br>Площадь: ${plot.area} сот.<br>Цена: ${price}<br>Статус: ${plot.status}`;
+    }
+
+    function drawPolygons(){
+      while (svg.firstChild) svg.removeChild(svg.firstChild);
+      const iw = img.naturalWidth, ih = img.naturalHeight;
+      const list = getFilteredPlots();
+      list.forEach(plot => {
+        const pts = (plot.points || []).map(p => `${p.x*iw},${p.y*ih}`).join(' ');
+        const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+        poly.setAttribute('points', pts);
+        poly.setAttribute('tabindex', 0);
+        poly.classList.add('status-' + (plot.status || 'Свободен'));
+        // hover/move
+        poly.addEventListener('mouseenter', e => {
+          if(isTouch()) return;
+          const r = stage.getBoundingClientRect();
+          showTipAtScreen(e.clientX, e.clientY, plotTooltipHTML(plot));
+        });
+        poly.addEventListener('mousemove', e => {
+          if(isTouch()) return;
+          showTipAtScreen(e.clientX, e.clientY, plotTooltipHTML(plot));
+        });
+        poly.addEventListener('mouseleave', () => { if(!isTouch()) hideTip(); });
+        // click/tap -> show near polygon centroid
+        poly.addEventListener('click', (e) => {
+          e.stopPropagation();
+          // centroid in image coords
+          const pts2 = (plot.points || []);
+          const cx = pts2.reduce((s,p)=>s+p.x,0)/pts2.length * img.naturalWidth;
+          const cy = pts2.reduce((s,p)=>s+p.y,0)/pts2.length * img.naturalHeight;
+          // map to screen coords with current transform
+          const sr = stage.getBoundingClientRect();
+          const sx = sr.left + tx + cx*scale;
+          const sy = sr.top  + ty + cy*scale;
+          showTipAtScreen(sx, sy, plotTooltipHTML(plot));
+        });
+        svg.appendChild(poly);
+      });
+    }
+
+    // events
+    toolbar.addEventListener('click', (e) => {
+      const act = e.target && e.target.getAttribute('data-act');
+      if(!act) return;
+      if (act === 'close'){ cleanup(); return; }
+      if (act === 'fit'){ fitToScreen(); hideTip(); return; }
+      const rect = stage.getBoundingClientRect();
+      const cx = rect.width/2, cy = rect.height/2;
+      if (act === 'zin' || act === 'zout') {
+        const prev = scale;
+        let ns = prev * (act === 'zin' ? 1.2 : 1/1.2);
+        ns = Math.max(minScale, Math.min(maxScale, ns));
+        const k = ns / prev;
+        tx = cx - (cx - tx) * k;
+        ty = cy - (cy - ty) * k;
+        scale = ns;
+        applyTransform();
+      }
+    });
+
+    // drag/pan (mouse)
+    stage.addEventListener('mousedown', (e) => {
+      dragging = true; lastX = e.clientX; lastY = e.clientY; stage.style.cursor = 'grabbing'; hideTip();
+    });
+    window.addEventListener('mousemove', (e) => {
+      if(!dragging) return;
+      tx += e.clientX - lastX; ty += e.clientY - lastY; lastX = e.clientX; lastY = e.clientY;
+      applyTransform();
+    });
+    window.addEventListener('mouseup', () => { dragging = false; stage.style.cursor = 'grab'; });
+
+    // wheel zoom
     stage.addEventListener('wheel', (e) => {
       e.preventDefault();
       const rect = stage.getBoundingClientRect();
-      const mx = e.clientX - rect.left;
-      const my = e.clientY - rect.top;
+      const cx = e.clientX - rect.left;
+      const cy = e.clientY - rect.top;
       const prev = scale;
-      const factor = Math.exp(-e.deltaY * 0.0015); // вверх — увеличить
-      scale = Math.min(maxScale, Math.max(minScale, scale * factor));
-      const k = scale / prev;
-      tx = mx - (mx - tx) * k;
-      ty = my - (my - ty) * k;
-      apply();
-    }, { passive: false });
+      let ns = prev * (e.deltaY < 0 ? 1.15 : 1/1.15);
+      ns = Math.max(minScale, Math.min(maxScale, ns));
+      const k = ns / prev;
+      tx = cx - (cx - tx) * k;
+      ty = cy - (cy - ty) * k;
+      scale = ns;
+      applyTransform();
+    }, { passive:false });
 
-    // перетаскивание мышью
-    let dragging = false, lx = 0, ly = 0;
-    stage.addEventListener('mousedown', (e) => {
-      dragging = true; lx = e.clientX; ly = e.clientY;
-      stage.style.cursor = 'grabbing';
-    });
-    window.addEventListener('mouseup', () => {
-      dragging = false; stage.style.cursor = 'grab';
-    });
-    window.addEventListener('mousemove', (e) => {
-      if (!dragging) return;
-      tx += e.clientX - lx;
-      ty += e.clientY - ly;
-      lx = e.clientX; ly = e.clientY;
-      apply();
-    });
-
-    // сенсорные жесты (панорамирование и pinch)
-    let touchMode = null;
-    let lastX = 0, lastY = 0, lastDist = 0;
+    // touch: pan + pinch
     stage.addEventListener('touchstart', (e) => {
-      if (e.touches.length === 1) {
-        touchMode = 'pan';
-        lastX = e.touches[0].clientX;
-        lastY = e.touches[0].clientY;
-      } else if (e.touches.length === 2) {
-        touchMode = 'pinch';
-        const [t1, t2] = e.touches;
-        lastDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+      if(e.touches.length === 1){ touchMode = 'pan'; const t = e.touches[0]; lastX=t.clientX; lastY=t.clientY; hideTip(); }
+      else if(e.touches.length === 2){ touchMode = 'pinch';
+        const [t1,t2] = e.touches; lastDist = Math.hypot(t2.clientX-t1.clientX, t2.clientY-t1.clientY);
       }
-    }, { passive: true });
+    }, { passive:true });
 
     stage.addEventListener('touchmove', (e) => {
       e.preventDefault();
-      if (touchMode === 'pan' && e.touches.length === 1) {
+      if (touchMode === 'pan' && e.touches.length === 1){
         const t = e.touches[0];
-        tx += t.clientX - lastX;
-        ty += t.clientY - lastY;
-        lastX = t.clientX; lastY = t.clientY;
-        apply();
-      } else if (touchMode === 'pinch' && e.touches.length === 2) {
-        const [t1, t2] = e.touches;
-        const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+        tx += t.clientX - lastX; ty += t.clientY - lastY; lastX=t.clientX; lastY=t.clientY; applyTransform();
+      } else if (touchMode === 'pinch' && e.touches.length === 2){
+        const [t1,t2] = e.touches;
+        const dist = Math.hypot(t2.clientX-t1.clientX, t2.clientY-t1.clientY);
         const rect = stage.getBoundingClientRect();
-        const cx = (t1.clientX + t2.clientX) * 0.5 - rect.left;
-        const cy = (t1.clientY + t2.clientY) * 0.5 - rect.top;
+        const cx = (t1.clientX+t2.clientX)*0.5 - rect.left;
+        const cy = (t1.clientY+t2.clientY)*0.5 - rect.top;
         const prev = scale;
-        let newScale = Math.min(maxScale, Math.max(minScale, scale * (dist / lastDist)));
-        const k = newScale / prev;
-        tx = cx - (cx - tx) * k;
-        ty = cy - (cy - ty) * k;
-        scale = newScale;
-        lastDist = dist;
-        apply();
+        let ns = Math.max(minScale, Math.min(maxScale, scale*(dist/lastDist)));
+        const k = ns/prev;
+        tx = cx - (cx - tx) * k; ty = cy - (cy - ty) * k; scale = ns; lastDist = dist; applyTransform();
       }
-    }, { passive: false });
+    }, { passive:false });
+    stage.addEventListener('touchend', () => { touchMode = null; }, { passive:true });
 
-    stage.addEventListener('touchend', () => { touchMode = null; }, { passive: true });
+    // close on Esc, and on background click (outside content)
+    function onKey(e){ if(e.key === 'Escape') cleanup(); }
+    window.addEventListener('keydown', onKey);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) cleanup(); });
 
-    // закрытие
-    closeBtn.addEventListener('click', () => overlay.remove());
-    window.addEventListener('keydown', (e) => { if (e.key === 'Escape') overlay.remove(); });
-  };
+    function cleanup(){
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKey);
+      overlay.remove();
+    }
 
-  trigger.addEventListener('click', openViewer);
+    // init once image is ready
+    function afterImg(){
+      fitToScreen();
+      drawPolygons();
+      applyTransform();
+    }
+    if (img.complete && img.naturalWidth) { afterImg(); }
+    else { img.addEventListener('load', afterImg); }
+  }
+
+  window.openGenplanViewer = openViewer;
+  // open on click both on image and on container (to be safe on different CSS states)
+  triggerImg.addEventListener('click', openViewer);
+  triggerBox.addEventListener('click', (e)=>{
+    // ignore clicks on inline filters or external controls
+    if (e.target.closest('input,select,button,.master-plan-legend')) return;
+    openViewer();
+  });
+})();
+</script>
+
+
+
+<script>
+// === Robust open binding (capture phase + transparent hotspot) ===
+(function(){
+  function ready(fn){ if(document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+  ready(function(){
+    const box = document.getElementById('map-container');
+    const img = document.getElementById('map-img');
+    if (!box || !img) return;
+
+    // Transparent hotspot to ensure any click opens fullscreen (unless clicking UI controls)
+    let hotspot = box.querySelector('.gp-open-hotspot');
+    if (!hotspot) {
+      hotspot = document.createElement('button');
+      hotspot.className = 'gp-open-hotspot';
+      hotspot.setAttribute('type','button');
+      hotspot.setAttribute('aria-label','Открыть генплан на весь экран');
+      box.appendChild(hotspot);
+    }
+
+    // guard to avoid double opens
+    function isOverlayOpen(){ return !!document.querySelector('.genplan-viewer.gp-overlay'); }
+
+    // click on hotspot opens
+    hotspot.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      if (isOverlayOpen()) return;
+      // trigger the viewer if the function from the other script is present
+      try {
+        const clickEvt = new Event('click', { bubbles:true });
+        if (window.openGenplanViewer) { window.openGenplanViewer(); } else { img.dispatchEvent(clickEvt); }
+      } catch(err){}
+    });
+
+    // Capture-phase fallback: any click inside map-container opens, unless it's on controls
+    document.addEventListener('click', function(e){
+      const target = e.target;
+      if (!box.contains(target)) return;
+      if (target.closest('input,select,button,.master-plan-legend,.filters')) return;
+      if (isOverlayOpen()) return;
+      try {
+        const clickEvt = new Event('click', { bubbles:true });
+        if (window.openGenplanViewer) { window.openGenplanViewer(); } else { img.dispatchEvent(clickEvt); }
+      } catch(err){}
+    }, true);
+  });
+})();
+</script>
+
+
+<script>
+// === Inline Genplan Tooltip (outside fullscreen) ===
+(function(){
+  function ready(fn){ if(document.readyState!='loading') fn(); else document.addEventListener('DOMContentLoaded',fn); }
+  ready(function(){
+    const box = document.getElementById('map-container');
+    const img = document.getElementById('map-img');
+    if (!box || !img || !(window.plots && window.plots.length)) return;
+
+    // create svg overlay inside map-container if not present
+    let svg = box.querySelector('svg.gp-svg');
+    if(!svg){
+      svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+      svg.classList.add('gp-svg');
+      box.appendChild(svg);
+    }
+
+    // create tooltip element
+    let tip = box.querySelector('.gp-tooltip');
+    if(!tip){
+      tip = document.createElement('div');
+      tip.className = 'gp-tooltip';
+      box.appendChild(tip);
+    }
+
+    function hideTip(){ tip.style.display='none'; tip.innerHTML=''; }
+    function showTipAt(x,y,html){
+      tip.innerHTML=html; tip.style.display='block';
+      const pad=10;
+      let left=x+pad, top=y+pad;
+      const br=box.getBoundingClientRect(), tr=tip.getBoundingClientRect();
+      if(left+tr.width>br.right) left=x-tr.width-pad;
+      if(top+tr.height>br.bottom) top=y-tr.height-pad;
+      tip.style.left=(left-br.left)+'px'; tip.style.top=(top-br.top)+'px';
+    }
+
+    function plotTooltipHTML(plot){
+      const price = (plot.price && !isNaN(parseFloat(plot.price))) ?
+        Math.round(parseFloat(plot.price)).toLocaleString('ru-RU') + ' ₽' : plot.price;
+      return `<b>Участок №${plot.num}</b><br>Площадь: ${plot.area} сот.<br>Цена: ${price}<br>Статус: ${plot.status}`;
+    }
+
+    function drawPolygons(){
+      while(svg.firstChild) svg.removeChild(svg.firstChild);
+      const iw=img.naturalWidth, ih=img.naturalHeight;
+      svg.setAttribute('viewBox', `0 0 ${iw} ${ih}`);
+      svg.setAttribute('width', img.clientWidth);
+      svg.setAttribute('height', img.clientHeight);
+      window.plots.forEach(plot=>{
+        const pts=(plot.points||[]).map(p=>`${p.x*iw},${p.y*ih}`).join(' ');
+        const poly=document.createElementNS('http://www.w3.org/2000/svg','polygon');
+        poly.setAttribute('points',pts);
+        poly.classList.add('status-'+(plot.status||'Свободен'));
+        poly.addEventListener('mouseenter', e=>{
+          if(('ontouchstart' in window)) return;
+          showTipAt(e.clientX,e.clientY,plotTooltipHTML(plot));
+        });
+        poly.addEventListener('mousemove', e=>{
+          if(('ontouchstart' in window)) return;
+          showTipAt(e.clientX,e.clientY,plotTooltipHTML(plot));
+        });
+        poly.addEventListener('mouseleave', hideTip);
+        poly.addEventListener('click', e=>{
+          e.stopPropagation();
+          const r=box.getBoundingClientRect();
+          showTipAt(e.clientX,e.clientY,plotTooltipHTML(plot));
+        });
+        svg.appendChild(poly);
+      });
+    }
+
+    if(img.complete && img.naturalWidth){ drawPolygons(); }
+    else img.addEventListener('load', drawPolygons);
+
+    box.addEventListener('click', e=>{
+      if(e.target.tagName!=='polygon') hideTip();
+    });
+  });
+})();
+</script>
+
+
+<script>
+// Ensure window.plots is set after all scripts (fallback if plots was declared later with const/let)
+(function(){
+  function ensure() {
+    try {
+      if (typeof plots !== 'undefined' && !window.plots) window.plots = plots;
+      if (typeof lots !== 'undefined' && !window.lots) window.lots = lots;
+    } catch(e){}
+  }
+  // Try immediately (in case this script runs after plots)
+  ensure();
+  // Also try again on DOMContentLoaded (if plots declared later)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', ensure);
+  }
+  // Also try again after a short delay to catch late-inline scripts
+  setTimeout(ensure, 500);
 })();
 </script>
 
