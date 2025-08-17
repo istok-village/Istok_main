@@ -998,7 +998,6 @@ body.no-scroll{ overflow:hidden; }
 
 /* ensure desktop keeps original nav */
 @media (max-width: 560px){
-  /* hide desktop nav, show burger only on small screens */
   .cottage-nav__row nav{ display:none !important; }
   .burger{ display:flex; }
 }
@@ -1007,7 +1006,6 @@ body.no-scroll{ overflow:hidden; }
 
 /* === Mobile brand/title/burger alignment tweaks === */
 @media (max-width: 560px) {
-  /* header row in one line */
   .cottage-nav__row {
     display: flex !important;
     flex-direction: row !important;
@@ -1015,22 +1013,16 @@ body.no-scroll{ overflow:hidden; }
     justify-content: space-between !important;
     gap: 8px;
   }
-
-  /* logo + title to the left */
   .cottage-brand {
     display: flex !important;
     align-items: center !important;
     gap: 8px !important;
     margin-right: auto !important;
   }
-
-  /* tighten logo size on mobile to keep header neat */
   .cottage-brand .logo {
     width: 32px !important;
     height: 32px !important;
   }
-
-  /* hide long title and show short one: "Исток" */
   .cottage-brand span {
     display: none !important;
   }
@@ -1038,16 +1030,14 @@ body.no-scroll{ overflow:hidden; }
     content: "Исток";
     color: #906a41;
     font-weight: 700;
-    font-size: 1.5rem;          /* larger title */
+    font-size: 1.5rem;
     display: inline-block;
-    height: 24px;               /* match burger block height */
-    line-height: 24px;          /* visually same height as burger */
+    height: 24px;
+    line-height: 24px;
   }
-
-  /* burger to the right; ensure same block height as title */
   .burger {
     margin-left: 12px;
-    height: 24px;               /* reference height */
+    height: 24px;
     display: flex;
     align-items: center;
   }
@@ -1055,10 +1045,80 @@ body.no-scroll{ overflow:hidden; }
     width: 24px;
     height: 3px;
   }
-
-  /* keep menu hidden on mobile until opened */
   .cottage-nav__row nav {
     display: none !important;
+  }
+}
+
+
+
+/* === Extra Mobile Adjustments === */
+@media (max-width: 560px) {
+
+  /* 1) Make filter buttons same height as inputs */
+  .master-plan-controls button {
+    padding: 12px !important;
+    font-size: 16px !important;
+    height: 44px !important;
+    flex: 1 1 auto;
+  }
+
+  /* 2) Enable zoom/pan for master plan */
+  .master-plan-container {
+    overflow: auto !important;
+    touch-action: pan-x pan-y;
+  }
+  .master-plan-img {
+    max-width: none !important;
+    width: 1200px !important; /* allow scroll/zoom */
+  }
+  .master-plan-svg {
+    width: 1200px !important;
+    height: auto !important;
+  }
+
+  /* 3) Remove white space below genplan image */
+  #map-container {
+    margin-bottom: 0 !important;
+  }
+
+  /* 4) Legend inline instead of column */
+  .master-plan-legend {
+    flex-direction: row !important;
+    gap: 15px !important;
+    justify-content: center !important;
+    text-align: center;
+  }
+
+  /* 5) House blocks same width as container */
+  .cottage-houses {
+    width: 100% !important;
+  }
+  .cottage-house-card {
+    max-width: 100% !important;
+    margin: 0 auto !important;
+  }
+  .cottage-house-card > div {
+    grid-template-columns: 1fr !important;
+  }
+  .cottage-house-card h3 {
+    font-size: 1.2rem !important;
+  }
+  .cottage-house-card p {
+    font-size: 0.95rem !important;
+    line-height: 1.4 !important;
+  }
+
+  /* 6) Equal width for hero buttons */
+  .cottage-hero .cottage-btn {
+    flex: 1 1 auto !important;
+    min-width: 140px;
+    text-align: center;
+    justify-content: center;
+  }
+  .cottage-hero div[style*="flex-wrap"] {
+    width: 100% !important;
+    display: flex !important;
   }
 }
 
