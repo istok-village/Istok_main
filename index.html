@@ -1003,6 +1003,65 @@ body.no-scroll{ overflow:hidden; }
   .burger{ display:flex; }
 }
 
+
+
+/* === Mobile brand/title/burger alignment tweaks === */
+@media (max-width: 560px) {
+  /* header row in one line */
+  .cottage-nav__row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px;
+  }
+
+  /* logo + title to the left */
+  .cottage-brand {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-right: auto !important;
+  }
+
+  /* tighten logo size on mobile to keep header neat */
+  .cottage-brand .logo {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  /* hide long title and show short one: "Исток" */
+  .cottage-brand span {
+    display: none !important;
+  }
+  .cottage-brand::after {
+    content: "Исток";
+    color: #906a41;
+    font-weight: 700;
+    font-size: 1.5rem;          /* larger title */
+    display: inline-block;
+    height: 24px;               /* match burger block height */
+    line-height: 24px;          /* visually same height as burger */
+  }
+
+  /* burger to the right; ensure same block height as title */
+  .burger {
+    margin-left: 12px;
+    height: 24px;               /* reference height */
+    display: flex;
+    align-items: center;
+  }
+  .burger span {
+    width: 24px;
+    height: 3px;
+  }
+
+  /* keep menu hidden on mobile until opened */
+  .cottage-nav__row nav {
+    display: none !important;
+  }
+}
+
 </style>
 </head>
 <body>
