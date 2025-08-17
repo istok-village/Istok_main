@@ -1122,6 +1122,43 @@ body.no-scroll{ overflow:hidden; }
   }
 }
 
+
+@media (max-width: 560px) {
+  /* === Fix house blocks === */
+  .cottage-house-gallery img {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  .cottage-house-card {
+    text-align: center;
+  }
+
+  /* === Genplan zoom toggle === */
+  .master-plan-container {
+    overflow: hidden;
+  }
+  .master-plan-container.zoomed {
+    overflow: auto;
+  }
+  .master-plan-container img {
+    width: 100% !important;
+  }
+  .master-plan-container.zoomed img {
+    width: 1200px !important;
+  }
+
+  /* === Equal filter buttons === */
+  .master-plan-controls button {
+    flex: 1;
+    min-width: 45%;
+    height: 48px !important;
+    font-size: 16px !important;
+    text-align: center;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1236,7 +1273,17 @@ body.no-scroll{ overflow:hidden; }
     <div class="cottage-map" aria-label="Карта" style="width:100%;height:501px;">
       <script type="text/javascript" charset="utf-8" async
         src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A1a5756d586b332b5d397d93476f657849d857dce38a7917883b6c4649ff0cd9e&amp;width=100%25&amp;height=501&amp;lang=ru_RU&amp;scroll=true">
-      </script>
+      
+// === Genplan zoom toggle ===
+const mapContainerEl = document.getElementById("map-container");
+const mapImgEl = document.getElementById("map-img");
+if(mapContainerEl && mapImgEl){
+  mapImgEl.addEventListener("click", () => {
+    mapContainerEl.classList.toggle("zoomed");
+  });
+}
+
+</script>
     </div>
   </div>
 </section>
@@ -1876,6 +1923,16 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
     openLightbox(srcs, idx);
   });
 });
+
+
+// === Genplan zoom toggle ===
+const mapContainerEl = document.getElementById("map-container");
+const mapImgEl = document.getElementById("map-img");
+if(mapContainerEl && mapImgEl){
+  mapImgEl.addEventListener("click", () => {
+    mapContainerEl.classList.toggle("zoomed");
+  });
+}
 
 </script>
 </body>
