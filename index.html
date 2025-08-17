@@ -1302,6 +1302,13 @@ body.no-scroll{ overflow:hidden; }
 #map-container .gp-svg polygon { pointer-events:all; cursor:pointer; stroke:#333; stroke-width:1; fill:transparent; }
 #map-container .gp-svg polygon:hover { stroke:orange; stroke-width:2; }
 
+
+/* Mobile layout fix: remove extra whitespace under image, keep svg on top */
+#map-container { display:inline-block; line-height:0; position:relative; }
+#map-container img { display:block; width:100%; height:auto; max-width:100%; }
+#map-container .gp-svg { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:6; }
+#map-container .gp-open-hotspot { pointer-events:none; z-index:1; }
+
 </style>
 
 <!-- Ensure global access to plots regardless of whether they were declared with const/let -->
@@ -2213,7 +2220,7 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
       list.forEach(plot => {
         const pts = (plot.points || []).map(p => `${p.x*iw},${p.y*ih}`).join(' ');
         const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-        poly.setAttribute('points', pts);
+        poly.setAttribute('points', pts); poly.setAttribute('data-num', plot.num);
         poly.setAttribute('tabindex', 0);
         poly.classList.add('status-' + (plot.status || 'Свободен'));
         // hover/move
@@ -2452,7 +2459,7 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
       window.plots.forEach(plot=>{
         const pts=(plot.points||[]).map(p=>`${p.x*iw},${p.y*ih}`).join(' ');
         const poly=document.createElementNS('http://www.w3.org/2000/svg','polygon');
-        poly.setAttribute('points',pts);
+        poly.setAttribute('points', pts); poly.setAttribute('data-num', plot.num);
         poly.classList.add('status-'+(plot.status||'Свободен'));
         poly.addEventListener('mouseenter', e=>{
           if(('ontouchstart' in window)) return;
@@ -2500,6 +2507,125 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
   }
   // Also try again after a short delay to catch late-inline scripts
   setTimeout(ensure, 500);
+})();
+</script>
+
+
+<script>
+// Delegation: intercept clicks on inline polygons and open overlay with that plot.
+// Also keep #map-container height matched to image (mobile whitespace fix).
+(function(){
+  function init(){
+    const box = document.getElementById('map-container');
+    const img = document.getElementById('map-img');
+    if (!box || !img) return;
+
+    function hideInlineTip(){ const t = box.querySelector('.gp-tooltip'); if (t){ t.style.display='none'; t.innerHTML=''; } }
+
+    function handleClickOnPoly(e){
+      const poly = e.target.closest('polygon');
+      if (!poly) return;
+      e.stopPropagation(); e.preventDefault();
+      hideInlineTip();
+      const id = poly.getAttribute('data-num') || poly.dataset.num;
+      const plot = (window.plots || []).find(p => String(p.num) === String(id));
+      if (window.openGenplanViewer) {
+        try { window.openGenplanViewer(plot || id); return; } catch(err){ /* continue to fallback */ }
+      }
+      // fallback: trigger image click which opens viewer
+      const clickEvt = new Event('click', { bubbles:true });
+      img.dispatchEvent(clickEvt);
+    }
+
+    // attach delegation on the inline svg (it may be created later)
+    function attachOnce(){
+      const svg = box.querySelector('svg.gp-svg');
+      if (!svg) { return false; }
+      // ensure svg will receive pointer events for polygons
+      svg.style.pointerEvents = 'auto';
+      svg.addEventListener('click', handleClickOnPoly, true);
+      return true;
+    }
+
+    // try attach now or poll shortly
+    if (!attachOnce()){
+      let tries = 0;
+      const t = setInterval(()=>{
+        tries++;
+        if (attachOnce() || tries>30) clearInterval(t);
+      }, 150);
+    }
+
+    // ensure container has exact image height to avoid extra space under map on mobile
+    function updateContainerSize(){
+      box.style.display = 'inline-block';
+      box.style.lineHeight = '0';
+      if (img.clientHeight) box.style.height = img.clientHeight + 'px';
+    }
+    if (img.complete) updateContainerSize(); else img.addEventListener('load', updateContainerSize);
+    window.addEventListener('resize', updateContainerSize);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+</script>
+
+
+<script>
+// Wrapper for window.openGenplanViewer that accepts an initial plot/ID and ensures only one tooltip is shown.
+// It opens the overlay (via original), then polls for the matching polygon inside the overlay and triggers one click on it.
+(function(){
+  // wait until the original opener exists
+  function wrap(){
+    if (!window.openGenplanViewer) { return false; }
+    const orig = window.openGenplanViewer;
+    window.openGenplanViewer = function(initialPlot){
+      // hide inline tooltip if any
+      const inlineTip = document.querySelector('#map-container .gp-tooltip');
+      if (inlineTip){ inlineTip.style.display='none'; inlineTip.innerHTML=''; }
+
+      // if overlay already present, try to show plot inside it
+      const existing = document.querySelector('.genplan-viewer.gp-overlay');
+      const id = (initialPlot && (initialPlot.num || initialPlot)) || initialPlot;
+      if (existing){
+        const svg = existing.querySelector('.gp-svg');
+        if (svg) {
+          const poly = svg.querySelector('polygon[data-num="'+id+'"]');
+          if (poly) { poly.dispatchEvent(new MouseEvent('click',{bubbles:true})); return; }
+        }
+      }
+
+      // call original opener to create overlay
+      try { orig(); } catch(e) { /* ignore */ }
+
+      if (typeof id === 'undefined' || id === null) return;
+
+      // poll for polygon in overlay then dispatch a single click to open its tooltip (overlay handles dedup)
+      let tries = 0;
+      const timer = setInterval(function(){
+        tries++;
+        const overlay = document.querySelector('.genplan-viewer.gp-overlay');
+        if (!overlay) { if (tries>30) clearInterval(timer); return; }
+        const svg = overlay.querySelector('.gp-svg');
+        if (!svg) { if (tries>30) clearInterval(timer); return; }
+        const poly = svg.querySelector('polygon[data-num="'+id+'"]') || svg.querySelector('polygon');
+        if (poly){
+          // ensure overlay's tip is hidden first
+          const otip = overlay.querySelector('.gp-tooltip');
+          if (otip){ otip.style.display='none'; otip.innerHTML=''; }
+          poly.dispatchEvent(new MouseEvent('click',{bubbles:true}));
+          clearInterval(timer);
+        }
+        if (tries>30) clearInterval(timer);
+      }, 100);
+    };
+    return true;
+  }
+
+  if (!wrap()){
+    document.addEventListener('DOMContentLoaded', function(){ wrap(); });
+    setTimeout(wrap, 500);
+  }
 })();
 </script>
 
