@@ -1,15 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-  <title>Исток — коттеджный поселок</title>
-  <meta name="description" content="Коттеджный поселок Исток — природа, пруды, участки, инфраструктура. Узнайте о расположении, генплане, ценах и запишитесь на просмотр." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
+<title>Исток — коттеджный поселок</title>
+<meta content="Коттеджный поселок Исток — природа, пруды, участки, инфраструктура. Узнайте о расположении, генплане, ценах и запишитесь на просмотр." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
     /* CSS Variables */
     :root {
       /* Warm color palette */
@@ -1357,7 +1357,6 @@ body.no-scroll{ overflow:hidden; }
 .cottage-brand .logo { display: inline-block !important; max-width: none !important; }
 
 </style>
-
 <!-- Ensure global access to plots regardless of whether they were declared with const/let -->
 <script>
   try {
@@ -1366,7 +1365,6 @@ body.no-scroll{ overflow:hidden; }
     }
   } catch(e){ /* ignore */ }
 </script>
-
 <style>
 
 /* === Second-pass fixes: make desktop logo flush-left, reduce title size, and prevent mobile overflow === */
@@ -1406,438 +1404,366 @@ body.no-scroll{ overflow:hidden; }
 <body>
 <!-- Navigation -->
 <header class="cottage-nav">
-  <div class="cottage-container cottage-nav__row" style="padding-left: 0; padding-right: 0; justify-content: space-between;">
-    <a class="cottage-brand" href="#top" aria-label="Исток" style="margin-left: 0;">
-      <img src="logo.png" alt="Логотип Исток" class="logo" 
-           style="width:42px;height:42px;background:none;box-shadow:none;border-radius:0;">
-      <span style="color:#906a41;">Исток — коттеджный поселок</span>
-    </a>
-    <div class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></div>
-    <nav style="display: flex; gap: 0.8rem;">
-      <a class="cottage-tag" href="#location">Расположение</a>
-      <a class="cottage-tag" href="#plan">Генплан</a>
-      <a class="cottage-tag" href="#lots">Участки</a>
-      <a class="cottage-tag" href="#houses">Дома</a>
-      <a class="cottage-tag" href="#contact">Заявка</a>
-      <a class="cottage-tag" href="tel:+79991234567">📞 Позвонить</a>
-      <a class="cottage-tag" href="https://t.me/village_istok" target="_blank">✈️ Telegram</a>
-    </nav>
-  </div>
+<div class="cottage-container cottage-nav__row" style="padding-left: 0; padding-right: 0; justify-content: space-between;">
+<a aria-label="Исток" class="cottage-brand" href="#top" style="margin-left: 0;">
+<img alt="Логотип Исток" class="logo" src="logo.png" style="width:42px;height:42px;background:none;box-shadow:none;border-radius:0;"/>
+<span style="color:#906a41;">Исток — коттеджный поселок</span>
+</a>
+<div aria-controls="mobileMenu" aria-expanded="false" aria-label="Открыть меню" class="burger" id="burger"><span></span><span></span><span></span></div>
+<nav style="display: flex; gap: 0.8rem;">
+<a class="cottage-tag" href="#location">Расположение</a>
+<a class="cottage-tag" href="#plan">Генплан</a>
+<a class="cottage-tag" href="#lots">Участки</a>
+<a class="cottage-tag" href="#houses">Дома</a>
+<a class="cottage-tag" href="#contact">Заявка</a>
+<a class="cottage-tag" href="tel:+79859854352">📞 Позвонить</a>
+<a class="cottage-tag" href="https://t.me/village_istok" target="_blank">✈️ Telegram</a>
+</nav>
+</div>
 </header>
-
 <!-- Мобильное меню и оверлей -->
-<div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true">
-  <a href="#location">Расположение</a>
-  <a href="#plan">Генплан</a>
-  <a href="#lots">Участки</a>
-  <a href="#houses">Дома</a>
-  <a href="#contact">Заявка</a>
-  <a href="tel:+79991234567">📞 Позвонить</a>
-  <a href="https://t.me/village_istok" target="_blank">✈️ Telegram</a>
+<div aria-modal="true" class="mobile-menu" id="mobileMenu" role="dialog">
+<a href="#location">Расположение</a>
+<a href="#plan">Генплан</a>
+<a href="#lots">Участки</a>
+<a href="#houses">Дома</a>
+<a href="#contact">Заявка</a>
+<a href="tel:+79859854352">📞 Позвонить</a>
+<a href="https://t.me/village_istok" target="_blank">✈️ Telegram</a>
 </div>
 <div class="menu-overlay" id="menuOverlay"></div>
-
-
-  <main id="top">
-    <!-- Hero Section -->
-    <section class="cottage-hero">
-      <div class="cottage-container cottage-hero__grid">
-        <div>
-          <span class="cottage-tag">Новый поселок у воды</span>
-          <h1 class="cottage-h1">Жизнь на природе, среди лесов и прудов</h1>
-          <p class="cottage-lead" style="color: var(--text);">
+<main id="top">
+<!-- Hero Section -->
+<section class="cottage-hero">
+<div class="cottage-container cottage-hero__grid">
+<div>
+<span class="cottage-tag">Новый поселок у воды</span>
+<h1 class="cottage-h1">Жизнь на природе, среди лесов и прудов</h1>
+<p class="cottage-lead" style="color: var(--text);">
             Участки рядом с прудами и берёзовой рощей. Электричество и дороги, 
             общественные зоны и собственная философия «новой деревни» — для спокойной 
             жизни и дружного комьюнити.
           </p>
-          <div style="display: flex; gap: 0.6rem; margin-top: 1.2rem; flex-wrap: wrap;">
-            <a class="cottage-btn cottage-btn--accent" href="#contact">
+<div style="display: flex; gap: 0.6rem; margin-top: 1.2rem; flex-wrap: wrap;">
+<a class="cottage-btn cottage-btn--accent" href="#contact">
               Записаться на просмотр
             </a>
-            <a class="cottage-btn" href="#plan">
+<a class="cottage-btn" href="#plan">
               Смотреть участки
             </a>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 0.3rem; margin-top: 1rem; color: var(--text); font-size: 0.95rem;"><span>⚡ 15 кВт</span><span>🛣️ Щебеночная дорога</span><span>🌊 Каскад водоемов</span><span>🏡 Общественные пространства</span></div>
-        </div>
-        <div class="cottage-hero__media" aria-label="Фото поселка">
-          <img src="hero.jpeg" alt="Пейзаж с водой и полями" />
-        </div>
-      </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="cottage-section">
-      <div class="cottage-container">
-        <h2>Почему «Исток»</h2>
-        <p style="color: var(--text);">Коротко о самых важных преимуществах проекта.</p>
-        <div class="cottage-features" style="margin-top: 1rem;">
-          <article class="cottage-card">
-            <div class="cottage-tag">Природа</div>
-            <h3>Пруды и берёзовая роща</h3>
-            <p style="color: var(--text);">
+</div>
+<div style="display: flex; flex-direction: column; gap: 0.3rem; margin-top: 1rem; color: var(--text); font-size: 0.95rem;"><span>⚡ 15 кВт</span><span>🛣️ Щебеночная дорога</span><span>🌊 Каскад водоемов</span><span>🏡 Общественные пространства</span></div>
+</div>
+<div aria-label="Фото поселка" class="cottage-hero__media">
+<img alt="Пейзаж с водой и полями" src="hero.jpeg">
+</img></div>
+</div>
+</section>
+<!-- Features Section -->
+<section class="cottage-section">
+<div class="cottage-container">
+<h2>Почему «Исток»</h2>
+<p style="color: var(--text);">Коротко о самых важных преимуществах проекта.</p>
+<div class="cottage-features" style="margin-top: 1rem;">
+<article class="cottage-card">
+<div class="cottage-tag">Природа</div>
+<h3>Пруды и берёзовая роща</h3>
+<p style="color: var(--text);">
               Видовые участки, прогулочные тропы, места для рыбалки и пикников.
             </p>
-          </article>
-          <article class="cottage-card">
-            <div class="cottage-tag">Инфраструктура</div>
-            <h3>Коммуникации и дороги</h3>
-            <p style="color: var(--text);">
+</article>
+<article class="cottage-card">
+<div class="cottage-tag">Инфраструктура</div>
+<h3>Коммуникации и дороги</h3>
+<p style="color: var(--text);">
               Электричество, подъездные пути и общественные пространства.
             </p>
-          </article>
-          <article class="cottage-card">
-            <div class="cottage-tag">Сообщество</div>
-            <h3>Новая деревня</h3>
-            <p style="color: var(--text);">
+</article>
+<article class="cottage-card">
+<div class="cottage-tag">Сообщество</div>
+<h3>Новая деревня</h3>
+<p style="color: var(--text);">
               Соседские дворища и общие активности для жителей.
             </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Location Section -->
-<section id="location" class="cottage-section">
-  <div class="cottage-container cottage-location__wrap">
-    <div>
-      <h2>Расположение и доступность</h2>
-      <p style="color: var(--text);">
+</article>
+</div>
+</div>
+</section>
+<!-- Location Section -->
+<section class="cottage-section" id="location">
+<div class="cottage-container cottage-location__wrap">
+<div>
+<h2>Расположение и доступность</h2>
+<p style="color: var(--text);">
         Удобное расположение поселка обеспечивает лёгкий и быстрый доступ, сохраняя уединение и близость к природе
       </p>
-      <ul style="color: var(--text); padding-left: 0; list-style: none;">
-        <li style="margin-bottom: 0.5rem;">🚗 2 часа от МКАД (трасса М4 или М2), 1 час от Тулы</li>
-        <li style="margin-bottom: 0.5rem;">🛒 Ближайшие магазины и фермерские продукты</li>
-        <li style="margin-bottom: 0.5rem;">🏞️ Лес, водоемы и прогулочные тропы рядом</li>
-        <li style="margin-bottom: 0.5rem;">🎓 Школа — в радиусе 10 км</li>
-      </ul>
-    </div>
-    <div class="cottage-map" aria-label="Карта" style="width:100%;height:501px;">
-      <script type="text/javascript" charset="utf-8" async
-        src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A1a5756d586b332b5d397d93476f657849d857dce38a7917883b6c4649ff0cd9e&amp;width=100%25&amp;height=501&amp;lang=ru_RU&amp;scroll=true">
-      
+<ul style="color: var(--text); padding-left: 0; list-style: none;">
+<li style="margin-bottom: 0.5rem;">🚗 2 часа от МКАД (трасса М4 или М2), 1 час от Тулы</li>
+<li style="margin-bottom: 0.5rem;">🛒 Ближайшие магазины и фермерские продукты</li>
+<li style="margin-bottom: 0.5rem;">🏞️ Лес, водоемы и прогулочные тропы рядом</li>
+<li style="margin-bottom: 0.5rem;">🎓 Школа — в радиусе 10 км</li>
+</ul>
+</div>
+<div aria-label="Карта" class="cottage-map" style="width:100%;height:501px;">
+<script async="" charset="utf-8" src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A1a5756d586b332b5d397d93476f657849d857dce38a7917883b6c4649ff0cd9e&amp;width=100%25&amp;height=501&amp;lang=ru_RU&amp;scroll=true" type="text/javascript">
 </script>
-    </div>
-  </div>
+</div>
+</div>
 </section>
-
-    <!-- Plan Section -->
-<section id="plan" class="cottage-section">
-  <div class="cottage-container">
-    <h2>Генплан</h2>
-
-    <div style="margin-top: 2rem; margin-bottom: 3rem;">
-      <!-- Master Plan -->
-      <div class="master-plan-wrapper">
-        <div class="master-plan-controls">
-          <!-- Inputs row -->
-          <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:10px;">
-            <input type="number" id="filter-num" placeholder="Номер участка" min="1" />
-            <input type="number" id="filter-area-min" placeholder="Площадь от" min="0" step="0.01" />
-            <input type="number" id="filter-area-max" placeholder="Площадь до" min="0" step="0.01" />
-            <select id="filter-status">
-              <option value="">Все статусы</option>
-              <option value="Свободен">Свободен</option>
-              <option value="Бронь">Бронь</option>
-              <option value="Продан">Продан</option>
-            </select>
-          </div>
-
-          <!-- Buttons row (centered) -->
-          <div style="display:flex; justify-content:center; gap:20px; margin-top:10px;">
-            <button class="cottage-btn" onclick="applyFilters()">Применить фильтры</button>
-            <button class="cottage-btn" onclick="resetFilters()">Сбросить фильтры</button>
-          </div>
-        </div>
-
-        <div id="map-container" class="master-plan-container">
-          <img id="map-img" class="master-plan-img" src="genplan.jpg" alt="Генеральный план поселка" />
-          <svg id="map-svg" class="master-plan-svg" width="1200" height="900" aria-label="План участков"></svg>
-          <div id="tooltip" class="master-plan-tooltip" role="tooltip" aria-hidden="true"></div>
-        </div>
-
-        <div class="master-plan-legend" aria-label="Легенда статусов участков">
-          <div class="master-plan-legend-item">
-            <div class="master-plan-legend-color legend-Свободен"></div> 
+<!-- Plan Section -->
+<section class="cottage-section" id="plan">
+<div class="cottage-container">
+<h2>Генплан</h2>
+<div style="margin-top: 2rem; margin-bottom: 3rem;">
+<!-- Master Plan -->
+<div class="master-plan-wrapper">
+<div class="master-plan-controls">
+<!-- Inputs row -->
+<div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:10px;">
+<input id="filter-num" min="1" placeholder="Номер участка" type="number"/>
+<input id="filter-area-min" min="0" placeholder="Площадь от" step="0.01" type="number"/>
+<input id="filter-area-max" min="0" placeholder="Площадь до" step="0.01" type="number"/>
+<select id="filter-status">
+<option value="">Все статусы</option>
+<option value="Свободен">Свободен</option>
+<option value="Бронь">Бронь</option>
+<option value="Продан">Продан</option>
+</select>
+</div>
+<!-- Buttons row (centered) -->
+<div style="display:flex; justify-content:center; gap:20px; margin-top:10px;">
+<button class="cottage-btn" onclick="applyFilters()">Применить фильтры</button>
+<button class="cottage-btn" onclick="resetFilters()">Сбросить фильтры</button>
+</div>
+</div>
+<div class="master-plan-container" id="map-container">
+<img alt="Генеральный план поселка" class="master-plan-img" id="map-img" src="genplan.jpg"/>
+<svg aria-label="План участков" class="master-plan-svg" height="900" id="map-svg" width="1200"></svg>
+<div aria-hidden="true" class="master-plan-tooltip" id="tooltip" role="tooltip"></div>
+</div>
+<div aria-label="Легенда статусов участков" class="master-plan-legend">
+<div class="master-plan-legend-item">
+<div class="master-plan-legend-color legend-Свободен"></div> 
             Свободен
           </div>
-          <div class="master-plan-legend-item">
-            <div class="master-plan-legend-color legend-Бронь"></div> 
+<div class="master-plan-legend-item">
+<div class="master-plan-legend-color legend-Бронь"></div> 
             Бронь
           </div>
-          <div class="master-plan-legend-item">
-            <div class="master-plan-legend-color legend-Продан"></div> 
+<div class="master-plan-legend-item">
+<div class="master-plan-legend-color legend-Продан"></div> 
             Продан
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div>
-      <h3>Галерея поселка</h3>
-      <p style="color: var(--text); margin-bottom: 1rem;">
+</div>
+</div>
+</div>
+<div>
+<h3>Галерея поселка</h3>
+<p style="color: var(--text); margin-bottom: 1rem;">
         Визуализации домов и уличных перспектив.
       </p>
-      <div class="cottage-gallery">
-        <img src="gallery1.jpeg" alt="Фото 1" />
-        <img src="gallery2.jpeg" alt="Фото 2" />
-        <img src="gallery3.jpeg" alt="Фото 3" />
-        <img src="gallery4.jpg" alt="Фото 4" />
-        <img src="gallery5.jpg" alt="Фото 5" />
-        <img src="gallery6.jpg" alt="Фото 6" />
-      </div>
-    </div>
-  </div>
+<div class="cottage-gallery">
+<img alt="Фото 1" src="gallery1.jpeg"/>
+<img alt="Фото 2" src="gallery2.jpeg"/>
+<img alt="Фото 3" src="gallery3.jpeg"/>
+<img alt="Фото 4" src="gallery4.jpg"/>
+<img alt="Фото 5" src="gallery5.jpg"/>
+<img alt="Фото 6" src="gallery6.jpg"/>
+</div>
+</div>
+</div>
 </section>
-
-    <!-- Lots Section -->
-    <section id="lots" class="cottage-section">
-      <div class="cottage-container">
-        <h2>Акция до конца лета</h2>
-        <p style="color: var(--text);">Выберите подходящий участок для строительства дома.</p>
-        <div class="cottage-lots" id="lots-container">
-          <!-- Lots will be populated by JavaScript -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Houses Section -->
-    <section id="houses" class="cottage-section">
-      <div class="cottage-container">
-        <h2>Готовые проекты домов</h2>
-        <p style="color: var(--text);">
+<!-- Lots Section -->
+<section class="cottage-section" id="lots">
+<div class="cottage-container">
+<h2>Акция до конца лета</h2>
+<p style="color: var(--text);">Выберите подходящий участок для строительства дома.</p>
+<div class="cottage-lots" id="lots-container">
+<!-- Lots will be populated by JavaScript -->
+</div>
+</div>
+</section>
+<!-- Houses Section -->
+<section class="cottage-section" id="houses">
+<div class="cottage-container">
+<h2>Готовые проекты домов</h2>
+<p style="color: var(--text);">
           Выберите готовый проект дома или закажите индивидуальный. 
           Строительство под ключ с гарантией качества.
         </p>
-        <div class="cottage-houses" style="margin-top: 2rem;" id="houses-container">
-          <!-- Houses will be populated by JavaScript -->
-        </div>
-      </div>
-    </section>
-
+<div class="cottage-houses" id="houses-container" style="margin-top: 2rem;">
+<!-- Houses will be populated by JavaScript -->
+</div>
+</div>
+</section>
 <section class="cottage-section">
-  <div class="cottage-container" style="display:flex; flex-wrap:wrap; align-items:center; gap:2rem;">
-    <div style="flex:1 1 300px; min-width:250px;">
-      <h2>О поселке Исток</h2>
-      <p style="color: var(--text); line-height:1.5;">
+<div class="cottage-container" style="display:flex; flex-wrap:wrap; align-items:center; gap:2rem;">
+<div style="flex:1 1 300px; min-width:250px;">
+<h2>О поселке Исток</h2>
+<p style="color: var(--text); line-height:1.5;">
         Познакомьтесь с нашим коттеджным поселком через короткое видео. Увидьте природу, дома и инфраструктуру, чтобы принять решение о покупке участка или дома.
       </p>
-      <ul style="color: var(--text); padding-left: 1.2rem; line-height:1.5;">
-        <li>Природные холмы и пруды</li>
-        <li>Готовые проекты домов</li>
-        <li>Общественные зоны и безопасность</li>
-      </ul>
-    </div>
-
-    <!-- Видео справа — ВАРИАНТ A: contain -->
-    <div style="flex:1 1 480px; max-width:600px;">
-      <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:12px; background:#000;">
-        <video
-          src="img/video.mp4"
-          controls
-          autoplay
-          muted
-          loop
-          style="position:absolute; inset:0; width:100%; height:100%; border-radius:12px; object-fit:contain; background:#000;">
+<ul style="color: var(--text); padding-left: 1.2rem; line-height:1.5;">
+<li>Природные холмы и пруды</li>
+<li>Готовые проекты домов</li>
+<li>Общественные зоны и безопасность</li>
+</ul>
+</div>
+<!-- Видео справа — ВАРИАНТ A: contain -->
+<div style="flex:1 1 480px; max-width:600px;">
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:12px; background:#000;">
+<video autoplay="" controls="" loop="" muted="" src="img/video.mp4" style="position:absolute; inset:0; width:100%; height:100%; border-radius:12px; object-fit:contain; background:#000;">
           Ваш браузер не поддерживает воспроизведение видео.
         </video>
-      </div>
-    </div>
-  </div>
+</div>
+</div>
+</div>
 </section>
-
 <section class="cottage-section">
-  <div class="cottage-container">
-    <div style="display:flex; flex-wrap:wrap; align-items:center; gap:1.5rem; background:#fefefe; padding:1.5rem; border-radius:16px; box-shadow:0 6px 20px rgba(0,0,0,0.1); transition: transform 0.3s;">
-      <img src="contact.jpg" alt="Фото менеджера" style="width:120px; height:120px; border-radius:50%; object-fit:cover; border:3px solid var(--accent);">
-      <div style="flex:1 1 250px; min-width:200px;">
-        <h3 style="margin:0 0 0.5rem;">Ваш менеджер</h3>
-        <p style="margin:0.2rem 0; color: var(--text); font-weight:500;">Иван Иванов — специалист по продажам коттеджного поселка «Исток»</p>
-        <p style="margin:0.2rem 0;">📞 <a href="tel:+79991234567" style="color:var(--accent); text-decoration:underline;">+7 (999) 123-45-67</a></p>
-        <p style="margin:0.2rem 0;">💬 <a href="https://t.me/village_istok" target="_blank" style="color:var(--accent); text-decoration:underline;">@village_istok</a></p>
-      </div>
-    </div>
-  </div>
+<div class="cottage-container">
+<div style="display:flex; flex-wrap:wrap; align-items:center; gap:1.5rem; background:#fefefe; padding:1.5rem; border-radius:16px; box-shadow:0 6px 20px rgba(0,0,0,0.1); transition: transform 0.3s;">
+<img alt="Фото менеджера" src="contact.jpg" style="width:120px; height:120px; border-radius:50%; object-fit:cover; border:3px solid var(--accent);"/>
+<div style="flex:1 1 250px; min-width:200px;">
+<h3 style="margin:0 0 0.5rem;">Ваш менеджер</h3>
+<p style="margin:0.2rem 0; color: var(--text); font-weight:500;">Артем поможет вам с выбором недвижимости в коттеджном посёлке «Исток»</p>
+<p style="margin:0.2rem 0;">📞 <a href="tel:+79859854352" style="color:var(--accent); text-decoration:underline;">+7 (985) 985-43-52</a></p>
+<p style="margin:0.2rem 0;">💬 <a href="https://t.me/village_istok" style="color:var(--accent); text-decoration:underline;" target="_blank">@village_istok</a></p>
+</div>
+</div>
+</div>
 </section>
-
 <!-- Contact Section -->
-<section id="contact" class="cottage-section">
-  <div class="cottage-container">
-    <h2>Записаться на просмотр</h2>
-    <p style="color: var(--text);">
+<section class="cottage-section" id="contact">
+<div class="cottage-container">
+<h2>Записаться на просмотр</h2>
+<p style="color: var(--text);">
       Оставьте контакты — мы перезвоним и договоримся об удобном времени.
     </p>
-    <form class="cottage-form" onsubmit="submitForm(event)">
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
-        <input class="cottage-input" type="text" name="name" placeholder="Имя" required />
-        <input id="phone" class="cottage-input" type="tel" name="phone" required />
-      </div>
-      <input class="cottage-input" type="email" name="email" placeholder="Email (необязательно)" />
-      <textarea class="cottage-textarea" name="comment" placeholder="Комментарий"></textarea>
-      
-      <!-- Privacy Consent -->
-      <div style="margin: 1rem 0;">
-        <label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; color: var(--text); cursor: pointer;">
-          <input type="checkbox" name="privacy_consent" required style="margin-top: 0.2rem; flex-shrink: 0;" />
-          <span>
+<form class="cottage-form" id="contactForm">
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+<input class="cottage-input" name="name" placeholder="Имя" required="" type="text"/>
+<input class="cottage-input" id="phone" name="phone" required="" type="tel"/>
+</div>
+<input class="cottage-input" name="email" placeholder="Email (необязательно)" type="email"/>
+<textarea class="cottage-textarea" name="comment" placeholder="Комментарий"></textarea>
+<!-- Privacy Consent -->
+<div style="margin: 1rem 0;">
+<label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; color: var(--text); cursor: pointer;">
+<input name="privacy_consent" required="" style="margin-top: 0.2rem; flex-shrink: 0;" type="checkbox"/>
+<span>
             Выражаю согласие на обработку моих персональных данных в соответствии с 
-            <a href="privacy-policy.html" target="_blank" style="color: var(--accent); text-decoration: underline;">Политикой в отношении обработки персональных данных</a>
-          </span>
-        </label>
-      </div>
-      
-      <!-- Marketing Consent -->
-      <div style="margin: 1rem 0;">
-        <label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; color: var(--text); cursor: pointer;">
-          <input type="checkbox" name="marketing_consent" style="margin-top: 0.2rem; flex-shrink: 0;" />
-          <span>
-            Я согласен (-на) на получение информационных и рекламных сообщений
-          </span>
-        </label>
-      </div>
-
-      <button class="cottage-btn cottage-btn--accent" type="submit">
-        Отправить заявку
-      </button>
-    </form>
-  </div>
+            <a href="privacy-policy.html" style="color: var(--accent); text-decoration: underline;" target="_blank">Политикой в отношении обработки персональных данных</a>
+</span>
+</label>
+</div>
+<!-- Marketing Consent -->
+<div style="margin: 1rem 0;">
+<label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; color: var(--text); cursor: pointer;">
+<input name="marketing_consent" style="margin-top: 0.2rem; flex-shrink: 0;" type="checkbox"/>
+<span>Я согласен (-на) на получение информационных и рекламных сообщений</span>
+</label>
+</div>
+<button class="cottage-btn cottage-btn--accent" type="submit">Отправить заявку</button>
+</form>
+</div>
 </section>
-
 <script>
-  const phoneInput = document.getElementById("phone");
+const phoneInput = document.getElementById("phone");
 
-  // При загрузке сразу ставим +7 (
-  window.addEventListener("DOMContentLoaded", () => {
-    phoneInput.value = "+7 (";
-  });
+// Маска телефона
+window.addEventListener("DOMContentLoaded", () => {
+  phoneInput.value = "+7 (";
+});
 
-  phoneInput.addEventListener("input", function(e) {
-    let value = phoneInput.value.replace(/\D/g, ""); // только цифры
+phoneInput.addEventListener("input", function() {
+  let value = phoneInput.value.replace(/\D/g, "");
+  if (!value.startsWith("7")) value = "7" + value;
+  let formatted = "+7 (";
+  if (value.length > 1) formatted += value.substring(1,4);
+  if (value.length >= 5) formatted += ") " + value.substring(4,7);
+  if (value.length >= 8) formatted += "-" + value.substring(7,9);
+  if (value.length >= 10) formatted += "-" + value.substring(9,11);
+  phoneInput.value = formatted;
+});
 
-    // Всегда начинается с 7
-    if (!value.startsWith("7")) {
-      value = "7" + value;
-    }
+phoneInput.addEventListener("keydown", function(e) {
+  if (phoneInput.selectionStart < 4 && (e.key === "Backspace" || e.key === "Delete")) e.preventDefault();
+});
 
-    let formatted = "+7 (";
+// Отправка формы на сервер
+document.getElementById("contactForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const form = e.target;
+  const data = {
+    name: form.name.value,
+    phone: form.phone.value,
+    email: form.email.value,
+    comment: form.comment.value
+  };
 
-    if (value.length > 1) {
-      formatted += value.substring(1, 4);
-    }
-    if (value.length >= 5) {
-      formatted += ") " + value.substring(4, 7);
-    }
-    if (value.length >= 8) {
-      formatted += "-" + value.substring(7, 9);
-    }
-    if (value.length >= 10) {
-      formatted += "-" + value.substring(9, 11);
-    }
-
-    phoneInput.value = formatted;
-  });
-
-  // Не даём стереть +7 (
-  phoneInput.addEventListener("keydown", function(e) {
-    if (phoneInput.selectionStart < 4 && (e.key === "Backspace" || e.key === "Delete")) {
-      e.preventDefault();
-    }
-  });
-
-  // === Отправка формы в Telegram ===
-  function submitForm(event) {
-    event.preventDefault();
-
-    const form = event.target;
-    const name = form.name.value;
-    const phone = form.phone.value;
-    const email = form.email.value;
-    const comment = form.comment.value;
-
-    // Текст сообщения
-    const message = `
-📩 Новая заявка с сайта:
-👤 Имя: ${name}
-📞 Телефон: ${phone}
-📧 Email: ${email || "не указан"}
-💬 Комментарий: ${comment || "нет"}
-    `;
-
-    // Твой токен и чат
-    const token = "8212344618:AAE395Vafj7lpmLhAOzcwwQym41ruwzDsHo";
-    const chatId = "@istok_leads"; // можно заменить на -100xxxxxxxxx если надо
-
-    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+  try {
+    const res = await fetch("send_telegram.php", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: message,
-        parse_mode: "HTML"
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.ok) {
-          alert("Заявка успешно отправлена!");
-          form.reset();
-          phoneInput.value = "+7 ("; // снова ставим маску
-        } else {
-          alert("Ошибка при отправке. Попробуйте позже.");
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        alert("Ошибка соединения.");
-      });
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(data)
+    });
+    const result = await res.json();
+    if (result.ok) {
+      alert("Заявка успешно отправлена!");
+      form.reset();
+      phoneInput.value = "+7 (";
+    } else {
+      alert("Ошибка при отправке. Попробуйте позже.");
+    }
+  } catch(err) {
+    console.error(err);
+    alert("Ошибка соединения.");
   }
+});
 </script>
-
 </main>
-
-  <!-- Footer -->
-  <footer class="cottage-footer">
-    <div class="cottage-container">
-      <div style="display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
-        <div>© 2025 Исток. Все права защищены.</div>
-        <div style="color: var(--muted);">ИП Иванов И.И. • ИНН 123456789012 • ОГРНИП 315123456789012</div>
-      </div>
-      
-      <!-- Legal Links -->
-      <div style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1rem;">
-        <a href="privacy-policy.html" target="_blank" style="color: var(--accent); text-decoration: underline; font-size: 0.9rem;">
+<!-- Footer -->
+<footer class="cottage-footer">
+<div class="cottage-container">
+<div style="display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
+<div>© 2025 Исток. Все права защищены.</div>
+<div style="color: var(--muted);">ИП Назаренко В.В. • ИНН 301609702140 • ОГРНИП 324774600214546</div>
+</div>
+<!-- Legal Links -->
+<div style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1rem;">
+<a href="privacy-policy.html" style="color: var(--accent); text-decoration: underline; font-size: 0.9rem;" target="_blank">
           Политика в отношении обработки персональных данных
         </a>
-        <a href="privacy-consent.html" target="_blank" style="color: var(--accent); text-decoration: underline; font-size: 0.9rem;">
+<a href="privacy-consent.html" style="color: var(--accent); text-decoration: underline; font-size: 0.9rem;" target="_blank">
           Согласие на обработку персональных данных
         </a>
-        <a href="cookie-policy.html" target="_blank" style="color: var(--accent); text-decoration: underline; font-size: 0.9rem;">
+<a href="cookie-policy.html" style="color: var(--accent); text-decoration: underline; font-size: 0.9rem;" target="_blank">
           Согласие на использование файлов cookie
         </a>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Phone Button -->
-  <a href="tel:+79991234567" class="phone-button" aria-label="Позвонить нам" title="Позвонить: +7 (999) 123-45-67">
+</div>
+<div style="text-align:center; font-size:0.9rem; color:var(--muted); margin-top:1rem;">
+  Любая информация, представленная на данном сайте, носит исключительно информационный характер и ни при каких условиях не является публичной офертой, определяемой положениями статьи 437 ГК РФ. Отправляя сведения через любую электронную форму на данном сайте, вы даете свое согласие на обработку ваших персональных данных
+</div>
+</div> <!-- close .cottage-container -->
+</footer>
+<!-- Phone Button -->
+<a aria-label="Позвонить нам" class="phone-button" href="tel:+79859854352" title="Позвонить: +7 (985) 985-43-52">
     📞
   </a>
-
-  <!-- Cookie Banner -->
-  <div id="cookie-banner" class="cookie-banner">
-    <div class="cookie-banner-content">
-      <div>
-        Продолжая использовать сайт, Вы даете ИП Иванову И.И. (адрес: г. Москва, ул. Примерная, д. 1, ИНН 123456789012, ОГРНИП 315123456789012) 
+<!-- Cookie Banner -->
+<div class="cookie-banner" id="cookie-banner">
+<div class="cookie-banner-content">
+<div>
+        Продолжая использовать сайт, Вы даете ИП Назаренко В.В. (адрес: 115408, г. Москва, ул. Паромная улица, 7к3, кв 445, ИНН 301609702140, ОГРНИП 324774600214546) 
         согласие на использование файлов cookie на сайте Оператора и обработку пользовательских данных. 
         Если Вы не хотите, чтобы Ваши данные обрабатывались, просим отключить обработку файлов cookie и сбор пользовательских данных 
         в настройках Вашего браузера или покинуть сайт. 
         <a href="cookie-policy.html" target="_blank">Подробнее об использовании файлов cookie</a>
-      </div>
-      <button onclick="acceptCookies()">Принять</button>
-    </div>
-  </div>
-
-   <script>
+</div>
+<button onclick="acceptCookies()">Принять</button>
+</div>
+</div>
+<script>
     // Sample data
     const plots = [
       {
@@ -2252,7 +2178,6 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
 
 
 </script>
-
 <script>
 // === Genplan Fullscreen Viewer (image + SVG polygons + tooltips + pan/zoom/pinch) ===
 (function(){
@@ -2544,9 +2469,6 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
   });
 })();
 </script>
-
-
-
 <script>
 // === Robust open binding (capture phase + transparent hotspot) ===
 (function(){
@@ -2594,8 +2516,6 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
   });
 })();
 </script>
-
-
 <script>
 // === Inline Genplan Tooltip (outside fullscreen) ===
 (function(){
@@ -2676,8 +2596,6 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
   });
 })();
 </script>
-
-
 <script>
 // Ensure window.plots is set after all scripts (fallback if plots was declared later with const/let)
 (function(){
@@ -2697,8 +2615,6 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
   setTimeout(ensure, 500);
 })();
 </script>
-
-
 <script>
 // Delegation: intercept clicks on inline polygons and open overlay with that plot.
 // Also keep #map-container height matched to image (mobile whitespace fix).
@@ -2757,8 +2673,6 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 </script>
-
-
 <script>
 // Wrapper for window.openGenplanViewer that accepts an initial plot/ID and ensures only one tooltip is shown.
 // It opens the overlay (via original), then polls for the matching polygon inside the overlay and triggers one click on it.
@@ -2817,5 +2731,156 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
 })();
 </script>
 
+<script>
+// Mobile-only enhancement for openLightbox: pinch-zoom + swipe
+(function(){
+  const orig = window.openLightbox;
+  if (typeof orig !== 'function') return;
+
+  function isMobileDevice(){
+    return (window.matchMedia && window.matchMedia('(pointer: coarse)').matches)
+           || /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+  }
+
+  window.openLightbox = function(images, startIndex){
+    if (!isMobileDevice()) {
+      // Desktop: keep original behavior
+      return orig(images, startIndex);
+    }
+
+    let index = startIndex || 0;
+
+    const viewer = document.createElement('div');
+    viewer.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;z-index:9999;';
+    // block underlying page scroll, but allow gestures inside
+    viewer.style.touchAction = 'none';
+
+    const img = document.createElement('img');
+    img.src = images[index];
+    img.style.maxWidth = '90%';
+    img.style.maxHeight = '90%';
+    img.style.willChange = 'transform';
+    img.style.transform = 'translate(0px,0px) scale(1)';
+    img.style.transformOrigin = 'center center';
+    img.style.touchAction = 'none';
+    img.alt = '';
+    viewer.appendChild(img);
+
+    // arrows
+    const prev = document.createElement('div');
+    prev.innerHTML = '&#10094;';
+    prev.style.cssText = 'position:absolute;left:20px;color:white;font-size:3rem;cursor:pointer;user-select:none;';
+    prev.addEventListener('click', function(e){
+      e.stopPropagation();
+      index = (index - 1 + images.length) % images.length;
+      img.src = images[index];
+      resetTransform();
+    });
+
+    const next = document.createElement('div');
+    next.innerHTML = '&#10095;';
+    next.style.cssText = 'position:absolute;right:20px;color:white;font-size:3rem;cursor:pointer;user-select:none;';
+    next.addEventListener('click', function(e){
+      e.stopPropagation();
+      index = (index + 1) % images.length;
+      img.src = images[index];
+      resetTransform();
+    });
+
+    viewer.appendChild(prev);
+    viewer.appendChild(next);
+
+    // close only by tapping background
+    viewer.addEventListener('click', function(e){
+      if (e.target === viewer) {
+        document.body.removeChild(viewer);
+        document.body.classList.remove('no-scroll');
+      }
+    });
+
+    document.body.appendChild(viewer);
+
+    // --- pinch zoom + pan + swipe ---
+    let scale = 1, startScale = 1;
+    let posX = 0, posY = 0, startX = 0, startY = 0;
+    let startDist = 0;
+    let isPanning = false;
+    let touchStartX = 0, touchStartY = 0, touchEndX = 0, touchEndY = 0;
+
+    function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+    function resetTransform(){
+      scale = 1; posX = 0; posY = 0;
+      img.style.transition = 'transform .15s ease';
+      img.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+      setTimeout(() => { img.style.transition = 'none'; }, 160);
+    }
+    function applyTransform(){
+      img.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+    }
+    function getDist(t1, t2){
+      const dx = t2.clientX - t1.clientX;
+      const dy = t2.clientY - t1.clientY;
+      return Math.hypot(dx, dy);
+    }
+
+    img.addEventListener('touchstart', function(e){
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        startDist  = getDist(e.touches[0], e.touches[1]);
+        startScale = scale;
+      } else if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        if (scale > 1) {
+          e.preventDefault();
+          isPanning = true;
+          startX = e.touches[0].clientX - posX;
+          startY = e.touches[0].clientY - posY;
+        }
+      }
+    }, { passive: false });
+
+    img.addEventListener('touchmove', function(e){
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const newDist = getDist(e.touches[0], e.touches[1]);
+        const factor  = newDist / (startDist || newDist);
+        scale = clamp(startScale * factor, 1, 5);
+        applyTransform();
+      } else if (e.touches.length === 1 && isPanning) {
+        e.preventDefault();
+        posX = e.touches[0].clientX - startX;
+        posY = e.touches[0].clientY - startY;
+        applyTransform();
+      }
+    }, { passive: false });
+
+    img.addEventListener('touchend', function(e){
+      if (e.changedTouches.length === 1) {
+        touchEndX = e.changedTouches[0].clientX;
+        touchEndY = e.changedTouches[0].clientY;
+        const dx = touchEndX - touchStartX;
+        const dy = touchEndY - touchStartY;
+        // Swipe only if image not zoomed in and horizontal move is dominant
+        if (scale === 1 && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+          if (dx > 0) {
+            index = (index - 1 + images.length) % images.length;
+          } else {
+            index = (index + 1) % images.length;
+          }
+          img.src = images[index];
+          resetTransform();
+        }
+      }
+      if (isPanning && scale <= 1.0001) {
+        isPanning = false;
+        resetTransform();
+      }
+      if (!('TouchEvent' in window)) return;
+    });
+
+  };
+})();
+</script>
 </body>
 </html>
