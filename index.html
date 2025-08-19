@@ -1726,10 +1726,12 @@ phoneInput.addEventListener("keydown", function(e) {
   if (phoneInput.selectionStart < 4 && (e.key === "Backspace" || e.key === "Delete")) e.preventDefault();
 });
 
-// Отправка формы на сервер
+// Отправка формы на сервер (Timeweb)
 document.getElementById("contactForm").addEventListener("submit", async function(e) {
   e.preventDefault();
   const form = e.target;
+
+  // Собираем данные
   const data = {
     name: form.name.value,
     phone: form.phone.value,
@@ -1738,19 +1740,23 @@ document.getElementById("contactForm").addEventListener("submit", async function
   };
 
   try {
-    const res = await fetch("send_telegram.php", {
+    // Полный URL на PHP на Timeweb
+    const res = await fetch("https://cb31743.tw1.ru/send_telegram.php", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(data)
     });
+
     const result = await res.json();
+
     if (result.ok) {
       alert("Заявка успешно отправлена!");
       form.reset();
-      phoneInput.value = "+7 (";
+      phoneInput.value = "+7 ("; // сбрасываем маску
     } else {
       alert("Ошибка при отправке. Попробуйте позже.");
     }
+
   } catch(err) {
     console.error(err);
     alert("Ошибка соединения.");
