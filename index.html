@@ -1259,6 +1259,19 @@ body.no-scroll{ overflow:hidden; }
   white-space: normal !important;
 }
 
+.house-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .house-info {
+    justify-content: flex-start;
+    gap: 2rem;
+  }
+}
 
 /* === Genplan Viewer: content wrapper + SVG overlay + tooltip (stronger selectors) === */
 .genplan-viewer .gp-stage { position:absolute; inset:0; overflow:hidden; touch-action:none; cursor:grab; }
@@ -1309,6 +1322,40 @@ body.no-scroll{ overflow:hidden; }
 #map-container .gp-svg { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:6; }
 #map-container .gp-open-hotspot { pointer-events:none; z-index:1; }
 
+
+/* === User adjustments: header layout and house block tweaks === */
+/* Mobile: center title, left-pin logo, burger right, single-line */
+@media (max-width: 560px) {
+  .cottage-nav__row { position: relative !important; justify-content: center !important; padding-left: 0 !important; padding-right: 0 !important; }
+  /* ensure original pseudo-element on .cottage-brand does not duplicate the title */
+  .cottage-brand::after { content: none !important; }
+  .cottage-brand { position: absolute !important; left: 12px !important; top: 50% !important; transform: translateY(-50%) !important; display: flex !important; align-items: center !important; gap: 8px !important; margin: 0 !important; }
+  .cottage-brand .logo { width: 48px !important; height: 48px !important; }
+  .cottage-brand span { display: none !important; } /* hide inline span; show centered title instead */
+  .cottage-nav__row::after { content: "Исток"; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); font-weight: 700; color: #906a41; font-size: 1.25rem; pointer-events: none; white-space: nowrap; }
+  .burger { position: absolute !important; right: 12px !important; top: 50% !important; transform: translateY(-50%) !important; margin-left: 0 !important; }
+}
+
+/* Desktop: larger logo, larger title, left aligned inside header container */
+@media (min-width: 561px) {
+  .cottage-brand .logo { width: 58px !important; height: 58px !important; }
+  .cottage-brand span { font-size: 1.25rem !important; font-weight: 800 !important; margin-left: 8px !important; color: #906a41 !important; }
+  .cottage-brand { gap: 12px !important; align-items: center !important; }
+  /* keep brand at the left of the header container */
+  .cottage-nav__row { justify-content: space-between !important; }
+  .cottage-container.cottage-nav__row { padding-left: 0 !important; padding-right: 0 !important; }
+}
+
+/* House block: make area left and price right (symmetric) */
+.cottage-house-card .house-meta-row,
+.cottage-house-card [style*="display: flex; gap: 2rem; margin-bottom: 1rem; justify-content: space-between; align-items: center;"] {
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+/* Extra safety: ensure logo does not get hidden by other selectors */
+.cottage-brand .logo { display: inline-block !important; max-width: none !important; }
+
 </style>
 
 <!-- Ensure global access to plots regardless of whether they were declared with const/let -->
@@ -1320,6 +1367,41 @@ body.no-scroll{ overflow:hidden; }
   } catch(e){ /* ignore */ }
 </script>
 
+<style>
+
+/* === Second-pass fixes: make desktop logo flush-left, reduce title size, and prevent mobile overflow === */
+
+/* Desktop: ensure brand is flush to the left edge of the header container and title is smaller */
+@media (min-width: 561px) {
+  /* reduce side paddings to allow brand to be at the very left of the header container */
+  .cottage-nav__row, .cottage-header, .cottage-container { padding-left: 8px !important; padding-right: 8px !important; }
+  /* make sure the brand sits at the left inside the header */
+  .cottage-brand { position: relative !important; left: 0 !important; margin-left: 0 !important; padding-left: 0 !important; transform: none !important; display:flex !important; align-items:center !important; z-index: 5 !important; }
+  .cottage-brand .logo { margin-left: 0 !important; margin-right: 8px !important; width: 56px !important; height: 56px !important; max-width: none !important; max-height: none !important; box-sizing: border-box !important; }
+  /* make the title smaller and neater */
+  .cottage-brand span { font-size: 1rem !important; line-height: 1 !important; font-weight: 700 !important; color: #906a41 !important; margin: 0 !important; padding: 0 !important; }
+  /* ensure the nav row keeps spacing for other items */
+  .cottage-nav__row { display: flex !important; align-items: center !important; justify-content: space-between !important; }
+}
+
+/* Mobile: prevent logo overflow, tighten header height and keep clean layout */
+@media (max-width: 560px) {
+  .cottage-nav__row { min-height: 56px !important; height: 56px !important; padding-left: 8px !important; padding-right: 8px !important; }
+  .cottage-brand { position: absolute !important; left: 8px !important; top: 50% !important; transform: translateY(-50%) !important; display:flex !important; align-items:center !important; gap:8px !important; z-index: 6 !important; }
+  /* constrain the logo so it never exceeds header height */
+  .cottage-brand .logo { width: 44px !important; height: 44px !important; max-width: 44px !important; max-height: 44px !important; box-sizing: border-box !important; }
+  /* slightly smaller centered title for mobile pseudo-element */
+  .cottage-nav__row::after { font-size: 1.05rem !important; top: 50% !important; transform: translate(-50%,-50%) !important; white-space: nowrap; pointer-events: none; }
+  .burger { right: 8px !important; top: 50% !important; transform: translateY(-50%) !important; z-index: 7 !important; }
+}
+
+/* House meta row: keep the area left and price right */
+.cottage-house-card .house-meta-row { display: flex !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; box-sizing: border-box !important; padding: 0 !important; }
+
+/* Safety: ensure images in brand do not carry extra margins that push them away */
+.cottage-brand img, .cottage-brand .logo { display: inline-block !important; margin: 0 !important; padding: 0 !important; }
+
+</style>
 </head>
 <body>
 <!-- Navigation -->
@@ -1578,48 +1660,138 @@ body.no-scroll{ overflow:hidden; }
   </div>
 </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="cottage-section">
-      <div class="cottage-container">
-        <h2>Записаться на просмотр</h2>
-        <p style="color: var(--text);">
-          Оставьте контакты — мы перезвоним и договоримся об удобном времени.
-        </p>
-        <form class="cottage-form" onsubmit="submitForm(event)">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
-            <input class="cottage-input" type="text" name="name" placeholder="Имя" required />
-            <input class="cottage-input" type="tel" name="phone" placeholder="Телефон" required />
-          </div>
-          <input class="cottage-input" type="email" name="email" placeholder="Email (необязательно)" />
-          <textarea class="cottage-textarea" name="comment" placeholder="Комментарий"></textarea>
-          
-          <!-- Privacy Consent -->
-          <div style="margin: 1rem 0;">
-            <label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; color: var(--text); cursor: pointer;">
-              <input type="checkbox" name="privacy_consent" required style="margin-top: 0.2rem; flex-shrink: 0;" />
-              <span>
-                Выражаю согласие на обработку моих персональных данных в соответствии с 
-                <a href="privacy-policy.html" target="_blank" style="color: var(--accent); text-decoration: underline;">Политикой в отношении обработки персональных данных</a>
-              </span>
-            </label>
-          </div>
-          
-          <!-- Marketing Consent -->
-          <div style="margin: 1rem 0;">
-            <label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; color: var(--text); cursor: pointer;">
-              <input type="checkbox" name="marketing_consent" style="margin-top: 0.2rem; flex-shrink: 0;" />
-              <span>
-                Я согласен (-на) на получение информационных и рекламных сообщений
-              </span>
-            </label>
-          </div>
-
-          <button class="cottage-btn cottage-btn--accent" type="submit">
-            Отправить заявку
-          </button>
-        </form>
+<!-- Contact Section -->
+<section id="contact" class="cottage-section">
+  <div class="cottage-container">
+    <h2>Записаться на просмотр</h2>
+    <p style="color: var(--text);">
+      Оставьте контакты — мы перезвоним и договоримся об удобном времени.
+    </p>
+    <form class="cottage-form" onsubmit="submitForm(event)">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+        <input class="cottage-input" type="text" name="name" placeholder="Имя" required />
+        <input id="phone" class="cottage-input" type="tel" name="phone" required />
       </div>
-    </section>
+      <input class="cottage-input" type="email" name="email" placeholder="Email (необязательно)" />
+      <textarea class="cottage-textarea" name="comment" placeholder="Комментарий"></textarea>
+      
+      <!-- Privacy Consent -->
+      <div style="margin: 1rem 0;">
+        <label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; color: var(--text); cursor: pointer;">
+          <input type="checkbox" name="privacy_consent" required style="margin-top: 0.2rem; flex-shrink: 0;" />
+          <span>
+            Выражаю согласие на обработку моих персональных данных в соответствии с 
+            <a href="privacy-policy.html" target="_blank" style="color: var(--accent); text-decoration: underline;">Политикой в отношении обработки персональных данных</a>
+          </span>
+        </label>
+      </div>
+      
+      <!-- Marketing Consent -->
+      <div style="margin: 1rem 0;">
+        <label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; color: var(--text); cursor: pointer;">
+          <input type="checkbox" name="marketing_consent" style="margin-top: 0.2rem; flex-shrink: 0;" />
+          <span>
+            Я согласен (-на) на получение информационных и рекламных сообщений
+          </span>
+        </label>
+      </div>
+
+      <button class="cottage-btn cottage-btn--accent" type="submit">
+        Отправить заявку
+      </button>
+    </form>
+  </div>
+</section>
+
+<script>
+  const phoneInput = document.getElementById("phone");
+
+  // При загрузке сразу ставим +7 (
+  window.addEventListener("DOMContentLoaded", () => {
+    phoneInput.value = "+7 (";
+  });
+
+  phoneInput.addEventListener("input", function(e) {
+    let value = phoneInput.value.replace(/\D/g, ""); // только цифры
+
+    // Всегда начинается с 7
+    if (!value.startsWith("7")) {
+      value = "7" + value;
+    }
+
+    let formatted = "+7 (";
+
+    if (value.length > 1) {
+      formatted += value.substring(1, 4);
+    }
+    if (value.length >= 5) {
+      formatted += ") " + value.substring(4, 7);
+    }
+    if (value.length >= 8) {
+      formatted += "-" + value.substring(7, 9);
+    }
+    if (value.length >= 10) {
+      formatted += "-" + value.substring(9, 11);
+    }
+
+    phoneInput.value = formatted;
+  });
+
+  // Не даём стереть +7 (
+  phoneInput.addEventListener("keydown", function(e) {
+    if (phoneInput.selectionStart < 4 && (e.key === "Backspace" || e.key === "Delete")) {
+      e.preventDefault();
+    }
+  });
+
+  // === Отправка формы в Telegram ===
+  function submitForm(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const name = form.name.value;
+    const phone = form.phone.value;
+    const email = form.email.value;
+    const comment = form.comment.value;
+
+    // Текст сообщения
+    const message = `
+📩 Новая заявка с сайта:
+👤 Имя: ${name}
+📞 Телефон: ${phone}
+📧 Email: ${email || "не указан"}
+💬 Комментарий: ${comment || "нет"}
+    `;
+
+    // Твой токен и чат
+    const token = "8212344618:AAE395Vafj7lpmLhAOzcwwQym41ruwzDsHo";
+    const chatId = "@istok_leads"; // можно заменить на -100xxxxxxxxx если надо
+
+    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: message,
+        parse_mode: "HTML"
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.ok) {
+          alert("Заявка успешно отправлена!");
+          form.reset();
+          phoneInput.value = "+7 ("; // снова ставим маску
+        } else {
+          alert("Ошибка при отправке. Попробуйте позже.");
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert("Ошибка соединения.");
+      });
+  }
+</script>
 
 </main>
 
@@ -1811,7 +1983,9 @@ function populateLots() {
         <div>
           <h3 style="margin: 0 0 0.5rem; font-size: 1.3rem; color: var(--text);">${house.title}</h3>
           <p style="color: var(--text); margin-bottom: 1rem;">${house.description}</p>
-          <div style="display: flex; gap: 2rem; margin-bottom: 1rem;">
+          
+          <!-- Блок Площадь / Цена с классом -->
+          <div class="house-info" style="margin-bottom: 1rem;">
             <div>
               <div style="color: var(--text); font-size: 0.9rem;">Площадь</div>
               <div style="font-weight: 600; color: var(--text);">${house.area} м²</div>
@@ -1821,6 +1995,7 @@ function populateLots() {
               <div style="font-weight: 700; font-size: 1.2rem; color: var(--text);">${formatPrice(house.price)}</div>
             </div>
           </div>
+          
           <a class="cottage-btn cottage-btn--accent" href="#contact">Получить консультацию</a>
         </div>
         <div>
@@ -2131,6 +2306,19 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
                         '<button class="gp-btn" data-act="fit">По центру</button>' +
                         '<button class="gp-btn" data-act="close">Закрыть ✕</button>';
     overlay.appendChild(toolbar);
+    // ensure close button works on first click and doesn't re-open due to bubbling
+    const closeBtn = toolbar.querySelector('[data-act="close"]');
+    if (closeBtn) {
+      const kill = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+        cleanup();
+      };
+      closeBtn.addEventListener('click', kill);
+      closeBtn.addEventListener('pointerup', kill);
+    }
+
 
     // content (image + svg overlay) inside a single transformable wrapper
     const content = document.createElement('div');
@@ -2183,7 +2371,7 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
       // leave a small margin
       minScale = Math.min(minScale, 1); // don't upscale on desktop initial
       if (minScale > 1) minScale = 1;
-      scale = Math.max(minScale, Math.min(scale, maxScale));
+      scale = minScale; // open at fit-to-screen scale, avoids initial zoom-in on mobile
       tx = (rect.width - iw * scale) * 0.5;
       ty = (rect.height - ih * scale) * 0.5;
       applyTransform();
