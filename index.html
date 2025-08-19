@@ -1731,17 +1731,15 @@ document.getElementById("contactForm").addEventListener("submit", async function
   e.preventDefault();
   const form = e.target;
 
-  // Собираем данные
   const data = {
-    name: form.name.value,
-    phone: form.phone.value,
-    email: form.email.value,
-    comment: form.comment.value
+    name: form.name.value.trim(),
+    phone: form.phone.value.trim(),
+    email: form.email.value.trim(),
+    comment: form.comment.value.trim()
   };
 
   try {
-    // Полный URL на PHP на Timeweb
-    const res = await fetch("https://cb31743.tw1.ru/send_telegram.php", {
+    const res = await fetch("https://cb31743.tw1.ru/send.php", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(data)
@@ -1752,9 +1750,9 @@ document.getElementById("contactForm").addEventListener("submit", async function
     if (result.ok) {
       alert("Заявка успешно отправлена!");
       form.reset();
-      phoneInput.value = "+7 ("; // сбрасываем маску
+      phoneInput.value = "+7 (";
     } else {
-      alert("Ошибка при отправке. Попробуйте позже.");
+      alert("Ошибка: " + (result.error || "Попробуйте позже."));
     }
 
   } catch(err) {
