@@ -1541,13 +1541,12 @@ body.no-scroll{ overflow:hidden; }
   }
 }
 </style>
-
-
 <style id="overlay-viewer-styles">
-/* === Image Overlay Viewer (bg close + pinch zoom + pan) === */
+/* === Image Overlay Viewer with VisualViewport normalization === */
 #imgov-overlay {
   position: fixed;
-  inset: 0;
+  left: 0; top: 0;
+  width: 100vw; height: 100vh;
   background: rgba(0,0,0,0.95);
   display: none;
   align-items: center;
@@ -1555,14 +1554,23 @@ body.no-scroll{ overflow:hidden; }
   z-index: 20000;
   -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
+  overflow: hidden;
 }
 #imgov-overlay.show { display: flex; }
+
+/* Inner wrapper which is counter-scaled against page zoom */
+#imgov-vvwrap {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100vw; height: 100vh;
+  transform-origin: 0 0;
+}
 
 #imgov-stage {
   position: relative;
   width: 100%;
   height: 100%;
-  overflow: hidden; /* prevent page scroll during pan */
+  overflow: hidden;
   touch-action: none; /* we manage gestures */
 }
 
@@ -8347,13 +8355,15 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
     o.setAttribute('role','dialog');
     o.setAttribute('aria-modal','true');
     o.innerHTML = `
-      <div id="imgov-stage" aria-live="polite">
-        <button id="imgov-close" aria-label="Закрыть">✕</button>
-        <button class="imgov-nav imgov-prev" aria-label="Предыдущая">‹</button>
-        <img id="imgov-img" alt="Просмотр изображения" />
-        <img id="imgov-img-ghost" alt="" aria-hidden="true" />
-        <button class="imgov-nav imgov-next" aria-label="Следующая">›</button>
-        <div id="imgov-counter">1 / 1</div>
+      <div id="imgov-vvwrap">
+        <div id="imgov-stage" aria-live="polite">
+          <button id="imgov-close" aria-label="Закрыть">✕</button>
+          <button class="imgov-nav imgov-prev" aria-label="Предыдущая">‹</button>
+          <img id="imgov-img" alt="Просмотр изображения" />
+          <img id="imgov-img-ghost" alt="" aria-hidden="true" />
+          <button class="imgov-nav imgov-next" aria-label="Следующая">›</button>
+          <div id="imgov-counter">1 / 1</div>
+        </div>
       </div>
     `;
     document.body.appendChild(o);
@@ -8367,10 +8377,11 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
     lastTap: 0
   };
 
-  let overlay, stage, imgEl, ghostEl, prevBtn, nextBtn, closeBtn, counterEl;
+  let overlay, wrap, stage, imgEl, ghostEl, prevBtn, nextBtn, closeBtn, counterEl;
 
   function ensureRefs(){
     overlay   = overlay   || document.getElementById('imgov-overlay') || buildOverlay();
+    wrap      = wrap      || document.getElementById('imgov-vvwrap');
     stage     = stage     || document.getElementById('imgov-stage');
     imgEl     = imgEl     || document.getElementById('imgov-img');
     ghostEl   = ghostEl   || document.getElementById('imgov-img-ghost');
@@ -8391,11 +8402,11 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
 
   function resetZoom(){
     state.zoom.scale = 1; state.zoom.tx = 0; state.zoom.ty = 0;
-    applyTransform();
+    if (imgEl) imgEl.style.transform = 'translate(-50%, -50%) translate(0px, 0px) scale(1)';
   }
 
   function measureBaseRect(){
-    // measure visible size at scale=1
+    if (!imgEl) return;
     const prev = imgEl.style.transform;
     imgEl.style.transform = 'translate(-50%, -50%) translate(0px, 0px) scale(1)';
     const r = imgEl.getBoundingClientRect();
@@ -8420,17 +8431,31 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
     state.zoom.ty = Math.max(-maxY, Math.min(maxY, state.zoom.ty));
   }
 
-  // Smooth crossfade + directional slide (disabled when zoomed in)
+  // --- VisualViewport normalization ---
+  function normalizeViewport(){
+    ensureRefs();
+    try{
+      const vv = window.visualViewport;
+      const scale = vv && vv.scale ? vv.scale : 1;
+      const offsetX = vv && vv.offsetLeft ? vv.offsetLeft : 0;
+      const offsetY = vv && vv.offsetTop ? vv.offsetTop : 0;
+
+      // Counter-scale the inner wrapper so UI looks 1:1 regardless of page zoom
+      const inv = 1 / scale;
+      wrap.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${inv})`;
+      wrap.style.width  = `calc(100vw * ${scale})`;
+      wrap.style.height = `calc(100vh * ${scale})`;
+    }catch(e){ /* ignore */ }
+  }
+
+  // Smooth crossfade + directional slide (disabled for pinch)
   function show(i, direction){
     ensureRefs();
     const n = state.items.length; if (!n) return;
     state.index = (i + n) % n;
     const target = state.items[state.index];
 
-    
-    // Ensure starting zoom/position are reset for the new image
-    resetZoom();
-const dir = direction || 0;
+    const dir = direction || 0;
     const offset = dir ? (dir > 0 ? 60 : -60) : 0;
 
     // outgoing -> ghost
@@ -8449,10 +8474,10 @@ const dir = direction || 0;
 
         const onload = ()=>{
           imgEl.removeEventListener('load', onload);
-          resetZoom(); // always start with scale 1
+          resetZoom(); // ensure baseline
           imgEl.style.opacity = '1';
           imgEl.style.transform = 'translate(-50%, -50%) translate(0px, 0px) scale(1)';
-          setTimeout(measureBaseRect, 30);
+          setTimeout(()=>{ measureBaseRect(); normalizeViewport(); }, 30);
         };
         imgEl.addEventListener('load', onload);
 
@@ -8483,6 +8508,7 @@ const dir = direction || 0;
     overlay.classList.add('show');
     document.body.classList.add('imgov-lock');
     resetZoom();
+    normalizeViewport();
     show(state.index, 0);
   }
 
@@ -8509,12 +8535,12 @@ const dir = direction || 0;
   document.addEventListener('click', function(e){
     if (!overlay || !overlay.classList.contains('show')) return;
     const t = e.target;
-    if (t.id === 'imgov-close') { e.preventDefault(); close(); return; }
-    if (t.classList && t.classList.contains('imgov-prev')) { e.preventDefault(); prev(); return; }
-    if (t.classList && t.classList.contains('imgov-next')) { e.preventDefault(); next(); return; }
-    // click on dark bg or empty area of stage closes when not zoomed in
-    if ((t.id === 'imgov-overlay' || t.id === 'imgov-stage') && state.zoom.scale <= 1.02) { close(); return; }
-  });
+    if (t.id === 'imgov-close') { e.preventDefault(); e.stopPropagation(); close(); return; }
+    if (t.classList && t.classList.contains('imgov-prev')) { e.preventDefault(); e.stopPropagation(); prev(); return; }
+    if (t.classList && t.classList.contains('imgov-next')) { e.preventDefault(); e.stopPropagation(); next(); return; }
+    // click on dark bg or empty area of stage closes only when not zoomed (safe UX)
+    if ((t.id === 'imgov-overlay' || t.id === 'imgov-stage') && state.zoom.scale <= 1.02) { e.preventDefault(); close(); return; }
+  }, true);
 
   // --- Touch gestures ---
   const SWIPE_THRESHOLD = 60;
@@ -8526,12 +8552,9 @@ const dir = direction || 0;
     if (!overlay || !overlay.classList.contains('show')) return;
     const t = e.target;
     const onImage = (t.id === 'imgov-img');
-    const onBg = (t.id === 'imgov-stage' || t.id === 'imgov-overlay');
-    // Don't hijack taps on controls (close/prev/next/counter)
     if (t.closest && t.closest('#imgov-close, .imgov-nav, #imgov-counter')) { return; }
 
     if (e.touches.length === 2) {
-      // start pinch
       state.touch.pinching = true;
       const p0 = getPt(e,0), p1 = getPt(e,1);
       state.touch.d0 = distance(p0,p1);
@@ -8545,15 +8568,12 @@ const dir = direction || 0;
       state.touch.active = true;
       state.touch.lastX = state.touch.startX = p.x;
       state.touch.lastY = state.touch.startY = p.y;
-      // prevent page scroll if on image or zoomed
-      if (!onBg && (onImage || state.zoom.scale > 1.02)) e.preventDefault();
+      if (onImage || state.zoom.scale > 1.02) e.preventDefault();
     }
   }, {passive:false});
 
   document.addEventListener('touchmove', function(e){
     if (!overlay || !overlay.classList.contains('show')) return;
-
-    // Ignore moves that start on controls (close/prev/next/counter)
     const t = e.target;
     if (t.closest && t.closest('#imgov-close, .imgov-nav, #imgov-counter')) return;
 
@@ -8575,7 +8595,6 @@ const dir = direction || 0;
     state.touch.lastX = p.x; state.touch.lastY = p.y;
 
     if (state.zoom.scale > 1.02) {
-      // pan
       state.zoom.tx += dx;
       state.zoom.ty += dy;
       clampPan();
@@ -8586,8 +8605,6 @@ const dir = direction || 0;
 
   document.addEventListener('touchend', function(e){
     if (!overlay || !overlay.classList.contains('show')) return;
-
-    // Don't treat taps on controls as gestures; let clicks fire
     const t = e.target;
     if (t.closest && t.closest('#imgov-close, .imgov-nav, #imgov-counter')) return;
 
@@ -8598,7 +8615,6 @@ const dir = direction || 0;
     if (e.touches.length === 0 && state.touch.active){
       const totalDx = state.touch.lastX - state.touch.startX;
       const totalDy = state.touch.lastY - state.touch.startY;
-      // swipe navigation only when not zoomed
       if (state.zoom.scale <= 1.02 && Math.abs(totalDx) > Math.abs(totalDy) && Math.abs(totalDx) > SWIPE_THRESHOLD){
         if (totalDx < 0) next(); else prev();
       }
@@ -8607,22 +8623,23 @@ const dir = direction || 0;
   }, {passive:false});
 
   // Double-tap to toggle zoom
-  stage && stage.addEventListener('touchend', function(e){
+  document.addEventListener('touchend', function(e){
     if (!overlay || !overlay.classList.contains('show')) return;
+    if (e.target.id !== 'imgov-stage' && e.target.id !== 'imgov-img') return;
     const now = Date.now();
     if (now - state.lastTap < 300) {
-      // toggle
       state.zoom.scale = (state.zoom.scale > 1.02) ? 1 : 2;
       state.zoom.tx = 0; state.zoom.ty = 0;
       clampPan(); applyTransform();
       e.preventDefault();
     }
     state.lastTap = now;
-  });
+  }, {passive:false});
 
   // Wheel zoom (desktop trackpads)
-  stage && stage.addEventListener('wheel', function(e){
+  document.addEventListener('wheel', function(e){
     if (!overlay || !overlay.classList.contains('show')) return;
+    if (e.target.id !== 'imgov-stage' && e.target.id !== 'imgov-img') return;
     const delta = e.deltaY;
     let s = state.zoom.scale + (-delta * 0.002);
     s = Math.max(state.zoom.min, Math.min(state.zoom.max, s));
@@ -8631,21 +8648,23 @@ const dir = direction || 0;
     e.preventDefault();
   }, {passive:false});
 
-  // Buttons
-  document.addEventListener('click', function(e){
+  // Keyboard support (desktop)
+  document.addEventListener('keydown', function(e){
     if (!overlay || !overlay.classList.contains('show')) return;
-    if (e.target.matches('.imgov-prev')) { prev(); }
-    if (e.target.matches('.imgov-next')) { next(); }
+    if (e.key === 'Escape') { e.preventDefault(); close(); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); prev(); }
   });
 
-  // Recalculate base rect on resize/orientation change
-  window.addEventListener('resize', function(){
-    if (!overlay || !overlay.classList.contains('show')) return;
-    setTimeout(()=>{ measureBaseRect(); clampPan(); applyTransform(); }, 60);
-  });
-
-  // Hook into both galleries (delegation above already opens, this ensures all img clicks are captured)
-  // No additional code needed here.
+  // Recalculate base rect and viewport normalization on resize/zoom/scroll
+  function bindViewportEvents(){
+    const vv = window.visualViewport;
+    if (!vv) return;
+    vv.addEventListener('resize', normalizeViewport);
+    vv.addEventListener('scroll', normalizeViewport);
+  }
+  bindViewportEvents();
+  window.addEventListener('resize', normalizeViewport);
 
 })(); 
 </script>
