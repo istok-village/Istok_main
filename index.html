@@ -1,15 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-  <title>Исток — коттеджный поселок</title>
-  <meta name="description" content="Коттеджный поселок Исток — природа, пруды, участки, инфраструктура. Узнайте о расположении, генплане, ценах и запишитесь на просмотр." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
+<title>Исток — коттеджный поселок</title>
+<meta content="Коттеджный поселок Исток — природа, пруды, участки, инфраструктура. Узнайте о расположении, генплане, ценах и запишитесь на просмотр." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
     /* CSS Variables */
     :root {
       /* Warm color palette */
@@ -1357,7 +1357,6 @@ body.no-scroll{ overflow:hidden; }
 .cottage-brand .logo { display: inline-block !important; max-width: none !important; }
 
 </style>
-
 <!-- Ensure global access to plots regardless of whether they were declared with const/let -->
 <script>
   try {
@@ -1366,7 +1365,6 @@ body.no-scroll{ overflow:hidden; }
     }
   } catch(e){ /* ignore */ }
 </script>
-
 <style>
 
 /* === Second-pass fixes: make desktop logo flush-left, reduce title size, and prevent mobile overflow === */
@@ -1402,309 +1400,371 @@ body.no-scroll{ overflow:hidden; }
 .cottage-brand img, .cottage-brand .logo { display: inline-block !important; margin: 0 !important; padding: 0 !important; }
 
 </style>
+<link href="logo_1.png" rel="icon" type="image/png"/>
+<link href="favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+<style id="assistant-mobile-call-overrides">
+/* === Assistant overrides: mobile header call button === */
+.mobile-call-btn { display: none; }
 
-<link rel="icon" type="image/png" href="logo_1.png">
-<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+@media (max-width: 560px) {
+  /* Hide the pseudo-title in the center on mobile */
+  .cottage-nav__row::after { content: none !important; }
+  /* Ensure brand span stays hidden (defensive) */
+  .cottage-brand span { display: none !important; }
+
+  /* Show centered call button */
+  .mobile-call-btn {
+    display: inline-flex !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    padding: 10px 14px !important;
+    border-radius: 999px !important;
+    background: linear-gradient(180deg, #906a41, #7a5a37) !important;
+    border: 1px solid var(--border) !important;
+    color: #f8f0e3 !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    text-decoration: none !important;
+    box-shadow: 0 4px 12px rgba(144,106,65,0.25) !important;
+    z-index: 1005 !important;
+    font-size: 0.95rem !important;
+    white-space: nowrap !important;
+  }
+}
+</style><style id="assistant-mobile-call-overrides-anim">@media (max-width: 560px) {
+  @keyframes assistantPulse {
+    0%   { transform: translate(-50%, -50%) scale(1);   box-shadow: 0 0 0 0 rgba(144,106,65,0.45); }
+    70%  { transform: translate(-50%, -50%) scale(1.05); box-shadow: 0 0 0 14px rgba(144,106,65,0); }
+    100% { transform: translate(-50%, -50%) scale(1);   box-shadow: 0 0 0 0 rgba(144,106,65,0); }
+  }
+  .mobile-call-btn { animation: assistantPulse 1.8s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) { .mobile-call-btn { animation: none !important; } }
+}</style>
+<style id="swipe-gallery-styles">
+/* === Swipe galleries: CSS overrides === */
+
+/* House galleries: enable snap on all viewports */
+.cottage-house-gallery { 
+  scroll-snap-type: x mandatory; 
+  -webkit-overflow-scrolling: touch; 
+}
+.cottage-house-gallery > * { 
+  scroll-snap-align: center; 
+}
+
+/* Village gallery: on mobile turn grid into horizontal swipe */
+@media (max-width: 560px) {
+  .cottage-gallery {
+    display: flex !important;
+    overflow-x: auto !important;
+    gap: 0.5rem !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 0.5rem !important;
+  }
+  .cottage-gallery img {
+    flex: 0 0 85% !important;
+    height: auto !important;
+    max-height: 260px !important;
+    scroll-snap-align: center !important;
+  }
+}
+</style>
 
 </head>
 <body>
 <!-- Navigation -->
 <header class="cottage-nav">
-  <div class="cottage-container cottage-nav__row" style="padding-left: 0; padding-right: 0; justify-content: space-between;">
-    <a class="cottage-brand" href="#top" aria-label="Исток" style="margin-left: 0;">
-      <img src="logo.png" alt="Логотип Исток" class="logo" 
-           style="width:42px;height:42px;background:none;box-shadow:none;border-radius:0;">
-      <span style="color:#906a41;">Исток — коттеджный поселок</span>
-    </a>
-    <div class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></div>
-    <nav style="display: flex; gap: 0.8rem;">
-      <a class="cottage-tag" href="#location">Расположение</a>
-      <a class="cottage-tag" href="#plan">Генплан</a>
-      <a class="cottage-tag" href="#lots">Участки</a>
-      <a class="cottage-tag" href="#houses">Дома</a>
-      <a class="cottage-tag" href="#contact">Заявка</a>
-      <a class="cottage-tag" href="tel:+79859854352">📞 Позвонить</a>
-      <a class="cottage-tag" href="https://t.me/village_istok" target="_blank">✈️ Telegram</a>
-    </nav>
-  </div>
+<div class="cottage-container cottage-nav__row" style="padding-left: 0; padding-right: 0; justify-content: space-between;">
+<a aria-label="Исток" class="cottage-brand" href="#top" style="margin-left: 0;">
+<img alt="Логотип Исток" class="logo" src="logo.png" style="width:42px;height:42px;background:none;box-shadow:none;border-radius:0;"/>
+<span style="color:#906a41;">Исток — коттеджный поселок</span>
+</a>
+<div aria-controls="mobileMenu" aria-expanded="false" aria-label="Открыть меню" class="burger" id="burger"><span></span><span></span><span></span></div>
+<nav style="display: flex; gap: 0.8rem;">
+<a class="cottage-tag" href="#location">Расположение</a>
+<a class="cottage-tag" href="#plan">Генплан</a>
+<a class="cottage-tag" href="#lots">Участки</a>
+<a class="cottage-tag" href="#houses">Дома</a>
+<a class="cottage-tag" href="#contact">Заявка</a>
+<a class="cottage-tag" href="tel:+79859854352">+7(985)985-43-52</a>
+<a class="cottage-tag" href="https://t.me/village_istok" target="_blank">✈️ Telegram</a>
+</nav>
+<a aria-label="Позвонить: +7 (985) 985-43-52" class="mobile-call-btn" href="tel:+79859854352">📞 +7 (985) 985-43-52</a></div>
 </header>
-
 <!-- Мобильное меню и оверлей -->
-<div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true">
-  <a href="#location">Расположение</a>
-  <a href="#plan">Генплан</a>
-  <a href="#lots">Участки</a>
-  <a href="#houses">Дома</a>
-  <a href="#contact">Заявка</a>
-  <a href="tel:+79859854352">📞 Позвонить</a>
-  <a href="https://t.me/village_istok" target="_blank">✈️ Telegram</a>
+<div aria-modal="true" class="mobile-menu" id="mobileMenu" role="dialog">
+<a href="#location">Расположение</a>
+<a href="#plan">Генплан</a>
+<a href="#lots">Участки</a>
+<a href="#houses">Дома</a>
+<a href="#contact">Заявка</a>
+<a href="tel:+79859854352">📞 Позвонить</a>
+<a href="https://t.me/village_istok" target="_blank">✈️ Telegram</a>
 </div>
 <div class="menu-overlay" id="menuOverlay"></div>
-
-
-  <main id="top">
-    <!-- Hero Section -->
-    <section class="cottage-hero">
-      <div class="cottage-container cottage-hero__grid">
-        <div>
-          <span class="cottage-tag">Новый поселок у воды</span>
-          <h1 class="cottage-h1">Жизнь на природе, среди лесов и прудов</h1>
-          <p class="cottage-lead" style="color: var(--text);">
+<main id="top">
+<!-- Hero Section -->
+<section class="cottage-hero">
+<div class="cottage-container cottage-hero__grid">
+<div>
+<span class="cottage-tag">Новый поселок у воды</span>
+<h1 class="cottage-h1">Жизнь на природе, среди лесов и прудов</h1>
+<p class="cottage-lead" style="color: var(--text);">
             Участки рядом с прудами и берёзовой рощей. Электричество и дороги, 
             общественные зоны и собственная философия «новой деревни» — для спокойной 
             жизни и дружного комьюнити.
           </p>
-          <div style="display: flex; gap: 0.6rem; margin-top: 1.2rem; flex-wrap: wrap;">
-            <a class="cottage-btn cottage-btn--accent" href="#contact">
+<div style="display: flex; gap: 0.6rem; margin-top: 1.2rem; flex-wrap: wrap;">
+<a class="cottage-btn cottage-btn--accent" href="#contact">
               Записаться на просмотр
             </a>
-            <a class="cottage-btn" href="#plan">
+<a class="cottage-btn" href="#plan">
               Смотреть участки
             </a>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 0.3rem; margin-top: 1rem; color: var(--text); font-size: 0.95rem;"><span>⚡ 15 кВт</span><span>🛣️ Щебеночная дорога</span><span>🌊 Каскад водоемов</span><span>🏡 Общественные пространства</span></div>
-        </div>
-        <div class="cottage-hero__media" aria-label="Фото поселка">
-          <img src="hero.jpeg" alt="Пейзаж с водой и полями" />
-        </div>
-      </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="cottage-section">
-      <div class="cottage-container">
-        <h2>Почему «Исток»</h2>
-        <p style="color: var(--text);">Коротко о самых важных преимуществах проекта.</p>
-        <div class="cottage-features" style="margin-top: 1rem;">
-          <article class="cottage-card">
-            <div class="cottage-tag">Природа</div>
-            <h3>Пруды и берёзовая роща</h3>
-            <p style="color: var(--text);">
+</div>
+<div style="display: flex; flex-direction: column; gap: 0.3rem; margin-top: 1rem; color: var(--text); font-size: 0.95rem;"><span>⚡ 15 кВт</span><span>🛣️ Щебеночная дорога</span><span>🌊 Каскад водоемов</span><span>🏡 Общественные пространства</span></div>
+</div>
+<div aria-label="Фото поселка" class="cottage-hero__media">
+<img alt="Пейзаж с водой и полями" src="hero.jpeg">
+</img></div>
+</div>
+</section>
+<!-- Features Section -->
+<section class="cottage-section">
+<div class="cottage-container">
+<h2>Почему «Исток»</h2>
+<p style="color: var(--text);">Коротко о самых важных преимуществах проекта.</p>
+<div class="cottage-features" style="margin-top: 1rem;">
+<article class="cottage-card">
+<div class="cottage-tag">Природа</div>
+<h3>Пруды и берёзовая роща</h3>
+<p style="color: var(--text);">
               Видовые участки, прогулочные тропы, места для рыбалки и пикников.
             </p>
-          </article>
-          <article class="cottage-card">
-            <div class="cottage-tag">Инфраструктура</div>
-            <h3>Коммуникации и дороги</h3>
-            <p style="color: var(--text);">
+</article>
+<article class="cottage-card">
+<div class="cottage-tag">Инфраструктура</div>
+<h3>Коммуникации и дороги</h3>
+<p style="color: var(--text);">
               Электричество, подъездные пути и общественные пространства.
             </p>
-          </article>
-          <article class="cottage-card">
-            <div class="cottage-tag">Сообщество</div>
-            <h3>Новая деревня</h3>
-            <p style="color: var(--text);">
+</article>
+<article class="cottage-card">
+<div class="cottage-tag">Сообщество</div>
+<h3>Новая деревня</h3>
+<p style="color: var(--text);">
               Соседские дворища и общие активности для жителей.
             </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Location Section -->
-<section id="location" class="cottage-section">
-  <div class="cottage-container cottage-location__wrap">
-    <div>
-      <h2>Расположение и доступность</h2>
-      <p style="color: var(--text);">
-        Удобное расположение поселка обеспечивает лёгкий и быстрый доступ, сохраняя уединение и близость к природе
-      </p>
-      <ul style="color: var(--text); padding-left: 0; list-style: none;">
-        <li style="margin-bottom: 0.5rem;">🚗 2 часа от МКАД (по М4 или М2), 1 час от Тулы</li>
-        <li style="margin-bottom: 0.5rem;">🛒 Ближайшие магазины и фермерские продукты</li>
-        <li style="margin-bottom: 0.5rem;">🏞️ Лес, водоемы и прогулочные тропы рядом</li>
-        <li style="margin-bottom: 0.5rem;">🎓 Школа — в радиусе 10 км</li>
-      </ul>
-    </div>
-    <div class="cottage-map" aria-label="Карта" style="width:100%;height:501px;">
-      <script type="text/javascript" charset="utf-8" async
-        src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A1a5756d586b332b5d397d93476f657849d857dce38a7917883b6c4649ff0cd9e&amp;width=100%25&amp;height=501&amp;lang=ru_RU&amp;scroll=true">
-      
-</script>
-    </div>
-  </div>
+</article>
+</div>
+</div>
 </section>
-
-    <!-- Plan Section -->
-<section id="plan" class="cottage-section">
-  <div class="cottage-container">
-    <h2>Генплан</h2>
-
-    <div style="margin-top: 2rem; margin-bottom: 3rem;">
-      <!-- Master Plan -->
-      <div class="master-plan-wrapper">
-        <div class="master-plan-controls">
-          <!-- Inputs row -->
-          <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:10px;">
-            <input type="number" id="filter-num" placeholder="Номер участка" min="1" />
-            <input type="number" id="filter-area-min" placeholder="Площадь от" min="0" step="0.01" />
-            <input type="number" id="filter-area-max" placeholder="Площадь до" min="0" step="0.01" />
-            <select id="filter-status">
-              <option value="">Все статусы</option>
-              <option value="Свободен">Свободен</option>
-              <option value="Бронь">Бронь</option>
-              <option value="Продан">Продан</option>
-            </select>
-          </div>
-
-          <!-- Buttons row (centered) -->
-          <div style="display:flex; justify-content:center; gap:20px; margin-top:10px;">
-            <button class="cottage-btn" onclick="applyFilters()">Применить фильтры</button>
-            <button class="cottage-btn" onclick="resetFilters()">Сбросить фильтры</button>
-          </div>
-        </div>
-
-        <div id="map-container" class="master-plan-container">
-          <img id="map-img" class="master-plan-img" src="genplan.jpg" alt="Генеральный план поселка" />
-          <svg id="map-svg" class="master-plan-svg" width="1200" height="900" aria-label="План участков"></svg>
-          <div id="tooltip" class="master-plan-tooltip" role="tooltip" aria-hidden="true"></div>
-        </div>
-
-        <div class="master-plan-legend" aria-label="Легенда статусов участков">
-          <div class="master-plan-legend-item">
-            <div class="master-plan-legend-color legend-Свободен"></div> 
+<!-- Location Section -->
+<section class="cottage-section" id="plan">
+<div class="cottage-container">
+<h2>Генплан</h2>
+<div style="margin-top: 2rem; margin-bottom: 3rem;">
+<!-- Master Plan -->
+<div class="master-plan-wrapper">
+<div class="master-plan-controls">
+<!-- Inputs row -->
+<div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:10px;">
+<input id="filter-num" min="1" placeholder="Номер участка" type="number"/>
+<input id="filter-area-min" min="0" placeholder="Площадь от" step="0.01" type="number"/>
+<input id="filter-area-max" min="0" placeholder="Площадь до" step="0.01" type="number"/>
+<select id="filter-status">
+<option value="">Все статусы</option>
+<option value="Свободен">Свободен</option>
+<option value="Бронь">Бронь</option>
+<option value="Продан">Продан</option>
+</select>
+</div>
+<!-- Buttons row (centered) -->
+<div style="display:flex; justify-content:center; gap:20px; margin-top:10px;">
+<button class="cottage-btn" onclick="applyFilters()">Применить фильтры</button>
+<button class="cottage-btn" onclick="resetFilters()">Сбросить фильтры</button>
+</div>
+</div>
+<div class="master-plan-container" id="map-container">
+<img alt="Генеральный план поселка" class="master-plan-img" id="map-img" src="genplan.jpg"/>
+<svg aria-label="План участков" class="master-plan-svg" height="900" id="map-svg" width="1200"></svg>
+<div aria-hidden="true" class="master-plan-tooltip" id="tooltip" role="tooltip"></div>
+</div>
+<div aria-label="Легенда статусов участков" class="master-plan-legend">
+<div class="master-plan-legend-item">
+<div class="master-plan-legend-color legend-Свободен"></div> 
             Свободен
           </div>
-          <div class="master-plan-legend-item">
-            <div class="master-plan-legend-color legend-Бронь"></div> 
+<div class="master-plan-legend-item">
+<div class="master-plan-legend-color legend-Бронь"></div> 
             Бронь
           </div>
-          <div class="master-plan-legend-item">
-            <div class="master-plan-legend-color legend-Продан"></div> 
+<div class="master-plan-legend-item">
+<div class="master-plan-legend-color legend-Продан"></div> 
             Продан
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div>
-      <h3>Галерея поселка</h3>
-      <p style="color: var(--text); margin-bottom: 1rem;">
+</div>
+</div>
+</div>
+<div>
+<h3>Галерея поселка</h3>
+<p style="color: var(--text); margin-bottom: 1rem;">
         Визуализации домов и уличных перспектив.
       </p>
-      <div class="cottage-gallery">
-        <img src="gallery1.jpeg" alt="Фото 1" />
-        <img src="gallery2.jpeg" alt="Фото 2" />
-        <img src="gallery3.jpeg" alt="Фото 3" />
-        <img src="gallery4.jpg" alt="Фото 4" />
-        <img src="gallery5.jpg" alt="Фото 5" />
-        <img src="gallery6.jpg" alt="Фото 6" />
-      </div>
-    </div>
-  </div>
+<div class="cottage-gallery">
+<img alt="Фото 1" src="gallery1.jpeg"/>
+<img alt="Фото 2" src="gallery2.jpeg"/>
+<img alt="Фото 3" src="gallery3.jpeg"/>
+<img alt="Фото 4" src="gallery4.jpg"/>
+<img alt="Фото 5" src="gallery5.jpg"/>
+<img alt="Фото 6" src="gallery6.jpg"/>
+</div>
+</div>
+</div>
+</section><section class="cottage-section" id="location">
+<div class="cottage-container cottage-location__wrap">
+<div>
+<h2>Расположение и доступность</h2>
+<p style="color: var(--text);">
+        Удобное расположение поселка обеспечивает лёгкий и быстрый доступ, сохраняя уединение и близость к природе
+      </p>
+<ul style="color: var(--text); padding-left: 0; list-style: none;">
+<li style="margin-bottom: 0.5rem;">🚗 2 часа от МКАД (по М4 или М2), 1 час от Тулы</li>
+<li style="margin-bottom: 0.5rem;">🛒 Ближайшие магазины и фермерские продукты</li>
+<li style="margin-bottom: 0.5rem;">🏞️ Лес, водоемы и прогулочные тропы рядом</li>
+<li style="margin-bottom: 0.5rem;">🎓 Школа — в радиусе 10 км</li>
+</ul>
+</div>
+<div aria-label="Карта" class="cottage-map" style="width:100%;height:501px;">
+<script async="" charset="utf-8" src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A1a5756d586b332b5d397d93476f657849d857dce38a7917883b6c4649ff0cd9e&amp;width=100%25&amp;height=501&amp;lang=ru_RU&amp;scroll=true" type="text/javascript">
+</script>
+</div>
+</div>
 </section>
+<!-- Plan Section -->
 
-    <!-- Lots Section -->
-    <section id="lots" class="cottage-section">
-      <div class="cottage-container">
-        <h2>Акция до конца лета</h2>
-        <p style="color: var(--text);">Выберите подходящий участок для строительства дома.</p>
-        <div class="cottage-lots" id="lots-container">
-          <!-- Lots will be populated by JavaScript -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Houses Section -->
-    <section id="houses" class="cottage-section">
-      <div class="cottage-container">
-        <h2>Готовые проекты домов</h2>
-        <p style="color: var(--text);">
+<!-- Lots Section -->
+<section class="cottage-section" id="lots">
+<div class="cottage-container">
+<h2>Акция до конца лета</h2>
+<p style="color: var(--text);">Выберите подходящий участок для строительства дома.</p>
+<div class="cottage-lots" id="lots-container">
+<!-- Lots will be populated by JavaScript -->
+</div>
+</div>
+</section>
+<!-- Houses Section -->
+<section class="cottage-section" id="houses">
+<div class="cottage-container">
+<h2>Готовые проекты домов</h2>
+<p style="color: var(--text);">
           Выберите готовый проект дома или закажите индивидуальный. 
           Строительство под ключ с гарантией качества.
         </p>
-        <div class="cottage-houses" style="margin-top: 2rem;" id="houses-container">
-          <!-- Houses will be populated by JavaScript -->
-        </div>
-      </div>
-    </section>
-
+<div class="cottage-houses" id="houses-container" style="margin-top: 2rem;">
+<!-- Houses will be populated by JavaScript -->
+</div>
+</div>
+</section>
 <section class="cottage-section">
-  <div class="cottage-container" style="display:flex; flex-wrap:wrap; align-items:center; gap:2rem;">
-    <div style="flex:1 1 300px; min-width:250px;">
-      <h2>О поселке Исток</h2>
-      <p style="color: var(--text); line-height:1.5;">
+<div class="cottage-container" style="display:flex; flex-wrap:wrap; align-items:center; gap:2rem;">
+<div style="flex:1 1 300px; min-width:250px;">
+<h2>О поселке Исток</h2>
+<p style="color: var(--text); line-height:1.5;">
         Познакомьтесь с нашим коттеджным поселком через короткое видео. Увидьте природу, дома и инфраструктуру, чтобы принять решение о покупке участка или дома.
       </p>
-      <ul style="color: var(--text); padding-left: 1.2rem; line-height:1.5;">
-        <li>Природные холмы и пруды</li>
-        <li>Готовые проекты домов</li>
-        <li>Общественные зоны и безопасность</li>
-      </ul>
-    </div>
-
-    <!-- Видео справа — ВАРИАНТ A: contain -->
-    <div style="flex:1 1 480px; max-width:600px;">
-      <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:12px; background:#000;">
-        <video
-          src="img/video.mp4"
-          controls
-          autoplay
-          muted
-          loop
-          style="position:absolute; inset:0; width:100%; height:100%; border-radius:12px; object-fit:contain; background:#000;">
+<ul style="color: var(--text); padding-left: 1.2rem; line-height:1.5;">
+<li>Природные холмы и пруды</li>
+<li>Готовые проекты домов</li>
+<li>Общественные зоны и безопасность</li>
+</ul>
+</div>
+<!-- Видео справа — ВАРИАНТ A: contain -->
+<div style="flex:1 1 480px; max-width:600px;">
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:12px; background:#000;">
+<video autoplay="" controls="" loop="" muted="" src="video.mp4" style="position:absolute; inset:0; width:100%; height:100%; border-radius:12px; object-fit:contain; background:#000;">
           Ваш браузер не поддерживает воспроизведение видео.
         </video>
-      </div>
-    </div>
-  </div>
+</div>
+</div>
+</div>
 </section>
-
 <section class="cottage-section">
-  <div class="cottage-container">
-    <div style="display:flex; flex-wrap:wrap; align-items:center; gap:1.5rem; background:#fefefe; padding:1.5rem; border-radius:16px; box-shadow:0 6px 20px rgba(0,0,0,0.1); transition: transform 0.3s;">
-      <img src="contact.jpg" alt="Фото менеджера" style="width:120px; height:120px; border-radius:50%; object-fit:cover; border:3px solid var(--accent);">
-      <div style="flex:1 1 250px; min-width:200px;">
-        <h3 style="margin:0 0 0.5rem;">Ваш менеджер</h3>
-        <p style="margin:0.2rem 0; color: var(--text); font-weight:500;">Артем поможет вам с выбором недвижимости в коттеджном посёлке «Исток»</p>
-        <p style="margin:0.2rem 0;">📞 <a href="tel:+79859854352" style="color:var(--accent); text-decoration:underline;">+7 (985) 985-43-52</a></p>
-        <p style="margin:0.2rem 0;">💬 <a href="https://t.me/village_istok" target="_blank" style="color:var(--accent); text-decoration:underline;">@village_istok</a></p>
-      </div>
-    </div>
-  </div>
+<div class="cottage-container">
+<div style="display:flex; flex-wrap:wrap; align-items:center; gap:1.5rem; background:#fefefe; padding:1.5rem; border-radius:16px; box-shadow:0 6px 20px rgba(0,0,0,0.1); transition: transform 0.3s;">
+<img alt="Фото менеджера" src="contact.jpg" style="width:120px; height:120px; border-radius:50%; object-fit:cover; border:3px solid var(--accent);"/>
+<div style="flex:1 1 250px; min-width:200px;">
+<h3 style="margin:0 0 0.5rem;">Ваш менеджер</h3>
+<p style="margin:0.2rem 0; color: var(--text); font-weight:500;">Артем поможет вам с выбором недвижимости в коттеджном посёлке «Исток»</p>
+<p style="margin:0.2rem 0;">📞 <a href="tel:+79859854352" style="color:var(--accent); text-decoration:underline;">+7 (985) 985-43-52</a></p>
+<p style="margin:0.2rem 0;">💬 <a href="https://t.me/village_istok" style="color:var(--accent); text-decoration:underline;" target="_blank">@village_istok</a></p>
+</div>
+</div>
+</div>
 </section>
-
 <!-- Contact Section -->
-<section id="contact" class="cottage-section">
-  <div class="cottage-container">
-    <h2>Записаться на просмотр</h2>
-    <p style="color: var(--text);">
+<section class="cottage-section" id="contact">
+<div class="cottage-container">
+<h2>Записаться на просмотр</h2>
+<p style="color: var(--text);">
       Оставьте контакты — мы перезвоним и договоримся об удобном времени.
     </p>
-    <form class="cottage-form" id="contactForm">
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
-        <input class="cottage-input" type="text" name="name" placeholder="Имя" required />
-        <input id="phone" class="cottage-input" type="tel" name="phone" required />
-      </div>
-      <input class="cottage-input" type="email" name="email" placeholder="Email (необязательно)" />
-      <textarea class="cottage-textarea" name="comment" placeholder="Комментарий"></textarea>
-      
-      <!-- Privacy Consent -->
-      <div style="margin: 1rem 0;">
-        <label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; color: var(--text); cursor: pointer;">
-          <input type="checkbox" name="privacy_consent" required style="margin-top: 0.2rem; flex-shrink: 0;" />
-          <span>
-            Выражаю согласие на обработку моих персональных данных в соответствии с 
-            <a href="privacy-policy.html" target="_blank" style="color: var(--accent); text-decoration: underline;">Политикой в отношении обработки персональных данных</a>
+<form class="cottage-form" id="contactForm">
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+<div>
+<input class="cottage-input" name="name" placeholder="Имя" type="text"/>
+<div class="error-message" style="color: red; font-size: 0.8rem; margin-top: 0.2rem;"></div>
+</div>
+<div>
+<input class="cottage-input" id="phone" name="phone" type="tel"/>
+<div class="error-message" style="color: red; font-size: 0.8rem; margin-top: 0.2rem;"></div>
+</div>
+</div>
+<input class="cottage-input" name="email" placeholder="Email (необязательно)" type="email"/>
+<textarea class="cottage-textarea" name="comment" placeholder="Комментарий"></textarea>
+<!-- Privacy Consent -->
+<div style="margin: 1rem 0;">
+<label id="privacyLabel" style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; color: var(--text); cursor: pointer;">
+<input name="privacy_consent" style="margin-top: 0.2rem; flex-shrink: 0;" type="checkbox"/>
+<span>
+            Выражаю 
+            <a href="privacy-consent.html" style="color: var(--accent); text-decoration: underline;" target="_blank">согласие</a> 
+            на обработку моих персональных данных в соответствии с 
+            <a href="privacy-policy.html" style="color: var(--accent); text-decoration: underline;" target="_blank">Политикой</a> 
+            в отношении обработки персональных данных
           </span>
-        </label>
-      </div>
-      
-      <!-- Marketing Consent -->
-      <div style="margin: 1rem 0;">
-        <label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; color: var(--text); cursor: pointer;">
-          <input type="checkbox" name="marketing_consent" style="margin-top: 0.2rem; flex-shrink: 0;" />
-          <span>Я согласен (-на) на получение информационных и рекламных сообщений</span>
-        </label>
-      </div>
-
-      <button class="cottage-btn cottage-btn--accent" type="submit">Отправить заявку</button>
-    </form>
-  </div>
+</label>
+<div class="error-message" style="color: red; font-size: 0.8rem; margin-top: 0.2rem;"></div>
+</div>
+<!-- Marketing Consent -->
+<div style="margin: 1rem 0;">
+<label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; color: var(--text); cursor: pointer;">
+<input name="marketing_consent" style="margin-top: 0.2rem; flex-shrink: 0;" type="checkbox"/>
+<span>
+            Я 
+            <a href="consent-marketing.html" style="color: var(--accent); text-decoration: underline;" target="_blank">согласен (-на)</a> 
+            на получение информационных и рекламных сообщений
+          </span>
+</label>
+</div>
+<button class="cottage-btn cottage-btn--accent" type="submit">Отправить заявку</button>
+</form>
+</div>
 </section>
-
 <script>
 const phoneInput = document.getElementById("phone");
+const form = document.getElementById("contactForm");
+const nameInput = form.name;
+const privacyCheckbox = form.privacy_consent;
+const privacyLabel = document.getElementById("privacyLabel");
+
+// Error elements
+const nameError = nameInput.nextElementSibling;
+const phoneError = phoneInput.nextElementSibling;
+const privacyError = privacyLabel.nextElementSibling;
 
 // Маска телефона
 window.addEventListener("DOMContentLoaded", () => {
@@ -1720,104 +1780,144 @@ phoneInput.addEventListener("input", function() {
   if (value.length >= 8) formatted += "-" + value.substring(7,9);
   if (value.length >= 10) formatted += "-" + value.substring(9,11);
   phoneInput.value = formatted;
+
+  phoneInput.style.borderColor = "";
+  phoneError.textContent = "";
 });
 
-phoneInput.addEventListener("keydown", function(e) {
-  if (phoneInput.selectionStart < 4 && (e.key === "Backspace" || e.key === "Delete")) e.preventDefault();
+// Сброс ошибки при вводе
+nameInput.addEventListener("input", () => {
+  nameInput.style.borderColor = "";
+  nameError.textContent = "";
+});
+privacyCheckbox.addEventListener("change", () => {
+  privacyLabel.style.border = "";
+  privacyError.textContent = "";
 });
 
-// Отправка формы на сервер (Timeweb)
-document.getElementById("contactForm").addEventListener("submit", async function(e) {
+// Отправка формы
+form.addEventListener("submit", async function(e) {
   e.preventDefault();
-  const form = e.target;
+
+  let valid = true;
+
+  // Проверка имени
+  if (nameInput.value.trim() === "") {
+    nameError.textContent = "Пожалуйста, укажите ваше Имя";
+    nameInput.style.borderColor = "red";
+    nameInput.focus();
+    valid = false;
+  }
+
+  // Проверка телефона
+  const digits = phoneInput.value.replace(/\D/g, "");
+  if (digits.length <= 1) {
+    phoneError.textContent = "Пожалуйста, укажите номер телефона";
+    phoneInput.style.borderColor = "red";
+    if (valid) phoneInput.focus();
+    valid = false;
+  } else if (digits.length < 11) {
+    phoneError.textContent = "Пожалуйста, укажите корректный номер телефона";
+    phoneInput.style.borderColor = "red";
+    if (valid) phoneInput.focus();
+    valid = false;
+  }
+
+  // Проверка галочки
+  if (!privacyCheckbox.checked) {
+    privacyError.textContent = "Чтобы продолжить, установите этот флажок";
+    privacyLabel.style.border = "1px solid red";
+    if (valid) privacyCheckbox.focus();
+    valid = false;
+  }
+
+  if (!valid) return;
 
   const data = {
-    name: form.name.value.trim(),
-    phone: form.phone.value.trim(),
-    email: form.email.value.trim(),
-    comment: form.comment.value.trim()
+    name: nameInput.value,
+    phone: phoneInput.value,
+    email: form.email.value,
+    comment: form.comment.value
   };
 
   try {
-    const res = await fetch("https://cb31743.tw1.ru/send.php", {
+    const res = await fetch("send_telegram.php", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(data)
     });
-
     const result = await res.json();
-
     if (result.ok) {
-      alert("Заявка успешно отправлена!");
       form.reset();
       phoneInput.value = "+7 (";
+      nameError.textContent = "";
+      phoneError.textContent = "";
+      privacyError.textContent = "";
+      nameInput.style.borderColor = "";
+      phoneInput.style.borderColor = "";
+      privacyLabel.style.border = "";
+      alert("Заявка успешно отправлена!");
     } else {
-      alert("Ошибка: " + (result.error || "Попробуйте позже."));
+      alert("Ошибка при отправке. Попробуйте позже.");
     }
-
   } catch(err) {
     console.error(err);
     alert("Ошибка соединения.");
   }
 });
 </script>
-
 </main>
-
-  <!-- Footer -->
-  <footer class="cottage-footer">
-    <div class="cottage-container">
-      <div style="display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
-        <div>© 2025 Исток. Все права защищены.</div>
-        <div style="color: var(--muted);">ИП Назаренко В.В. • ИНН 301609702140 • ОГРНИП 324774600214546</div>
-      </div>
-      
-      <!-- Legal Links -->
-      <div style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1rem;">
-        <a href="privacy-policy.html" target="_blank" style="color: var(--accent); text-decoration: underline; font-size: 0.9rem;">
-          Политика в отношении обработки персональных данных
-        </a>
-        <a href="privacy-consent.html" target="_blank" style="color: var(--accent); text-decoration: underline; font-size: 0.9rem;">
-          Согласие на обработку персональных данных
-        </a>
-        <a href="cookie-policy.html" target="_blank" style="color: var(--accent); text-decoration: underline; font-size: 0.9rem;">
-          Согласие на использование файлов cookie
-        </a>
-      </div>
-
+<!-- Footer -->
+<!-- Legal Links -->
+<footer class="cottage-footer">
+<div style="text-align: center; margin-bottom: 2rem; color: var(--muted); font-size: 0.9rem;">
+<div>© 2025 Исток. Все права защищены.</div>
+<div>ИП Назаренко В.В. • ИНН 301609702140 • ОГРНИП 324774600214546</div>
+</div>
+<!-- Legal Links -->
+<div style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1rem;">
+<a href="privacy-policy.html" style="color: var(--accent); text-decoration: underline; font-size: 0.9rem;" target="_blank">
+        Политика в отношении обработки персональных данных
+      </a>
+<a href="privacy-consent.html" style="color: var(--accent); text-decoration: underline; font-size: 0.9rem;" target="_blank">
+        Согласие на обработку персональных данных
+      </a>
+<a href="consent-marketing.html" style="color: var(--accent); text-decoration: underline; font-size: 0.9rem;" target="_blank">
+        Согласие на получение информационных и рекламных сообщений
+      </a>
+<a href="cookie-policy.html" style="color: var(--accent); text-decoration: underline; font-size: 0.9rem;" target="_blank">
+        Согласие на использование файлов cookie
+      </a>
+</div>
 <div style="text-align:center; font-size:0.9rem; color:var(--muted); margin-top:1rem;">
   Любая информация, представленная на данном сайте, носит исключительно информационный характер и ни при каких условиях не является публичной офертой, определяемой положениями статьи 437 ГК РФ. Отправляя сведения через любую электронную форму на данном сайте, вы даете свое согласие на обработку ваших персональных данных
 </div>
-</div> <!-- close .cottage-container -->
-
-  </footer>
-
-  <!-- Phone Button -->
-  <a href="tel:+79859854352" class="phone-button" aria-label="Позвонить нам" title="Позвонить: +7 (985) 985-43-52">
+ <!-- close .cottage-container -->
+</footer>
+<!-- Phone Button -->
+<a aria-label="Позвонить нам" class="phone-button" href="tel:+79859854352" title="Позвонить: +7 (985) 985-43-52">
     📞
   </a>
-
-  <!-- Cookie Banner -->
-  <div id="cookie-banner" class="cookie-banner">
-    <div class="cookie-banner-content">
-      <div>
+<!-- Cookie Banner -->
+<div class="cookie-banner" id="cookie-banner">
+<div class="cookie-banner-content">
+<div>
         Продолжая использовать сайт, Вы даете ИП Назаренко В.В. (адрес: 115408, г. Москва, ул. Паромная улица, 7к3, кв 445, ИНН 301609702140, ОГРНИП 324774600214546) 
         согласие на использование файлов cookie на сайте Оператора и обработку пользовательских данных. 
         Если Вы не хотите, чтобы Ваши данные обрабатывались, просим отключить обработку файлов cookie и сбор пользовательских данных 
         в настройках Вашего браузера или покинуть сайт. 
         <a href="cookie-policy.html" target="_blank">Подробнее об использовании файлов cookie</a>
-      </div>
-      <button onclick="acceptCookies()">Принять</button>
-    </div>
-  </div>
-
-   <script>
+</div>
+<button onclick="acceptCookies()">Принять</button>
+</div>
+</div>
+<script>
     // Sample data
     const plots = [
-{
+  {
     "num": 1,
     "area": 11.17,
-    "price": "502650.00",
+    "price": "557941.50",
     "status": "Свободен",
     "points": [
       {
@@ -1841,7 +1941,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 2,
     "area": 10.76,
-    "price": "484200.00",
+    "price": "537462.00",
     "status": "Свободен",
     "points": [
       {
@@ -1865,7 +1965,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 3,
     "area": 10.8,
-    "price": "486000.00",
+    "price": "539460.00",
     "status": "Свободен",
     "points": [
       {
@@ -1889,7 +1989,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 4,
     "area": 10.82,
-    "price": "486900.00",
+    "price": "540459.00",
     "status": "Свободен",
     "points": [
       {
@@ -1913,7 +2013,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 5,
     "area": 10.86,
-    "price": "488700.00",
+    "price": "542457.00",
     "status": "Продан",
     "points": [
       {
@@ -1937,7 +2037,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 6,
     "area": 10.89,
-    "price": "490050.00",
+    "price": "543955.50",
     "status": "Продан",
     "points": [
       {
@@ -1961,7 +2061,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 7,
     "area": 10.92,
-    "price": "491400.00",
+    "price": "545454.00",
     "status": "Свободен",
     "points": [
       {
@@ -1985,7 +2085,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 8,
     "area": 10.95,
-    "price": "492750.00",
+    "price": "546952.50",
     "status": "Свободен",
     "points": [
       {
@@ -2009,7 +2109,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 9,
     "area": 12.6,
-    "price": "567000.00",
+    "price": "629370.00",
     "status": "Свободен",
     "points": [
       {
@@ -2033,7 +2133,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 10,
     "area": 11.93,
-    "price": "536850.00",
+    "price": "595903.50",
     "status": "Свободен",
     "points": [
       {
@@ -2061,7 +2161,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 11,
     "area": 12.19,
-    "price": "548550.00",
+    "price": "608890.50",
     "status": "Свободен",
     "points": [
       {
@@ -2085,7 +2185,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 12,
     "area": 12.41,
-    "price": "558450.00",
+    "price": "619879.50",
     "status": "Свободен",
     "points": [
       {
@@ -2109,7 +2209,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 13,
     "area": 11.73,
-    "price": "527850.00",
+    "price": "585913.50",
     "status": "Свободен",
     "points": [
       {
@@ -2133,7 +2233,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 14,
     "area": 12.66,
-    "price": "569700.00",
+    "price": "632367.00",
     "status": "Свободен",
     "points": [
       {
@@ -2157,7 +2257,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 15,
     "area": 10.43,
-    "price": "469350.00",
+    "price": "520978.50",
     "status": "Свободен",
     "points": [
       {
@@ -2181,7 +2281,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 16,
     "area": 9.81,
-    "price": "441450.00",
+    "price": "490009.50",
     "status": "Свободен",
     "points": [
       {
@@ -2205,7 +2305,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 17,
     "area": 8.03,
-    "price": "361350.00",
+    "price": "401098.50",
     "status": "Свободен",
     "points": [
       {
@@ -2229,7 +2329,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 18,
     "area": 7.59,
-    "price": "341550.00",
+    "price": "379120.50",
     "status": "Свободен",
     "points": [
       {
@@ -2253,7 +2353,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 19,
     "area": 8.32,
-    "price": "374400.00",
+    "price": "415584.00",
     "status": "Свободен",
     "points": [
       {
@@ -2277,7 +2377,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 20,
     "area": 11.93,
-    "price": "536850.00",
+    "price": "595903.50",
     "status": "Свободен",
     "points": [
       {
@@ -2301,7 +2401,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 21,
     "area": 13.05,
-    "price": "978750.00",
+    "price": "1086412.50",
     "status": "Свободен",
     "points": [
       {
@@ -2325,7 +2425,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 22,
     "area": 14.17,
-    "price": "1062750.00",
+    "price": "1179652.50",
     "status": "Свободен",
     "points": [
       {
@@ -2349,7 +2449,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 23,
     "area": 18.08,
-    "price": "813600.00",
+    "price": "903096.00",
     "status": "Бронь",
     "points": [
       {
@@ -2377,7 +2477,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 24,
     "area": 12.11,
-    "price": "908250.00",
+    "price": "1008157.50",
     "status": "Свободен",
     "points": [
       {
@@ -2401,7 +2501,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 25,
     "area": 11.38,
-    "price": "512100.00",
+    "price": "568431.00",
     "status": "Свободен",
     "points": [
       {
@@ -2425,7 +2525,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 26,
     "area": 14.77,
-    "price": "664650.00",
+    "price": "737761.50",
     "status": "Свободен",
     "points": [
       {
@@ -2449,7 +2549,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 27,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -2473,7 +2573,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 28,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -2497,7 +2597,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 29,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -2521,7 +2621,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 30,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -2545,7 +2645,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 31,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -2569,7 +2669,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 32,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -2593,7 +2693,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 33,
     "area": 14.77,
-    "price": "664650.00",
+    "price": "737761.50",
     "status": "Свободен",
     "points": [
       {
@@ -2617,7 +2717,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 34,
     "area": 11.45,
-    "price": "515250.00",
+    "price": "571927.50",
     "status": "Свободен",
     "points": [
       {
@@ -2645,7 +2745,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 35,
     "area": 11.23,
-    "price": "505350.00",
+    "price": "560938.50",
     "status": "Бронь",
     "points": [
       {
@@ -2669,7 +2769,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 36,
     "area": 8.43,
-    "price": "379350.00",
+    "price": "421078.50",
     "status": "Свободен",
     "points": [
       {
@@ -2697,7 +2797,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 37,
     "area": 9.29,
-    "price": "418050.00",
+    "price": "464035.50",
     "status": "Бронь",
     "points": [
       {
@@ -2721,7 +2821,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 38,
     "area": 13.51,
-    "price": "607950.00",
+    "price": "674824.50",
     "status": "Бронь",
     "points": [
       {
@@ -2745,7 +2845,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 39,
     "area": 13.51,
-    "price": "607950.00",
+    "price": "674824.50",
     "status": "Свободен",
     "points": [
       {
@@ -2769,7 +2869,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 40,
     "area": 13.51,
-    "price": "607950.00",
+    "price": "674824.50",
     "status": "Свободен",
     "points": [
       {
@@ -2793,7 +2893,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 41,
     "area": 13.51,
-    "price": "607950.00",
+    "price": "674824.50",
     "status": "Свободен",
     "points": [
       {
@@ -2817,7 +2917,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 42,
     "area": 13.51,
-    "price": "607950.00",
+    "price": "674824.50",
     "status": "Свободен",
     "points": [
       {
@@ -2841,7 +2941,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 43,
     "area": 13.52,
-    "price": "608400.00",
+    "price": "675324.00",
     "status": "Свободен",
     "points": [
       {
@@ -2865,7 +2965,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 44,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -2889,7 +2989,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 45,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -2913,7 +3013,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 46,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -2937,7 +3037,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 47,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -2961,7 +3061,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 48,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -2985,7 +3085,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 49,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -3009,7 +3109,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 50,
     "area": 13.49,
-    "price": "607050.00",
+    "price": "673825.50",
     "status": "Свободен",
     "points": [
       {
@@ -3033,7 +3133,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 51,
     "area": 11.67,
-    "price": "525150.00",
+    "price": "582916.50",
     "status": "Свободен",
     "points": [
       {
@@ -3057,7 +3157,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 52,
     "area": 8.07,
-    "price": "363150.00",
+    "price": "403096.50",
     "status": "Свободен",
     "points": [
       {
@@ -3081,7 +3181,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 53,
     "area": 9.11,
-    "price": "409950.00",
+    "price": "455044.50",
     "status": "Свободен",
     "points": [
       {
@@ -3105,7 +3205,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 54,
     "area": 10.15,
-    "price": "456750.00",
+    "price": "506992.50",
     "status": "Бронь",
     "points": [
       {
@@ -3129,7 +3229,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 55,
     "area": 11.2,
-    "price": "504000.00",
+    "price": "559440.00",
     "status": "Свободен",
     "points": [
       {
@@ -3153,7 +3253,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 56,
     "area": 12.24,
-    "price": "550800.00",
+    "price": "611388.00",
     "status": "Продан",
     "points": [
       {
@@ -3177,7 +3277,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 57,
     "area": 13.57,
-    "price": "610650.00",
+    "price": "677821.50",
     "status": "Свободен",
     "points": [
       {
@@ -3201,7 +3301,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 58,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -3225,7 +3325,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 59,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -3249,7 +3349,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 60,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -3273,7 +3373,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 61,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Продан",
     "points": [
       {
@@ -3297,7 +3397,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 62,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -3321,7 +3421,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 63,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -3345,7 +3445,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 64,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Бронь",
     "points": [
       {
@@ -3369,7 +3469,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 65,
     "area": 14.45,
-    "price": "650250.00",
+    "price": "721777.50",
     "status": "Свободен",
     "points": [
       {
@@ -3393,7 +3493,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 66,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -3417,7 +3517,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 67,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Бронь",
     "points": [
       {
@@ -3441,7 +3541,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 68,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -3465,7 +3565,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 69,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -3489,7 +3589,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 70,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -3513,7 +3613,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 71,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -3537,7 +3637,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 72,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -3561,7 +3661,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 73,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -3585,7 +3685,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 74,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -3609,7 +3709,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 75,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -3633,7 +3733,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 76,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -3657,7 +3757,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 77,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -3681,7 +3781,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 78,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -3705,7 +3805,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 79,
     "area": 11.1,
-    "price": "499500.00",
+    "price": "554445.00",
     "status": "Свободен",
     "points": [
       {
@@ -3729,7 +3829,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 80,
     "area": 11.1,
-    "price": "499500.00",
+    "price": "554445.00",
     "status": "Свободен",
     "points": [
       {
@@ -3753,7 +3853,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 81,
     "area": 11.1,
-    "price": "499500.00",
+    "price": "554445.00",
     "status": "Свободен",
     "points": [
       {
@@ -3777,7 +3877,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 82,
     "area": 11.1,
-    "price": "499500.00",
+    "price": "554445.00",
     "status": "Свободен",
     "points": [
       {
@@ -3801,7 +3901,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 83,
     "area": 11.1,
-    "price": "499500.00",
+    "price": "554445.00",
     "status": "Свободен",
     "points": [
       {
@@ -3825,7 +3925,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 84,
     "area": 11.1,
-    "price": "499500.00",
+    "price": "554445.00",
     "status": "Свободен",
     "points": [
       {
@@ -3849,7 +3949,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 85,
     "area": 11.1,
-    "price": "499500.00",
+    "price": "554445.00",
     "status": "Свободен",
     "points": [
       {
@@ -3873,7 +3973,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 86,
     "area": 12.15,
-    "price": "546750.00",
+    "price": "606892.50",
     "status": "Свободен",
     "points": [
       {
@@ -3897,7 +3997,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 87,
     "area": 12.15,
-    "price": "546750.00",
+    "price": "606892.50",
     "status": "Свободен",
     "points": [
       {
@@ -3921,7 +4021,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 88,
     "area": 12.15,
-    "price": "546750.00",
+    "price": "606892.50",
     "status": "Свободен",
     "points": [
       {
@@ -3945,7 +4045,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 89,
     "area": 12.15,
-    "price": "546750.00",
+    "price": "606892.50",
     "status": "Свободен",
     "points": [
       {
@@ -3969,7 +4069,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 90,
     "area": 12.16,
-    "price": "547200.00",
+    "price": "607392.00",
     "status": "Свободен",
     "points": [
       {
@@ -3993,7 +4093,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 91,
     "area": 12.15,
-    "price": "546750.00",
+    "price": "606892.50",
     "status": "Свободен",
     "points": [
       {
@@ -4017,7 +4117,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 92,
     "area": 12.15,
-    "price": "546750.00",
+    "price": "606892.50",
     "status": "Свободен",
     "points": [
       {
@@ -4041,7 +4141,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 93,
     "area": 12.15,
-    "price": "546750.00",
+    "price": "606892.50",
     "status": "Свободен",
     "points": [
       {
@@ -4065,7 +4165,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 94,
     "area": 12.15,
-    "price": "546750.00",
+    "price": "606892.50",
     "status": "Свободен",
     "points": [
       {
@@ -4089,7 +4189,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 95,
     "area": 12.15,
-    "price": "546750.00",
+    "price": "606892.50",
     "status": "Свободен",
     "points": [
       {
@@ -4113,7 +4213,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 96,
     "area": 12.15,
-    "price": "546750.00",
+    "price": "606892.50",
     "status": "Свободен",
     "points": [
       {
@@ -4137,7 +4237,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 97,
     "area": 13.51,
-    "price": "607950.00",
+    "price": "674824.50",
     "status": "Свободен",
     "points": [
       {
@@ -4161,7 +4261,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 98,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -4185,7 +4285,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 99,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -4209,7 +4309,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 100,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -4233,7 +4333,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 101,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -4257,7 +4357,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 102,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -4281,7 +4381,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 103,
     "area": 10.13,
-    "price": "455850.00",
+    "price": "505993.50",
     "status": "Свободен",
     "points": [
       {
@@ -4305,7 +4405,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 104,
     "area": 11.45,
-    "price": "515250.00",
+    "price": "571927.50",
     "status": "Свободен",
     "points": [
       {
@@ -4329,7 +4429,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 105,
     "area": 12.77,
-    "price": "574650.00",
+    "price": "637861.50",
     "status": "Свободен",
     "points": [
       {
@@ -4353,7 +4453,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 106,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -4377,7 +4477,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 107,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -4401,7 +4501,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 108,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -4425,7 +4525,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 109,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -4449,7 +4549,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 110,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -4473,7 +4573,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 111,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -4497,7 +4597,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 112,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -4521,7 +4621,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 113,
     "area": 9.9,
-    "price": "445500.00",
+    "price": "494505.00",
     "status": "Свободен",
     "points": [
       {
@@ -4545,7 +4645,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 114,
     "area": 10.42,
-    "price": "468900.00",
+    "price": "520479.00",
     "status": "Свободен",
     "points": [
       {
@@ -4569,7 +4669,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 115,
     "area": 11.76,
-    "price": "529200.00",
+    "price": "587412.00",
     "status": "Свободен",
     "points": [
       {
@@ -4597,7 +4697,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 116,
     "area": 9.9,
-    "price": "445500.00",
+    "price": "494505.00",
     "status": "Свободен",
     "points": [
       {
@@ -4621,7 +4721,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 117,
     "area": 9.06,
-    "price": "407700.00",
+    "price": "452547.00",
     "status": "Свободен",
     "points": [
       {
@@ -4645,7 +4745,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 118,
     "area": 8.22,
-    "price": "369900.00",
+    "price": "410589.00",
     "status": "Свободен",
     "points": [
       {
@@ -4669,7 +4769,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 119,
     "area": 7.37,
-    "price": "331650.00",
+    "price": "368131.50",
     "status": "Свободен",
     "points": [
       {
@@ -4693,7 +4793,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 120,
     "area": 6.53,
-    "price": "293850.00",
+    "price": "326173.50",
     "status": "Свободен",
     "points": [
       {
@@ -4717,7 +4817,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 121,
     "area": 6.34,
-    "price": "285300.00",
+    "price": "316683.00",
     "status": "Свободен",
     "points": [
       {
@@ -4741,7 +4841,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 122,
     "area": 6.81,
-    "price": "306450.00",
+    "price": "340159.50",
     "status": "Свободен",
     "points": [
       {
@@ -4765,7 +4865,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 123,
     "area": 7.28,
-    "price": "327600.00",
+    "price": "363636.00",
     "status": "Свободен",
     "points": [
       {
@@ -4789,7 +4889,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 124,
     "area": 7.75,
-    "price": "348750.00",
+    "price": "387112.50",
     "status": "Свободен",
     "points": [
       {
@@ -4813,7 +4913,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 125,
     "area": 8.23,
-    "price": "370350.00",
+    "price": "411088.50",
     "status": "Свободен",
     "points": [
       {
@@ -4837,7 +4937,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 126,
     "area": 11.09,
-    "price": "499050.00",
+    "price": "553945.50",
     "status": "Свободен",
     "points": [
       {
@@ -4861,7 +4961,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 127,
     "area": 9.33,
-    "price": "419850.00",
+    "price": "466033.50",
     "status": "Свободен",
     "points": [
       {
@@ -4885,7 +4985,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 128,
     "area": 8.56,
-    "price": "385200.00",
+    "price": "427572.00",
     "status": "Свободен",
     "points": [
       {
@@ -4909,7 +5009,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 129,
     "area": 8.38,
-    "price": "377100.00",
+    "price": "418581.00",
     "status": "Свободен",
     "points": [
       {
@@ -4933,7 +5033,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 130,
     "area": 16.06,
-    "price": "722700.00",
+    "price": "802197.00",
     "status": "Свободен",
     "points": [
       {
@@ -4957,7 +5057,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 131,
     "area": 11.07,
-    "price": "498150.00",
+    "price": "552946.50",
     "status": "Свободен",
     "points": [
       {
@@ -4981,7 +5081,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 132,
     "area": 11.95,
-    "price": "537750.00",
+    "price": "596902.50",
     "status": "Свободен",
     "points": [
       {
@@ -5005,7 +5105,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 133,
     "area": 12.01,
-    "price": "540450.00",
+    "price": "599899.50",
     "status": "Свободен",
     "points": [
       {
@@ -5029,7 +5129,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 134,
     "area": 12.02,
-    "price": "540900.00",
+    "price": "600399.00",
     "status": "Свободен",
     "points": [
       {
@@ -5053,7 +5153,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 135,
     "area": 12.02,
-    "price": "540900.00",
+    "price": "600399.00",
     "status": "Свободен",
     "points": [
       {
@@ -5077,7 +5177,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 136,
     "area": 12.02,
-    "price": "540900.00",
+    "price": "600399.00",
     "status": "Свободен",
     "points": [
       {
@@ -5101,7 +5201,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 137,
     "area": 9.01,
-    "price": "405450.00",
+    "price": "450049.50",
     "status": "Свободен",
     "points": [
       {
@@ -5125,7 +5225,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 138,
     "area": 9.07,
-    "price": "408150.00",
+    "price": "453046.50",
     "status": "Свободен",
     "points": [
       {
@@ -5149,7 +5249,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 139,
     "area": 10.89,
-    "price": "490050.00",
+    "price": "543955.50",
     "status": "Свободен",
     "points": [
       {
@@ -5173,7 +5273,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 140,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5197,7 +5297,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 141,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5221,7 +5321,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 142,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5245,7 +5345,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 143,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5269,7 +5369,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 144,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5293,7 +5393,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 145,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5317,7 +5417,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 146,
     "area": 12.79,
-    "price": "575550.00",
+    "price": "638860.50",
     "status": "Свободен",
     "points": [
       {
@@ -5341,7 +5441,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 147,
     "area": 12.16,
-    "price": "547200.00",
+    "price": "607392.00",
     "status": "Свободен",
     "points": [
       {
@@ -5365,7 +5465,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 148,
     "area": 11.48,
-    "price": "516600.00",
+    "price": "573426.00",
     "status": "Свободен",
     "points": [
       {
@@ -5389,7 +5489,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 149,
     "area": 9.28,
-    "price": "417600.00",
+    "price": "463536.00",
     "status": "Свободен",
     "points": [
       {
@@ -5413,7 +5513,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 150,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5437,7 +5537,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 151,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5461,7 +5561,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 152,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5485,7 +5585,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 153,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5509,7 +5609,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 154,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5533,7 +5633,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 155,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5557,7 +5657,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 156,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5581,7 +5681,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 157,
     "area": 9.43,
-    "price": "943000.00",
+    "price": "1046730.00",
     "status": "Свободен",
     "points": [
       {
@@ -5605,7 +5705,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 158,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5629,7 +5729,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 159,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5653,7 +5753,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 160,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5677,7 +5777,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 161,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5701,7 +5801,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 162,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5725,7 +5825,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 163,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5749,7 +5849,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 164,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5773,7 +5873,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 165,
     "area": 12,
-    "price": "1200000.00",
+    "price": "1332000.00",
     "status": "Свободен",
     "points": [
       {
@@ -5797,7 +5897,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 166,
     "area": 17.55,
-    "price": "789750.00",
+    "price": "876622.50",
     "status": "Свободен",
     "points": [
       {
@@ -5821,7 +5921,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 167,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5845,7 +5945,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 168,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5869,7 +5969,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 169,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5893,7 +5993,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 170,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5917,7 +6017,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 171,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5941,7 +6041,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 172,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -5965,7 +6065,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 173,
     "area": 13.23,
-    "price": "1323000.00",
+    "price": "1468530.00",
     "status": "Свободен",
     "points": [
       {
@@ -5989,7 +6089,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 174,
     "area": 13.88,
-    "price": "624600.00",
+    "price": "693306.00",
     "status": "Свободен",
     "points": [
       {
@@ -6013,7 +6113,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 175,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -6037,7 +6137,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 176,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -6061,7 +6161,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 177,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -6085,7 +6185,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 178,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -6109,7 +6209,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 179,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -6133,7 +6233,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 180,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -6157,7 +6257,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 181,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -6181,7 +6281,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 182,
     "area": 12,
-    "price": "1200000.00",
+    "price": "1332000.00",
     "status": "Свободен",
     "points": [
       {
@@ -6205,7 +6305,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 183,
     "area": 12,
-    "price": "1200000.00",
+    "price": "1332000.00",
     "status": "Свободен",
     "points": [
       {
@@ -6229,7 +6329,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 184,
     "area": 12,
-    "price": "1200000.00",
+    "price": "1332000.00",
     "status": "Свободен",
     "points": [
       {
@@ -6253,7 +6353,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 185,
     "area": 12,
-    "price": "1200000.00",
+    "price": "1332000.00",
     "status": "Свободен",
     "points": [
       {
@@ -6277,7 +6377,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 186,
     "area": 12,
-    "price": "1200000.00",
+    "price": "1332000.00",
     "status": "Свободен",
     "points": [
       {
@@ -6301,7 +6401,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 187,
     "area": 11.94,
-    "price": "1194000.00",
+    "price": "1325340.00",
     "status": "Свободен",
     "points": [
       {
@@ -6325,7 +6425,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 188,
     "area": 9.79,
-    "price": "979000.00",
+    "price": "1086690.00",
     "status": "Свободен",
     "points": [
       {
@@ -6349,7 +6449,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 189,
     "area": 13.38,
-    "price": "1338000.00",
+    "price": "1485180.00",
     "status": "Свободен",
     "points": [
       {
@@ -6373,7 +6473,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 190,
     "area": 14.22,
-    "price": "1422000.00",
+    "price": "1578420.00",
     "status": "Свободен",
     "points": [
       {
@@ -6397,7 +6497,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 191,
     "area": 12,
-    "price": "1200000.00",
+    "price": "1332000.00",
     "status": "Свободен",
     "points": [
       {
@@ -6421,7 +6521,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 192,
     "area": 12,
-    "price": "1200000.00",
+    "price": "1332000.00",
     "status": "Свободен",
     "points": [
       {
@@ -6445,7 +6545,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 193,
     "area": 12,
-    "price": "1200000.00",
+    "price": "1332000.00",
     "status": "Продан",
     "points": [
       {
@@ -6469,7 +6569,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 194,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Продан",
     "points": [
       {
@@ -6493,7 +6593,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 195,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Продан",
     "points": [
       {
@@ -6517,7 +6617,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 196,
     "area": 12,
-    "price": "540000.00",
+    "price": "599400.00",
     "status": "Свободен",
     "points": [
       {
@@ -6541,7 +6641,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 197,
     "area": 14.22,
-    "price": "639900.00",
+    "price": "710289.00",
     "status": "Свободен",
     "points": [
       {
@@ -6565,7 +6665,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 198,
     "area": 14.22,
-    "price": "639900.00",
+    "price": "710289.00",
     "status": "Продан",
     "points": [
       {
@@ -6589,7 +6689,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 199,
     "area": 14.22,
-    "price": "639900.00",
+    "price": "710289.00",
     "status": "Продан",
     "points": [
       {
@@ -6613,7 +6713,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 200,
     "area": 9.42,
-    "price": "423900.00",
+    "price": "470529.00",
     "status": "Свободен",
     "points": [
       {
@@ -6637,7 +6737,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 201,
     "area": 10.73,
-    "price": "482850.00",
+    "price": "535963.50",
     "status": "Свободен",
     "points": [
       {
@@ -6661,7 +6761,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 202,
     "area": 12.03,
-    "price": "541350.00",
+    "price": "600898.50",
     "status": "Свободен",
     "points": [
       {
@@ -6685,7 +6785,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 203,
     "area": 9.57,
-    "price": "430650.00",
+    "price": "478021.50",
     "status": "Свободен",
     "points": [
       {
@@ -6709,7 +6809,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 204,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -6733,7 +6833,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 205,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -6757,7 +6857,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 206,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -6781,7 +6881,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 207,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -6805,7 +6905,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 208,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Продан",
     "points": [
       {
@@ -6829,7 +6929,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 209,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Продан",
     "points": [
       {
@@ -6853,7 +6953,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 210,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Продан",
     "points": [
       {
@@ -6877,7 +6977,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 211,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Продан",
     "points": [
       {
@@ -6901,7 +7001,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 212,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Продан",
     "points": [
       {
@@ -6925,7 +7025,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 213,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Продан",
     "points": [
       {
@@ -6949,7 +7049,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 214,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Продан",
     "points": [
       {
@@ -6973,7 +7073,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 215,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -6997,7 +7097,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 216,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -7021,7 +7121,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 217,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -7045,7 +7145,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 218,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -7069,7 +7169,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 219,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -7093,7 +7193,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
   {
     "num": 220,
     "area": 13.5,
-    "price": "607500.00",
+    "price": "674325.00",
     "status": "Свободен",
     "points": [
       {
@@ -7114,15 +7214,15 @@ document.getElementById("contactForm").addEventListener("submit", async function
       }
     ]
   }
-    ];
+];
 
     const lots = [
-      { num: 1, area: 12.5, price: 585000, status: 'Свободен' },
-      { num: 2, area: 10.8, price: 520000, status: 'Бронь' },
-      { num: 3, area: 14.2, price: 640000, status: 'Продан' },
-      { num: 4, area: 9.9, price: 490000, status: 'Свободен' },
-      { num: 5, area: 15.3, price: 680000, status: 'Свободен' },
-      { num: 6, area: 11.7, price: 535000, status: 'Бронь' }
+      { num: 1, area: 11.17, price: 557942, status: 'Свободен' },
+      { num: 2, area: 10.76, price: 537462, status: 'Свободен' },
+      { num: 3, area: 10.8, price: 539460, status: 'Свободен' },
+      { num: 4, area: 10.82, price: 540459, status: 'Свободен' },
+      { num: 7, area: 10.92, price: 545454, status: 'Свободен' },
+      { num: 8, area: 10.95, price: 546953, status: 'Свободен' }
     ];
 
     const houses = [
@@ -7253,7 +7353,7 @@ function populateLots() {
               <div style="font-weight: 600; color: var(--text);">${house.area} м²</div>
             </div>
             <div>
-              <div style="color: var(--text); font-size: 0.9rem;">Цена</div>
+              <div style="color: var(--text); font-size: 0.9rem;">Цена от</div>
               <div style="font-weight: 700; font-size: 1.2rem; color: var(--text);">${formatPrice(house.price)}</div>
             </div>
           </div>
@@ -7514,7 +7614,6 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
 
 
 </script>
-
 <script>
 // === Genplan Fullscreen Viewer (image + SVG polygons + tooltips + pan/zoom/pinch) ===
 (function(){
@@ -7806,9 +7905,6 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
   });
 })();
 </script>
-
-
-
 <script>
 // === Robust open binding (capture phase + transparent hotspot) ===
 (function(){
@@ -7856,8 +7952,6 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
   });
 })();
 </script>
-
-
 <script>
 // === Inline Genplan Tooltip (outside fullscreen) ===
 (function(){
@@ -7938,8 +8032,6 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
   });
 })();
 </script>
-
-
 <script>
 // Ensure window.plots is set after all scripts (fallback if plots was declared later with const/let)
 (function(){
@@ -7959,8 +8051,6 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
   setTimeout(ensure, 500);
 })();
 </script>
-
-
 <script>
 // Delegation: intercept clicks on inline polygons and open overlay with that plot.
 // Also keep #map-container height matched to image (mobile whitespace fix).
@@ -8019,8 +8109,6 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 </script>
-
-
 <script>
 // Wrapper for window.openGenplanViewer that accepts an initial plot/ID and ensures only one tooltip is shown.
 // It opens the overlay (via original), then polls for the matching polygon inside the overlay and triggers one click on it.
@@ -8076,6 +8164,99 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
     document.addEventListener('DOMContentLoaded', function(){ wrap(); });
     setTimeout(wrap, 500);
   }
+})();
+</script>
+
+<script id="swipe-gallery-script">
+(function(){
+  function enableSwipeScroll(el){
+    if(!el || el.dataset.swipeEnabled) return;
+    el.dataset.swipeEnabled = "1";
+    let isDown = false, startX = 0, startY = 0, scrollLeft = 0;
+    let lastX = 0, lastT = 0, velX = 0;
+    const friction = 0.95;
+    const minVel = 0.2;
+
+    function getPoint(e){
+      if(e.touches && e.touches[0]) return {x:e.touches[0].pageX, y:e.touches[0].pageY};
+      return {x:(e.pageX ?? 0), y:(e.pageY ?? 0)};
+    }
+
+    function onTouchStart(e){
+      const pt = getPoint(e);
+      isDown = true;
+      startX = pt.x; startY = pt.y;
+      scrollLeft = el.scrollLeft;
+      lastX = pt.x; lastT = performance.now();
+      el.style.scrollBehavior = 'auto';
+    }
+    function onTouchMove(e){
+      if(!isDown) return;
+      const pt = getPoint(e);
+      const dx = pt.x - startX;
+      const dy = pt.y - startY;
+      // lock horizontal scroll if horizontal intent stronger
+      if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 5){
+        if (e.cancelable) e.preventDefault();
+        el.scrollLeft = scrollLeft - dx;
+      }
+      const now = performance.now();
+      velX = (pt.x - lastX) / (now - lastT + 0.0001);
+      lastX = pt.x; lastT = now;
+    }
+    function onTouchEnd(){
+      if(!isDown) return;
+      isDown = false;
+      el.style.scrollBehavior = 'smooth';
+      // inertial scrolling
+      let momentum = velX * 900; // px per frame-ish
+      function step(){
+        if(Math.abs(momentum) < minVel) return;
+        el.scrollLeft -= momentum;
+        momentum *= friction;
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    const opts = {passive: false};
+    el.addEventListener('touchstart', onTouchStart, opts);
+    el.addEventListener('touchmove', onTouchMove, opts);
+    el.addEventListener('touchend', onTouchEnd, opts);
+
+    // Optional mouse drag (desktop/laptop)
+    let mouseDown = false, mStartX = 0, mScrollLeft = 0;
+    el.addEventListener('mousedown', (e)=>{ mouseDown=true; mStartX=e.pageX; mScrollLeft=el.scrollLeft; el.style.cursor='grabbing'; el.style.scrollBehavior='auto'; });
+    el.addEventListener('mousemove', (e)=>{ if(!mouseDown) return; const dx=e.pageX - mStartX; el.scrollLeft = mScrollLeft - dx; });
+    document.addEventListener('mouseup', ()=>{ if(mouseDown){ mouseDown=false; el.style.cursor=''; el.style.scrollBehavior='smooth'; } });
+  }
+
+  function initSwipe(){
+    // init for existing house galleries
+    document.querySelectorAll('.cottage-house-gallery').forEach(enableSwipeScroll);
+    // init for village gallery
+    const vg = document.querySelector('.cottage-gallery');
+    if (vg) enableSwipeScroll(vg);
+
+    // observe future inserts (e.g., houses rendered by JS)
+    const target = document.getElementById('houses-container') || document.body;
+    const obs = new MutationObserver((mutations) => {
+      mutations.forEach(m => {
+        m.addedNodes && m.addedNodes.forEach(node => {
+          if (!(node instanceof Element)) return;
+          if (node.matches && node.matches('.cottage-house-gallery')) {
+            enableSwipeScroll(node);
+          }
+          node.querySelectorAll && node.querySelectorAll('.cottage-house-gallery').forEach(enableSwipeScroll);
+        });
+      });
+    });
+    obs.observe(target, {childList: true, subtree: true});
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', initSwipe);
+  } else { initSwipe(); }
 })();
 </script>
 
