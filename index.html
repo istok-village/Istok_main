@@ -1433,44 +1433,214 @@ body.no-scroll{ overflow:hidden; }
     white-space: nowrap !important;
   }
 }
-</style><style id="assistant-mobile-call-overrides-anim">@media (max-width: 560px) {
-  @keyframes assistantPulse {
-    0%   { transform: translate(-50%, -50%) scale(1);   box-shadow: 0 0 0 0 rgba(144,106,65,0.45); }
-    70%  { transform: translate(-50%, -50%) scale(1.05); box-shadow: 0 0 0 14px rgba(144,106,65,0); }
-    100% { transform: translate(-50%, -50%) scale(1);   box-shadow: 0 0 0 0 rgba(144,106,65,0); }
-  }
-  .mobile-call-btn { animation: assistantPulse 1.8s ease-in-out infinite; }
-  @media (prefers-reduced-motion: reduce) { .mobile-call-btn { animation: none !important; } }
-}</style>
-<style id="swipe-gallery-styles">
-/* === Swipe galleries: CSS overrides === */
+</style><style id="assistant-call-unified-anim-shake">
+/* === Call button animations: 4s pulse/waves + symmetric, centered nudge on mobile === */
 
-/* House galleries: enable snap on all viewports */
-.cottage-house-gallery { 
-  scroll-snap-type: x mandatory; 
-  -webkit-overflow-scrolling: touch; 
-}
-.cottage-house-gallery > * { 
-  scroll-snap-align: center; 
+/* MOBILE call button — symmetric translation wiggle (no rotation) */
+.mobile-call-btn {
+  transform-origin: 50% 50%;
+  transform-box: border-box;
+  will-change: filter, transform;
 }
 
-/* Village gallery: on mobile turn grid into horizontal swipe */
-@media (max-width: 560px) {
-  .cottage-gallery {
-    display: flex !important;
-    overflow-x: auto !important;
-    gap: 0.5rem !important;
-    scroll-snap-type: x mandatory !important;
-    -webkit-overflow-scrolling: touch !important;
-    padding-bottom: 0.5rem !important;
+/* Default: just pulse/waves; we'll add the shake in @supports blocks below */
+.mobile-call-btn {
+  animation: callPulse 4s ease-in-out infinite;
+}
+
+/* Concentric waves */
+.mobile-call-btn::before,
+.mobile-call-btn::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 999px;
+  border: 2px solid rgba(144,106,65,0.45);
+  opacity: 0;
+  transform: scale(1);
+  pointer-events: none;
+  animation: callWave 4s ease-out infinite;
+  z-index: 0;
+}
+.mobile-call-btn::after { animation-delay: 2s; }
+.mobile-call-btn > * { position: relative; z-index: 1; }
+
+/* DESKTOP header phone link (number) — pulse + waves only */
+@media (min-width: 561px) {
+  .cottage-nav nav a[href^="tel"] {
+    position: relative;
+    overflow: visible;
+    animation: callPulse 4s ease-in-out infinite;
+    will-change: filter;
   }
-  .cottage-gallery img {
-    flex: 0 0 85% !important;
-    height: auto !important;
-    max-height: 260px !important;
-    scroll-snap-align: center !important;
+  .cottage-nav nav a[href^="tel"]::before,
+  .cottage-nav nav a[href^="tel"]::after {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: 999px;
+    border: 2px solid rgba(144,106,65,0.35);
+    opacity: 0;
+    transform: scale(1);
+    pointer-events: none;
+    animation: callWave 4s ease-out infinite;
+    z-index: -1;
+  }
+  .cottage-nav nav a[href^="tel"]::after { animation-delay: 2s; }
+}
+
+/* --- Keyframes shared --- */
+@keyframes callPulse {
+  0%, 100% { filter: drop-shadow(0 6px 14px rgba(144,106,65,0.28)); }
+  50%      { filter: drop-shadow(0 10px 24px rgba(144,106,65,0.55)); }
+}
+@keyframes callWave {
+  0%   { opacity: .55; transform: scale(1); }
+  100% { opacity: 0;   transform: scale(1.65); }
+}
+
+/* --- Preferred implementation (modern browsers): independent transform 'translate' --- */
+@supports (translate: 1px) {
+  .mobile-call-btn { translate: 0 0; animation: callPulse 4s ease-in-out infinite, callNudge 6s ease-in-out infinite; }
+  @keyframes callNudge {
+    0%, 88%, 100% { translate: 0 0; }
+    90% { translate: -1.5px 0; }
+    92% { translate:  1.5px 0; }
+    94% { translate: -1px 0; }
+    96% { translate:  1px 0; }
+    98% { translate:  0 0; }
   }
 }
+
+/* --- Fallback for older browsers: use CSS variable to compose into transform --- */
+@supports not (translate: 1px) {
+  .mobile-call-btn { --shake-x: 0px; transform: translateX(var(--shake-x)); animation: callPulse 4s ease-in-out infinite, callNudgeVar 6s ease-in-out infinite; }
+  @keyframes callNudgeVar {
+    0%, 88%, 100% { --shake-x: 0px; }
+    90% { --shake-x: -1.5px; }
+    92% { --shake-x:  1.5px; }
+    94% { --shake-x: -1px; }
+    96% { --shake-x:  1px; }
+    98% { --shake-x:  0px; }
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-call-btn,
+  .cottage-nav nav a[href^="tel"] {
+    animation: none !important;
+    filter: none !important;
+    transform: none !important;
+  }
+  .mobile-call-btn::before,
+  .mobile-call-btn::after,
+  .cottage-nav nav a[href^="tel"]::before,
+  .cottage-nav nav a[href^="tel"]::after {
+    animation: none !important;
+  }
+}
+</style>
+
+
+<style id="overlay-viewer-styles">
+/* === Image Overlay Viewer (bg close + pinch zoom + pan) === */
+#imgov-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 20000;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+#imgov-overlay.show { display: flex; }
+
+#imgov-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* prevent page scroll during pan */
+  touch-action: none; /* we manage gestures */
+}
+
+#imgov-img, #imgov-img-ghost {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 94vw;
+  max-height: 88vh;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  will-change: transform, opacity;
+  box-shadow: 0 6px 26px rgba(0,0,0,0.45);
+  border-radius: 10px;
+}
+#imgov-img { opacity: 1; transition: transform 0.28s ease, opacity 0.28s ease; }
+#imgov-img-ghost { opacity: 0; transition: transform 0.28s ease, opacity 0.28s ease; pointer-events: none; }
+
+#imgov-close {
+  position: absolute;
+  right: 14px;
+  top: 12px;
+  z-index: 20003;
+  border: 1px solid rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border-radius: 12px;
+  font-size: 18px;
+  padding: 10px 12px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+}
+#imgov-close:active { transform: scale(0.98); }
+
+/* Arrows: visible on all devices */
+.imgov-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20002;
+  border: 1px solid rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border-radius: 12px;
+  font-size: 20px;
+  padding: 10px 12px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  display: block;
+}
+.imgov-prev { left: 8px; }
+.imgov-next { right: 8px; }
+
+@media (min-width: 641px) {
+  .imgov-nav { font-size: 22px; padding: 12px 14px; }
+  .imgov-prev { left: 10px; } .imgov-next { right: 10px; }
+}
+
+#imgov-counter {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  z-index: 20002;
+  background: rgba(255,255,255,0.12);
+  color:#fff;
+  font-weight: 600;
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.22);
+  backdrop-filter: blur(6px);
+}
+
+/* prevent body scroll when overlay is open */
+body.imgov-lock { overflow: hidden !important; }
 </style>
 
 </head>
@@ -8166,98 +8336,304 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
   }
 })();
 </script>
-
-<script id="swipe-gallery-script">
+<script id="overlay-viewer-script">
 (function(){
-  function enableSwipeScroll(el){
-    if(!el || el.dataset.swipeEnabled) return;
-    el.dataset.swipeEnabled = "1";
-    let isDown = false, startX = 0, startY = 0, scrollLeft = 0;
-    let lastX = 0, lastT = 0, velX = 0;
-    const friction = 0.95;
-    const minVel = 0.2;
+  if (window.__imgov_init__) return;
+  window.__imgov_init__ = true;
 
-    function getPoint(e){
-      if(e.touches && e.touches[0]) return {x:e.touches[0].pageX, y:e.touches[0].pageY};
-      return {x:(e.pageX ?? 0), y:(e.pageY ?? 0)};
-    }
-
-    function onTouchStart(e){
-      const pt = getPoint(e);
-      isDown = true;
-      startX = pt.x; startY = pt.y;
-      scrollLeft = el.scrollLeft;
-      lastX = pt.x; lastT = performance.now();
-      el.style.scrollBehavior = 'auto';
-    }
-    function onTouchMove(e){
-      if(!isDown) return;
-      const pt = getPoint(e);
-      const dx = pt.x - startX;
-      const dy = pt.y - startY;
-      // lock horizontal scroll if horizontal intent stronger
-      if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 5){
-        if (e.cancelable) e.preventDefault();
-        el.scrollLeft = scrollLeft - dx;
-      }
-      const now = performance.now();
-      velX = (pt.x - lastX) / (now - lastT + 0.0001);
-      lastX = pt.x; lastT = now;
-    }
-    function onTouchEnd(){
-      if(!isDown) return;
-      isDown = false;
-      el.style.scrollBehavior = 'smooth';
-      // inertial scrolling
-      let momentum = velX * 900; // px per frame-ish
-      function step(){
-        if(Math.abs(momentum) < minVel) return;
-        el.scrollLeft -= momentum;
-        momentum *= friction;
-        requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    }
-
-    const opts = {passive: false};
-    el.addEventListener('touchstart', onTouchStart, opts);
-    el.addEventListener('touchmove', onTouchMove, opts);
-    el.addEventListener('touchend', onTouchEnd, opts);
-
-    // Optional mouse drag (desktop/laptop)
-    let mouseDown = false, mStartX = 0, mScrollLeft = 0;
-    el.addEventListener('mousedown', (e)=>{ mouseDown=true; mStartX=e.pageX; mScrollLeft=el.scrollLeft; el.style.cursor='grabbing'; el.style.scrollBehavior='auto'; });
-    el.addEventListener('mousemove', (e)=>{ if(!mouseDown) return; const dx=e.pageX - mStartX; el.scrollLeft = mScrollLeft - dx; });
-    document.addEventListener('mouseup', ()=>{ if(mouseDown){ mouseDown=false; el.style.cursor=''; el.style.scrollBehavior='smooth'; } });
+  function buildOverlay(){
+    const o = document.createElement('div');
+    o.id = 'imgov-overlay';
+    o.setAttribute('role','dialog');
+    o.setAttribute('aria-modal','true');
+    o.innerHTML = `
+      <div id="imgov-stage" aria-live="polite">
+        <button id="imgov-close" aria-label="Закрыть">✕</button>
+        <button class="imgov-nav imgov-prev" aria-label="Предыдущая">‹</button>
+        <img id="imgov-img" alt="Просмотр изображения" />
+        <img id="imgov-img-ghost" alt="" aria-hidden="true" />
+        <button class="imgov-nav imgov-next" aria-label="Следующая">›</button>
+        <div id="imgov-counter">1 / 1</div>
+      </div>
+    `;
+    document.body.appendChild(o);
+    return o;
   }
 
-  function initSwipe(){
-    // init for existing house galleries
-    document.querySelectorAll('.cottage-house-gallery').forEach(enableSwipeScroll);
-    // init for village gallery
-    const vg = document.querySelector('.cottage-gallery');
-    if (vg) enableSwipeScroll(vg);
+  const state = {
+    items: [], index: 0,
+    touch: {active:false, pinching:false, lastX:0, lastY:0, d0:0, s0:1, startX:0, startY:0},
+    zoom: {scale:1, tx:0, ty:0, min:1, max:4, baseW:0, baseH:0},
+    lastTap: 0
+  };
 
-    // observe future inserts (e.g., houses rendered by JS)
-    const target = document.getElementById('houses-container') || document.body;
-    const obs = new MutationObserver((mutations) => {
-      mutations.forEach(m => {
-        m.addedNodes && m.addedNodes.forEach(node => {
-          if (!(node instanceof Element)) return;
-          if (node.matches && node.matches('.cottage-house-gallery')) {
-            enableSwipeScroll(node);
-          }
-          node.querySelectorAll && node.querySelectorAll('.cottage-house-gallery').forEach(enableSwipeScroll);
-        });
+  let overlay, stage, imgEl, ghostEl, prevBtn, nextBtn, closeBtn, counterEl;
+
+  function ensureRefs(){
+    overlay   = overlay   || document.getElementById('imgov-overlay') || buildOverlay();
+    stage     = stage     || document.getElementById('imgov-stage');
+    imgEl     = imgEl     || document.getElementById('imgov-img');
+    ghostEl   = ghostEl   || document.getElementById('imgov-img-ghost');
+    prevBtn   = prevBtn   || overlay.querySelector('.imgov-prev');
+    nextBtn   = nextBtn   || overlay.querySelector('.imgov-next');
+    closeBtn  = closeBtn  || document.getElementById('imgov-close');
+    counterEl = counterEl || document.getElementById('imgov-counter');
+  }
+
+  function setCounter(){
+    if (counterEl) counterEl.textContent = (state.index + 1) + ' / ' + state.items.length;
+  }
+
+  function preload(i){
+    const n = state.items.length; if (!n) return;
+    const img = new Image(); img.src = state.items[(i+n)%n].src;
+  }
+
+  function resetZoom(){
+    state.zoom.scale = 1; state.zoom.tx = 0; state.zoom.ty = 0;
+    applyTransform();
+  }
+
+  function measureBaseRect(){
+    // measure visible size at scale=1
+    const prev = imgEl.style.transform;
+    imgEl.style.transform = 'translate(-50%, -50%) translate(0px, 0px) scale(1)';
+    const r = imgEl.getBoundingClientRect();
+    state.zoom.baseW = r.width;
+    state.zoom.baseH = r.height;
+    imgEl.style.transform = prev;
+  }
+
+  function applyTransform(){
+    const {scale, tx, ty} = state.zoom;
+    imgEl.style.transform = `translate(-50%, -50%) translate(${tx}px, ${ty}px) scale(${scale})`;
+  }
+
+  function clampPan(){
+    const {scale} = state.zoom;
+    const sw = stage.clientWidth, sh = stage.clientHeight;
+    const bw = state.zoom.baseW || imgEl.getBoundingClientRect().width/scale;
+    const bh = state.zoom.baseH || imgEl.getBoundingClientRect().height/scale;
+    const maxX = Math.max(0, (bw*scale - sw)/2);
+    const maxY = Math.max(0, (bh*scale - sh)/2);
+    state.zoom.tx = Math.max(-maxX, Math.min(maxX, state.zoom.tx));
+    state.zoom.ty = Math.max(-maxY, Math.min(maxY, state.zoom.ty));
+  }
+
+  // Smooth crossfade + directional slide (disabled when zoomed in)
+  function show(i, direction){
+    ensureRefs();
+    const n = state.items.length; if (!n) return;
+    state.index = (i + n) % n;
+    const target = state.items[state.index];
+
+    const dir = direction || 0;
+    const offset = dir ? (dir > 0 ? 60 : -60) : 0;
+
+    // outgoing -> ghost
+    ghostEl.src = imgEl.src || '';
+    ghostEl.style.opacity = ghostEl.src ? '1' : '0';
+    ghostEl.style.transform = 'translate(-50%, -50%)';
+
+    // incoming -> main (start slightly offset)
+    imgEl.style.opacity = '0';
+    imgEl.style.transform = `translate(-50%, -50%) translate(0px, 0px) scale(1) translateX(${offset}px)`;
+
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{
+        imgEl.src = target.src;
+        imgEl.alt = target.alt || '';
+
+        const onload = ()=>{
+          imgEl.removeEventListener('load', onload);
+          resetZoom(); // always start with scale 1
+          imgEl.style.opacity = '1';
+          imgEl.style.transform = 'translate(-50%, -50%) translate(0px, 0px) scale(1)';
+          setTimeout(measureBaseRect, 30);
+        };
+        imgEl.addEventListener('load', onload);
+
+        // animate ghost out
+        if (ghostEl.src) {
+          const goff = -offset || (dir ? -offset : (Math.random() < 0.5 ? 60 : -60));
+          ghostEl.style.transform = `translate(-50%, -50%) translateX(${goff}px)`;
+          ghostEl.addEventListener('transitionend', () => { ghostEl.src=''; ghostEl.style.opacity='0'; ghostEl.style.transform='translate(-50%, -50%)'; }, {once:true});
+          ghostEl.style.opacity = '0';
+        }
+
+        setCounter();
+        preload(state.index+1);
+        preload(state.index-1);
       });
     });
-    obs.observe(target, {childList: true, subtree: true});
   }
 
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', initSwipe);
-  } else { initSwipe(); }
-})();
+  function openFromGallery(galleryEl, startIndex){
+    ensureRefs();
+    const imgs = Array.from(galleryEl.querySelectorAll('img'));
+    state.items = imgs.map(im => ({
+      src: im.getAttribute('data-full') || im.currentSrc || im.src,
+      alt: im.getAttribute('alt') || ''
+    })).filter(it => !!it.src);
+    state.index = Math.max(0, Math.min(startIndex || 0, state.items.length-1));
+    if (!state.items.length) return;
+    overlay.classList.add('show');
+    document.body.classList.add('imgov-lock');
+    resetZoom();
+    show(state.index, 0);
+  }
+
+  function close(){ ensureRefs(); overlay.classList.remove('show'); document.body.classList.remove('imgov-lock'); }
+
+  function next(){ if (state.zoom.scale > 1.02) return; show(state.index + 1, 1); }
+  function prev(){ if (state.zoom.scale > 1.02) return; show(state.index - 1, -1); }
+
+  // Open on image click in the two galleries
+  document.addEventListener('click', function(e){
+    const t = e.target;
+    const img = t.closest && t.closest('.cottage-gallery img, .cottage-house-gallery img');
+    if (img) {
+      const gallery = img.closest('.cottage-gallery, .cottage-house-gallery');
+      const list = Array.from(gallery.querySelectorAll('img'));
+      const idx = Math.max(0, list.indexOf(img));
+      e.preventDefault(); e.stopPropagation(); if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+      openFromGallery(gallery, idx);
+      return;
+    }
+  }, true);
+
+  // Controls + background click
+  document.addEventListener('click', function(e){
+    if (!overlay || !overlay.classList.contains('show')) return;
+    const t = e.target;
+    if (t.id === 'imgov-close') { e.preventDefault(); close(); return; }
+    if (t.classList && t.classList.contains('imgov-prev')) { e.preventDefault(); prev(); return; }
+    if (t.classList && t.classList.contains('imgov-next')) { e.preventDefault(); next(); return; }
+    // click on dark bg or empty area of stage closes when not zoomed in
+    if ((t.id === 'imgov-overlay' || t.id === 'imgov-stage') && state.zoom.scale <= 1.02) { close(); return; }
+  });
+
+  // --- Touch gestures ---
+  const SWIPE_THRESHOLD = 60;
+
+  function getPt(e, idx=0){ const c=e.touches[idx]; return {x:c.clientX, y:c.clientY}; }
+  function distance(a,b){ const dx=a.x-b.x, dy=a.y-b.y; return Math.hypot(dx,dy); }
+
+  document.addEventListener('touchstart', function(e){
+    if (!overlay || !overlay.classList.contains('show')) return;
+    const t = e.target;
+    const onImage = (t.id === 'imgov-img');
+
+    if (e.touches.length === 2) {
+      // start pinch
+      state.touch.pinching = true;
+      const p0 = getPt(e,0), p1 = getPt(e,1);
+      state.touch.d0 = distance(p0,p1);
+      state.touch.s0 = state.zoom.scale;
+      e.preventDefault();
+      return;
+    }
+
+    if (e.touches.length === 1) {
+      const p = getPt(e,0);
+      state.touch.active = true;
+      state.touch.lastX = state.touch.startX = p.x;
+      state.touch.lastY = state.touch.startY = p.y;
+      // prevent page scroll if on image or zoomed
+      if (onImage || state.zoom.scale > 1.02) e.preventDefault();
+    }
+  }, {passive:false});
+
+  document.addEventListener('touchmove', function(e){
+    if (!overlay || !overlay.classList.contains('show')) return;
+
+    if (state.touch.pinching && e.touches.length === 2){
+      const p0 = getPt(e,0), p1 = getPt(e,1);
+      let newScale = (distance(p0,p1)/Math.max(1,state.touch.d0)) * state.touch.s0;
+      newScale = Math.max(state.zoom.min, Math.min(state.zoom.max, newScale));
+      state.zoom.scale = newScale;
+      clampPan();
+      applyTransform();
+      e.preventDefault();
+      return;
+    }
+
+    if (!state.touch.active || e.touches.length !== 1) return;
+    const p = getPt(e,0);
+    const dx = p.x - state.touch.lastX;
+    const dy = p.y - state.touch.lastY;
+    state.touch.lastX = p.x; state.touch.lastY = p.y;
+
+    if (state.zoom.scale > 1.02) {
+      // pan
+      state.zoom.tx += dx;
+      state.zoom.ty += dy;
+      clampPan();
+      applyTransform();
+      e.preventDefault();
+    }
+  }, {passive:false});
+
+  document.addEventListener('touchend', function(e){
+    if (!overlay || !overlay.classList.contains('show')) return;
+
+    if (state.touch.pinching && e.touches.length < 2){
+      state.touch.pinching = false;
+    }
+
+    if (e.touches.length === 0 && state.touch.active){
+      const totalDx = state.touch.lastX - state.touch.startX;
+      const totalDy = state.touch.lastY - state.touch.startY;
+      // swipe navigation only when not zoomed
+      if (state.zoom.scale <= 1.02 && Math.abs(totalDx) > Math.abs(totalDy) && Math.abs(totalDx) > SWIPE_THRESHOLD){
+        if (totalDx < 0) next(); else prev();
+      }
+      state.touch.active = false;
+    }
+  }, {passive:false});
+
+  // Double-tap to toggle zoom
+  stage && stage.addEventListener('touchend', function(e){
+    if (!overlay || !overlay.classList.contains('show')) return;
+    const now = Date.now();
+    if (now - state.lastTap < 300) {
+      // toggle
+      state.zoom.scale = (state.zoom.scale > 1.02) ? 1 : 2;
+      state.zoom.tx = 0; state.zoom.ty = 0;
+      clampPan(); applyTransform();
+      e.preventDefault();
+    }
+    state.lastTap = now;
+  });
+
+  // Wheel zoom (desktop trackpads)
+  stage && stage.addEventListener('wheel', function(e){
+    if (!overlay || !overlay.classList.contains('show')) return;
+    const delta = e.deltaY;
+    let s = state.zoom.scale + (-delta * 0.002);
+    s = Math.max(state.zoom.min, Math.min(state.zoom.max, s));
+    state.zoom.scale = s;
+    clampPan(); applyTransform();
+    e.preventDefault();
+  }, {passive:false});
+
+  // Buttons
+  document.addEventListener('click', function(e){
+    if (!overlay || !overlay.classList.contains('show')) return;
+    if (e.target.matches('.imgov-prev')) { prev(); }
+    if (e.target.matches('.imgov-next')) { next(); }
+  });
+
+  // Recalculate base rect on resize/orientation change
+  window.addEventListener('resize', function(){
+    if (!overlay || !overlay.classList.contains('show')) return;
+    setTimeout(()=>{ measureBaseRect(); clampPan(); applyTransform(); }, 60);
+  });
+
+  // Hook into both galleries (delegation above already opens, this ensures all img clicks are captured)
+  // No additional code needed here.
+
+})(); 
 </script>
 
 </body>
