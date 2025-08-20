@@ -8055,7 +8055,14 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
     // close on Esc, and on background click (outside content)
     function onKey(e){ if(e.key === 'Escape') cleanup(); }
     window.addEventListener('keydown', onKey);
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) cleanup(); });
+    overlay.addEventListener('click', (e) => {
+  if (e.target !== overlay) return;
+  // Close by background only when not zoomed beyond initial fit
+  try{ if (typeof scale !== 'undefined' && typeof minScale !== 'undefined') {
+    const eps = 0.001;
+    if (scale <= (minScale + eps)) { cleanup(); }
+  } else { cleanup(); } }catch(err){ cleanup(); }
+});
 
     function cleanup(){
       document.body.style.overflow = '';
