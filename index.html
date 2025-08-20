@@ -8497,13 +8497,20 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
   }
 
   function openFromGallery(galleryEl, startIndex){
-    try { resetTransform && resetTransform(); } catch(e){};
+    try { if(typeof resetTransform === 'function'){ resetTransform(); } } catch(e){};
     if(window.visualViewport){ /* normalize against page zoom */ 
-       const vv = window.visualViewport;
-       if(vv){
-         const wrap = document.getElementById('imgov-vvwrap');
-         if(wrap){ wrap.style.transform = 'scale('+(1/ vv.scale)+') translate('+vv.offsetLeft+'px,'+vv.offsetTop+'px)'; }
-       }
+       try{
+         const vv = window.visualViewport;
+         if(vv){
+           const wrap = document.getElementById('imgov-vvwrap');
+           if(wrap){
+             wrap.style.transformOrigin = '0 0';
+             wrap.style.transform = 'translate('+vv.offsetLeft+'px,'+vv.offsetTop+'px) scale('+(1/vv.scale)+')';
+             wrap.style.width = vv.width+'px';
+             wrap.style.height = vv.height+'px';
+           }
+         }
+       }catch(e){}
     }
     ensureRefs();
     const imgs = Array.from(galleryEl.querySelectorAll('img'));
