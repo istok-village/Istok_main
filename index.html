@@ -8427,7 +8427,10 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
     state.index = (i + n) % n;
     const target = state.items[state.index];
 
-    const dir = direction || 0;
+    
+    // Ensure starting zoom/position are reset for the new image
+    resetZoom();
+const dir = direction || 0;
     const offset = dir ? (dir > 0 ? 60 : -60) : 0;
 
     // outgoing -> ghost
@@ -8485,8 +8488,8 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
 
   function close(){ ensureRefs(); overlay.classList.remove('show'); document.body.classList.remove('imgov-lock'); }
 
-  function next(){ if (state.zoom.scale > 1.02) return; show(state.index + 1, 1); }
-  function prev(){ if (state.zoom.scale > 1.02) return; show(state.index - 1, -1); }
+  function next(){ show(state.index + 1, 1); }
+  function prev(){ show(state.index - 1, -1); }
 
   // Open on image click in the two galleries
   document.addEventListener('click', function(e){
@@ -8523,6 +8526,9 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
     if (!overlay || !overlay.classList.contains('show')) return;
     const t = e.target;
     const onImage = (t.id === 'imgov-img');
+    const onBg = (t.id === 'imgov-stage' || t.id === 'imgov-overlay');
+    // Don't hijack taps on controls (close/prev/next/counter)
+    if (t.closest && t.closest('#imgov-close, .imgov-nav, #imgov-counter')) { return; }
 
     if (e.touches.length === 2) {
       // start pinch
@@ -8540,12 +8546,16 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
       state.touch.lastX = state.touch.startX = p.x;
       state.touch.lastY = state.touch.startY = p.y;
       // prevent page scroll if on image or zoomed
-      if (onImage || state.zoom.scale > 1.02) e.preventDefault();
+      if (!onBg && (onImage || state.zoom.scale > 1.02)) e.preventDefault();
     }
   }, {passive:false});
 
   document.addEventListener('touchmove', function(e){
     if (!overlay || !overlay.classList.contains('show')) return;
+
+    // Ignore moves that start on controls (close/prev/next/counter)
+    const t = e.target;
+    if (t.closest && t.closest('#imgov-close, .imgov-nav, #imgov-counter')) return;
 
     if (state.touch.pinching && e.touches.length === 2){
       const p0 = getPt(e,0), p1 = getPt(e,1);
@@ -8576,6 +8586,10 @@ document.querySelectorAll('.cottage-house-gallery img').forEach((img, idx) => {
 
   document.addEventListener('touchend', function(e){
     if (!overlay || !overlay.classList.contains('show')) return;
+
+    // Don't treat taps on controls as gestures; let clicks fire
+    const t = e.target;
+    if (t.closest && t.closest('#imgov-close, .imgov-nav, #imgov-counter')) return;
 
     if (state.touch.pinching && e.touches.length < 2){
       state.touch.pinching = false;
